@@ -1,7 +1,7 @@
 /*
  * Authority.java
  * 
- * Copyright (C) 2018 Universidad de Sevilla
+ * Copyright (C) 2019 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -27,25 +27,26 @@ public class Authority implements GrantedAuthority {
 
 	// Constructors -----------------------------------------------------------
 
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
+
 
 	public Authority() {
 		super();
 	}
 
+
 	// Values -----------------------------------------------------------------
 
-	public static final String ADMININISTRATOR = "ADMININISTRATOR";
-	public static final String MEMBER = "MEMBER";
-	public static final String BROTHERHOOD = "BROTHERHOOD";
+	public static final String	ADMIN		= "ADMIN";
+	public static final String	CUSTOMER	= "CUSTOMER";
 
 	// Attributes -------------------------------------------------------------
 
-	private String authority;
+	private String				authority;
+
 
 	@NotBlank
-	@Pattern(regexp = "^" + Authority.ADMININISTRATOR + "|" + Authority.MEMBER
-			+ "|" + Authority.BROTHERHOOD + "$")
+	@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.CUSTOMER + "$")
 	@Override
 	public String getAuthority() {
 		return this.authority;
@@ -62,15 +63,11 @@ public class Authority implements GrantedAuthority {
 		result = new ArrayList<Authority>();
 
 		authority = new Authority();
-		authority.setAuthority(Authority.ADMININISTRATOR);
+		authority.setAuthority(Authority.ADMIN);
 		result.add(authority);
 
 		authority = new Authority();
-		authority.setAuthority(Authority.MEMBER);
-		result.add(authority);
-
-		authority = new Authority();
-		authority.setAuthority(Authority.BROTHERHOOD);
+		authority.setAuthority(Authority.CUSTOMER);
 		result.add(authority);
 
 		return result;
@@ -94,8 +91,7 @@ public class Authority implements GrantedAuthority {
 		else if (!this.getClass().isInstance(other))
 			result = false;
 		else
-			result = (this.getAuthority().equals(((Authority) other)
-					.getAuthority()));
+			result = (this.getAuthority().equals(((Authority) other).getAuthority()));
 
 		return result;
 	}

@@ -1,7 +1,7 @@
 /*
  * SampleTest.java
  * 
- * Copyright (C) 2018 Universidad de Sevilla
+ * Copyright (C) 2019 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -36,36 +36,36 @@ public class SampleTest extends AbstractTest {
 	// it using JUnit.
 
 	@Test
-	public void samplePositiveTest() {
+	public void SamplePositiveTest() {
 		Assert.isTrue(true);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void sampleNegativeTest() {
+	public void SampleNegativeTest() {
 		Assert.isTrue(false);
 	}
 
 	@Test
-	public void sampleDriver() {
+	public void SampleDriver() {
 		final Object testingData[][] = {
 			{
-				"userAccount1", 4, null
+				"userAccount1", super.getEntityId("userAccount1"), null
 			}, {
-				"userAccount2", 5, null
+				"userAccount2", super.getEntityId("userAccount2"), null
 			}, {
-				"userAccount3", 6, null
+				"userAccount3", super.getEntityId("userAccount3"), null
 			}, {
 				"non-existent", 0, AssertionError.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.sampleTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+			this.SampleTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
 	// Ancillary methods ------------------------------------------------------
 
-	protected void sampleTemplate(final String beanName, final int id, final Class<?> expected) {
+	protected void SampleTemplate(final String beanName, final int id, final Class<?> expected) {
 		Class<?> caught;
 		int dbId;
 

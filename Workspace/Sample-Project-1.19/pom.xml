@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- * pom.xml * * Copyright (C) 2018 Universidad de Sevilla * * The use 
+<!-- * pom.xml * * Copyright (C) 2019 Universidad de Sevilla * * The use 
 	of this project is hereby constrained to the conditions of the * TDG Licence, 
 	a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
@@ -11,9 +11,9 @@
 
 	<!-- Artifact identification and properties -->
 
-	<groupId>Acme.com</groupId>
-	<artifactId>Acme-Madruga</artifactId>
-	<version>0.0.0.0-SNAPSHOT</version>
+	<groupId>Design-and-Testing</groupId>
+	<artifactId>Sample-Project</artifactId>
+	<version>1.0</version>
 	<packaging>war</packaging>
 
 	<properties>
@@ -22,9 +22,8 @@
 
 	<!-- Indexing information -->
 
-	<name>Acme Madrugá</name>
-	<url>http://www.acme-madruga.com</url>
-	<description>This is D&amp;T's Acme Madrugá project.</description>
+	<name>Sample Project</name>
+	<url>http://www.sample-project.com</url>
 
 	<!-- Build commands -->
 
@@ -76,6 +75,17 @@
 					<server>tomcat-development-server</server>
 					<port>8080</port>
 					<path>/${project.artifactId}</path>
+				</configuration>
+			</plugin>
+
+			<!-- Surefire -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 
@@ -213,7 +223,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.45</version>
+			<version>5.1.26</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -305,4 +315,5 @@
 
 	</dependencies>
 
+	<description>This system allows people share their favourite Shouts.</description>
 </project> 

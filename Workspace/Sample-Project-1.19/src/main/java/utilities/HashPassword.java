@@ -1,7 +1,7 @@
 /*
  * HashPassword.java
  * 
- * Copyright (C) 2018 Universidad de Sevilla
+ * Copyright (C) 2019 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -25,8 +25,9 @@ public class HashPassword {
 		String line, hash;
 
 		try {
-			System.out.println("HashPassword 1.18");
-			System.out.println("-----------------");
+			System.out.println("HashPassword 1.18.2");
+			System.out.println("-------------------");
+			System.out.println();
 
 			encoder = new Md5PasswordEncoder();
 			reader = new ConsoleReader();
