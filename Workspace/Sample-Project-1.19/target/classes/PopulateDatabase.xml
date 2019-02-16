@@ -12,51 +12,458 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
 	<!-- User accounts -->
-
-	<bean id="userAccount1" class="security.UserAccount">
+	
+	<!-- ADMINISTRATORS -->
+	<bean id="userAdmin1" class="security.UserAccount">
 		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="isBanned" value="false" />
 		<property name="authorities">
 			<list>
 				<bean class="security.Authority">
-					<property name="authority" value="ADMIN" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="userAccount2" class="security.UserAccount">
-		<property name="username" value="customer" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="CUSTOMER" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="userAccount3" class="security.UserAccount">
-		<property name="username" value="super" />
-		<property name="password" value="1b3231655cebb7a1f783eddf27d254ca" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="ADMIN" />
-				</bean>
-				<bean class="security.Authority">
-					<property name="authority" value="CUSTOMER" />
+					<property name="authority" value="ADMINISTRATOR" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 	
+	<bean id="userAdmin2" class="security.UserAccount">
+		<property name="username" value="admin2" />
+		<property name="password" value="c84258e9c39059a89ab77d846ddab909" />
+		<property name="isBanned" value="false" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMINISTRATOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- MEMBER -->
+	
+	<bean id="userMember1" class="security.UserAccount">
+		<property name="username" value="member1" />
+		<property name="password" value="c7764cfed23c5ca3bb393308a0da2306" />
+		<property name="isBanned" value="false" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+		<bean id="userMember2" class="security.UserAccount">
+		<property name="username" value="member2" />
+		<property name="password" value="88ed421f060aadcacbd63f28d889797f" />
+		<property name="isBanned" value="false" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+
+	
+	<!-- BROTHERHOOD -->
+	
+	<bean id="userBrotherhood1" class="security.UserAccount">
+		<property name="username" value="brotherhood1" />
+		<property name="password" value="479e3180a45b21ea8e88beb0c45aa8ed" />
+		<property name="isBanned" value="false" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+		<bean id="userBrotherhood2" class="security.UserAccount">
+		<property name="username" value="brotherhood2" />
+		<property name="password" value="88f1b810c40cd63107fb758fef4d77db" />
+		<property name="isBanned" value="false" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- SYSTEM CONFIGURATION -->
+	
+	<bean id="sysConf" class="domain.SystemConfiguration">
+		<property name="systemName" value="Acme Madrugá" />
+		<property name="welcomeMessage">
+			<util:map id="utilmap0" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español"
+					value="¡Bienvenidos a Acme
+Madrugá! Tu sitio para organizar procesiones." />
+				<entry key="English"
+					value="Welcome to Acme Madrugá, the site to organise
+your processions." />
+			</util:map>
+		</property>
+		<property name="banner" value="https://tinyurl.com/acme-madruga" />
+		
+		
+		<property name="countryCode" value="+034" />
+		<property name="timeResultsCached" value="1" />
+		<property name="maxResults" value="10" />
+		<property name="messagePriority"
+			value="HIGH,NEUTRAL,LOW" />
+		<property name="spamWords"
+			value="sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millón,un millon,has sido seleccionado" />
+		<property name="possitiveWords"
+			value="good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantástico,excelente,genial,increíble,terrorífico,bonita" />
+		<property name="negativeWords"
+			value="not,bad,horrible,average,disaster,no,malo,horroroso,regular,desastre" />
+
+	</bean>
+	
+	
 	<!-- Other domain beans come here -->	
+	
+	<!-- FINDER -->
+	
+	<bean id="finder1" class="domain.Finder">
+		<property name="searchMoment" value="01/08/2019 19:48" />
+	</bean>
+	<bean id="finder2" class="domain.Finder">
+		<property name="searchMoment" value="01/08/2019 19:48" />
+	</bean>
+	
+	<!--POSITION -->
+	
+	<bean id="POSITION1" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap1" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Presidente" />
+				
+				<entry key="English" value="President" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	<bean id="POSITION2" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap2" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Vice Presidente" />
+				
+				<entry key="English" value="Vicepresident" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+		<bean id="POSITION3" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap3" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Secretario" />
+				
+				<entry key="English" value="Secretary" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+			<bean id="POSITION4" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap4" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Tesorero" />
+				
+				<entry key="English" value="Treasurer" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+				<bean id="POSITION5" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap5" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Historiador" />
+				
+				<entry key="English" value="Historian" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+		
+				<bean id="POSITION6" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap6" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Promotor" />
+				
+				<entry key="English" value="Fundraiser" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+	
+					<bean id="POSITION7" class="domain.Position">
+		<property name="name">
+			<util:map id="utilmap7" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Vocal" />
+				
+				<entry key="English" value="Officer" />
+				
+			</util:map>
+		</property>
+		
+	</bean>
+	
+	
+	
+	<!-- PLATFORM -->
+	<bean id="platform1" class="domain.Platform">
+		<property name="title" value="El Gran Poder" />
+		<property name="establismentDate" value="09/09/2009" />
+		<property name="pictures" value="https://imgur.com/gallery/z79NsNHR" />
+		<property name="description" value="El paso más fomoso de toda Sevilla" />
+		<property name="brotherhood">
+			<ref bean="brotherhood2" />
+		</property>
+		</bean>
+			<bean id="platform2" class="domain.Platform">
+		<property name="title" value="Procesión de Los Legionarios" />
+		<property name="establismentDate" value="09/09/2009" />
+		<property name="pictures" value="https://imgur.com/gallery/z79NsNHR" />
+		<property name="description" value="Espectacular paso" />
+		<property name="brotherhood">
+			<ref bean="brotherhood1" />
+		</property>
+		</bean>
+		
+			<bean id="platform3" class="domain.Platform">
+		<property name="title" value="Cristo Yacente" />
+		<property name="establismentDate" value="09/09/2009" />
+		<property name="pictures" value="https://imgur.com/gallery/z79NsNHR" />
+		<property name="description" value="Paso histórico" />
+		<property name="brotherhood">
+			<ref bean="brotherhood1" />
+		</property>
+		</bean>
+		
+			<bean id="platform4" class="domain.Platform">
+		<property name="title" value="La Macarena" />
+		<property name="establismentDate" value="09/09/2009" />
+		<property name="pictures" value="https://imgur.com/gallery/z79NsNHR" />
+		<property name="description" value="Compuesto por más de un millar de hermanos" />
+		<property name="brotherhood">
+			<ref bean="brotherhood2" />
+		</property>
+		</bean>
+	
+	
+	<!-- AREA -->
+		<bean id="zone1" class="domain.Zone">
+		<property name="name" value="Los remedios" />
+		<property name="pictures" value="https://imgur.com/gallery/z79NsNHR" />
+		</bean>
+		
+		<bean id="zone2" class="domain.Zone">
+		<property name="name" value="Montequinto" />
+		<property name="pictures" value="https://imgur.com/gallery/zsNHR,https://imgur.com/gallery/z79ad" />
+		</bean>
+		
+		<bean id="zone3" class="domain.Zone">
+		<property name="name" value="Sevilla Este" />
+		<property name="pictures" value="https://imgur.com/gallery/zdsfsHR" />
+		</bean>
+		
+		<bean id="zone4" class="domain.Zone">
+		<property name="name" value="Carmona" />
+		<property name="pictures" value="https://imgur.com/gallery/z79Nfs" />
+		</bean>
+	
+	<!-- SOCIAL PROFILE -->
+	
+	<!-- Administrator -->
+	<bean id="socialAdministrator1" class="domain.SocialProfile">
+		<property name="nick" value="socialAdministrator1" />
+		<property name="name" value="Instagram" />
+		<property name="linkProfile" value="https://www.instagram.com/socialAdministrator1" />
+		<property name="actor">
+			<ref bean="administrator1" />
+		</property>
+	</bean>
+	
+		<bean id="socialAdministrator2" class="domain.SocialProfile">
+		<property name="nick" value="socialAdministrator2" />
+		<property name="name" value="Twitter" />
+		<property name="linkProfile" value="https://www.twitter.com/socialAdministrator2" />
+		<property name="actor">
+			<ref bean="administrator2" />
+		</property>
+	</bean>
+	
+	<!-- member -->
+	 
+	<bean id="socialmember1" class="domain.SocialProfile">
+		<property name="nick" value="socialmember1" />
+		<property name="name" value="Instagram" />
+		<property name="linkProfile" value="https://www.instagram.com/socialmember1" />
+		<property name="actor">
+			<ref bean="member1" />
+		</property>
+	</bean>
+	
+		<bean id="socialmember2" class="domain.SocialProfile">
+		<property name="nick" value="socialmember2" />
+		<property name="name" value="Twitter" />
+		<property name="linkProfile" value="https://www.twitter.com/socialmember2" />
+		<property name="actor">
+			<ref bean="member2" />
+		</property>
+	</bean>
+	
+	<!-- Brotherhood -->
+	
+		<bean id="socialbrotherhood1" class="domain.SocialProfile">
+		<property name="nick" value="socialbrotherhood1" />
+		<property name="name" value="Twitter" />
+		<property name="linkProfile" value="https://www.twitter.com/socialbrotherhood1" />
+		<property name="actor">
+			<ref bean="brotherhood1" />
+		</property>
+	</bean>
+	
+		<bean id="socialbrotherhood2" class="domain.SocialProfile">
+		<property name="nick" value="socialmember2" />
+		<property name="name" value="Imgur" />
+		<property name="linkProfile" value="https://www.Imgur.com/socialbrotherhood2" />
+		<property name="actor">
+			<ref bean="brotherhood2" />
+		</property>
+	</bean>
+	<!-- ACTORS -->
+	
+	
+	<!-- ADMINISTRATOR -->
+	
+
+	
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="José" />
+		<property name="middleName" value="Carlos" />
+		<property name="surname" value="Gamiz Redondo" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.376305132.3400/flat,550x550,075,f.u1.jpg" />
+		<property name="email" value="josgamred@mail.com" />
+		<property name="phoneNumber" value="+34611987654" />
+		<property name="address" value="C/ Atlántica, 1 (Málaga)" />
+		<property name="userAccount" ref="userAdmin1" />
+	</bean>
+	
+		
+	<bean id="administrator2" class="domain.Administrator">
+		<property name="name" value="Carlos" />
+		<property name="middleName" value="Carl" />
+		<property name="surname" value="Albalat Heredia" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/ima76305daddfsj132.340aaaa0/flat,5.u1.jpg" />
+		<property name="email" value="carlo12@mail.com" />
+		<property name="phoneNumber" value="+34611987622" />
+		<property name="address" value="C/ Rota" />
+		<property name="userAccount" ref="userAdmin2" />
+	</bean>
+		<!-- BROTHERHOOD -->
+		
+					<bean id="brotherhood1" class="domain.Brotherhood">
+		<property name="name" value="Francisco" />
+		<property name="middleName" value="Paco" />
+		<property name="surname" value="Rico" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pacop@mail.com" />
+		<property name="phoneNumber" value="+34699987654" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userBrotherhood1" />
+		<property name="title" value="Cigarreras" />
+		<property name="establishmentDate" value="02/03/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone1" />
+
+		
+	</bean>
+	
+		
+	<bean id="brotherhood2" class="domain.Brotherhood">
+		<property name="name" value="Rosa Maria" />
+		<property name="middleName" value="Rosi" />
+		<property name="surname" value="Río Hernández" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/ima7.png" />
+		<property name="email" value="rosi12@mail.com" />
+		<property name="phoneNumber" value="+34611987112" />
+		<property name="address" value="C/ Manantial" />
+		<property name="userAccount" ref="userBrotherhood2" />
+		<property name="title" value="Silencio" />
+		<property name="establishmentDate" value="06/01/2016" />
+		<property name="pictures" value="https://imgur/ima7saS.png" />
+		<property name="zone" ref="zone2" />
+		
+	</bean>
+		
+			<!-- MEMBER -->
+			
+			 
+				<bean id="member1" class="domain.Member">
+		<property name="name" value="Francisco" />
+		<property name="middleName" value="Paco" />
+		<property name="surname" value="Rico" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/image.ioasdoi.jpg" />
+		<property name="email" value="pacop@mail.com" />
+		<property name="phoneNumber" value="+34699987654" />
+		<property name="address" value="Av. España" />
+		<property name="userAccount" ref="userMember1" />
+		<property name="finder" ref="finder1" />
+	</bean>
+	
+		
+	<bean id="member2" class="domain.Member">
+		<property name="name" value="Rosa Maria" />
+		<property name="middleName" value="Rosi" />
+		<property name="surname" value="Río Hernández" />
+		<property name="photo"
+			value="https://ih1.redbubble.net/ima7.png" />
+		<property name="email" value="rosi12@mail.com" />
+		<property name="phoneNumber" value="+34611987112" />
+		<property name="address" value="C/ Manantial" />
+		<property name="userAccount" ref="userMember2" />
+		<property name="finder" ref="finder2" />
+	</bean>
 	
 </beans>

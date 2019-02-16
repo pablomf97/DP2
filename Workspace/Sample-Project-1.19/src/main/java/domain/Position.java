@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +22,7 @@ public class Position extends DomainEntity {
 
 	@NotEmpty
 	@NotNull
+	@ElementCollection
 	public Map<String, String> getName() {
 		return name;
 	}

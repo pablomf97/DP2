@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -42,6 +43,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getWelcomeMessage() {
 		return welcomeMessage;
 	}

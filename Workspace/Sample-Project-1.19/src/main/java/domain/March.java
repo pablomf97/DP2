@@ -17,7 +17,7 @@ public class March extends DomainEntity {
 
 	private String status;
 	private Integer row;
-	private Integer column;
+	private Integer col;
 	private String reason;
 	private Member member;
 	private Procession procession;
@@ -41,12 +41,12 @@ public class March extends DomainEntity {
 		this.row = row;
 	}
 
-	public Integer getColumn() {
-		return column;
+	public Integer getCol() {
+		return col;
 	}
 
-	public void setColumn(Integer column) {
-		this.column = column;
+	public void setCol(Integer col) {
+		this.col = col;
 	}
 
 	public String getReason() {

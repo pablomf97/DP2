@@ -1,12 +1,17 @@
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -25,7 +30,7 @@ public class Procession extends DomainEntity {
 	private boolean isDraft;
 	// Float es un tipo ya predefinido en java, por lo que por ahora Float pasa
 	// a ser Platform.
-	private Platform platform;
+	private Collection<Platform> platforms;
 	private Brotherhood brotherhood;
 
 	/* Getters&Setters */
@@ -78,14 +83,18 @@ public class Procession extends DomainEntity {
 		this.isDraft = isDraft;
 	}
 
-	public Platform getPlatform() {
-		return platform;
+	@Valid
+	@ManyToMany
+	public Collection<Platform> getPlatforms() {
+		return platforms;
 	}
 
-	public void setPlatform(Platform platform) {
-		this.platform = platform;
+	public void setPlatforms(Collection<Platform> platforms) {
+		this.platforms = platforms;
 	}
 
+	@Valid
+	@OneToOne(optional=false)
 	public Brotherhood getBrotherhood() {
 		return brotherhood;
 	}
