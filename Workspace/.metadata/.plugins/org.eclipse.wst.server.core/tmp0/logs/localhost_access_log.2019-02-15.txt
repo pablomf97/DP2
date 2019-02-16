@@ -1,0 +1,10 @@
+127.0.0.1 - - [15/Feb/2019:10:44:59 +0100] "GET / HTTP/1.1" 404 955
+127.0.0.1 - - [15/Feb/2019:10:46:02 +0100] "GET / HTTP/1.1" 404 955
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/ HTTP/1.1" 200 1972
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/scripts/jquery.js HTTP/1.1" 200 275527
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/scripts/jquery-ui.js HTTP/1.1" 200 465012
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/styles/displaytag.css HTTP/1.1" 200 2826
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/scripts/jmenu.js HTTP/1.1" 200 10578
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/styles/jmenu.css HTTP/1.1" 200 1696
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/styles/common.css HTTP/1.1" 200 361
+127.0.0.1 - - [15/Feb/2019:10:46:12 +0100] "GET /Acme-Madruga/images/logo.png HTTP/1.1" 200 33484
