@@ -1,1 +1,0 @@
-En esta carpeta se encuentran los proyectos de ejemplo que se utilizaran como base para realizar Acme-Madruga.
