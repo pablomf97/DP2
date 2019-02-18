@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <!-- * data.xml * * Copyright (C) 2018 Universidad de Sevilla * * The use 
 	of this project is hereby constrained to the conditions of the * TDG Licence, 
 	a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+=======
+<!-- 
+	* data.xml 
+	* 
+	* Copyright (C) 2019 Universidad de Sevilla 
+	* 
+	* The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html 
+-->
+>>>>>>> Integración
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
@@ -21,18 +32,32 @@
 
 	<!-- Data source -->
 
+<<<<<<< HEAD
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/Acme-Madruga" />
 		<property name="user" value="acme-user" />
 		<property name="password" value="ACME-Us3r-P@ssw0rd" />
+=======
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/Sample" />
+		<property name="user" value="acme-user" />
+		<property name="password" value="ACME-Us3r-P@ssw0rd" />
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="5" />
+>>>>>>> Integración
 	</bean>
 
 	<!-- JPA -->
 
 	<bean id="persistenceUnit" class="java.lang.String">
+<<<<<<< HEAD
 		<constructor-arg value="Acme-Madruga" />
+=======
+		<constructor-arg value="Sample" />
+>>>>>>> Integración
 	</bean>
 
 	<bean id="sqlDialect" class="java.lang.String">
@@ -41,10 +66,18 @@
 
 	<util:properties id="jpaProperties">
 		<prop key="hibernate.show_sql">false</prop>
+<<<<<<< HEAD
 		<prop key="hibernate.format_sql">true</prop>
 		<!-- <prop key="hibernate.hbm2ddl.auto">verify</prop> -->
 		<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
 		<prop key="hibernate.ejb.entitymanager_factory_name">entity-manager</prop>
+=======
+		<prop key="hibernate.format_sql">true</prop>		
+		<!-- <prop key="hibernate.hbm2ddl.auto">validate</prop> -->
+		<prop key="hibernate.cglib.use_reflection_optimizer">false</prop>
+		<prop key="hibernate.ejb.entitymanager_factory_name">entity-manager</prop>		
+		<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+>>>>>>> Integración
 	</util:properties>
 
 </beans>

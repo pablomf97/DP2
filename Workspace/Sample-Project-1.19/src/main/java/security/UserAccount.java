@@ -1,7 +1,11 @@
 /*
  * UserAccount.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -34,7 +38,12 @@ public class UserAccount extends DomainEntity implements UserDetails {
 
 	// Constructors -----------------------------------------------------------
 
+<<<<<<< HEAD
 	private static final long serialVersionUID = 7254823034213841482L;
+=======
+	private static final long	serialVersionUID	= 7254823034213841482L;
+
+>>>>>>> Integración
 
 	public UserAccount() {
 		super();
@@ -42,6 +51,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 		this.authorities = new ArrayList<Authority>();
 	}
 
+<<<<<<< HEAD
 	// Attributes -------------------------------------------------------------
 
 	private boolean isBanned;
@@ -51,6 +61,17 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	private String username;
 	private String password;
 	private Collection<Authority> authorities;
+=======
+
+	// Attributes -------------------------------------------------------------
+
+	// UserDetails interface --------------------------------------------------
+
+	private String					username;
+	private String					password;
+	private Collection<Authority>	authorities;
+
+>>>>>>> Integración
 
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
@@ -78,8 +99,12 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	@ElementCollection
 	@Override
 	public Collection<Authority> getAuthorities() {
+<<<<<<< HEAD
 		// WARNING: Should return an unmodifiable copy, but it's not possible
 		// with hibernate!
+=======
+		// WARNING: Should return an unmodifiable copy, but it's not possible with hibernate!
+>>>>>>> Integración
 		return this.authorities;
 	}
 
@@ -119,6 +144,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 		return true;
 	}
 
+<<<<<<< HEAD
 	@Override
 	@Transient
 	public boolean isEnabled() {
@@ -131,6 +157,12 @@ public class UserAccount extends DomainEntity implements UserDetails {
 
 	public void setIsBanned(final Boolean isBanned) {
 		this.isBanned = isBanned;
+=======
+	@Transient
+	@Override
+	public boolean isEnabled() {
+		return true;
+>>>>>>> Integración
 	}
 
 }

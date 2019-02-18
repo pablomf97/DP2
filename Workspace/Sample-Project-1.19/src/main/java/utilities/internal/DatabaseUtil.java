@@ -1,7 +1,11 @@
 /*
  * DatabaseUtil.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -14,11 +18,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+>>>>>>> Integración
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+<<<<<<< HEAD
+=======
+import java.util.Properties;
+>>>>>>> Integración
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,10 +44,19 @@ import javax.persistence.spi.PersistenceProvider;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
+<<<<<<< HEAD
+=======
+import org.hibernate.cfg.NamingStrategy;
+>>>>>>> Integración
 import org.hibernate.dialect.Dialect;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.jdbc.Work;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+<<<<<<< HEAD
+=======
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+>>>>>>> Integración
 
 import utilities.DatabaseConfig;
 import domain.DomainEntity;
@@ -119,6 +139,7 @@ public class DatabaseUtil {
 		String[] statements;
 
 		databaseScript = new ArrayList<String>();
+<<<<<<< HEAD
 		databaseScript.add(String.format("drop database `%s`", this.databaseName));
 		databaseScript.add(String.format("create database `%s`", this.databaseName));
 		this.executeScript(databaseScript);
@@ -127,6 +148,18 @@ public class DatabaseUtil {
 		schemaScript.add(String.format("use `%s`", this.databaseName));
 		statements = this.configuration.generateSchemaCreationScript(this.databaseDialect);
 		schemaScript.addAll(Arrays.asList(statements));
+=======
+		databaseScript.add(String.format("drop database if exists `%s`;", this.databaseName));
+		databaseScript.add(String.format("create database `%s`;", this.databaseName));
+		this.executeScript(databaseScript);
+
+		schemaScript = new ArrayList<String>();
+		schemaScript.add(String.format("use `%s`;", this.databaseName));
+		statements = this.configuration.generateSchemaCreationScript(this.databaseDialect);
+		for (final String statement : statements)
+			schemaScript.add(String.format("%s;", statement));
+
+>>>>>>> Integración
 		this.executeScript(schemaScript);
 	}
 
@@ -134,7 +167,11 @@ public class DatabaseUtil {
 		List<String> script;
 
 		script = new ArrayList<String>();
+<<<<<<< HEAD
 		script.add("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
+=======
+		script.add("set transaction isolation level read uncommitted;");
+>>>>>>> Integración
 
 		this.executeScript(script);
 	}
@@ -143,7 +180,11 @@ public class DatabaseUtil {
 		List<String> script;
 
 		script = new ArrayList<String>();
+<<<<<<< HEAD
 		script.add("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
+=======
+		script.add("set transaction isolation level read committed;");
+>>>>>>> Integración
 
 		this.executeScript(script);
 	}
@@ -194,11 +235,35 @@ public class DatabaseUtil {
 
 	protected Configuration buildConfiguration() {
 		Configuration result;
+<<<<<<< HEAD
+=======
+		final ApplicationContext context;
+		final Properties properties;
+		String namingStrategyClassName;
+		Class<?> namingStrategyClass;
+		NamingStrategy namingStrategy;
+>>>>>>> Integración
 		Metamodel metamodel;
 		Collection<EntityType<?>> entities;
 		Collection<EmbeddableType<?>> embeddables;
 
 		result = new Configuration();
+<<<<<<< HEAD
+=======
+
+		context = new ClassPathXmlApplicationContext("classpath:spring/datasource.xml");
+		properties = (Properties) context.getBean("jpaProperties");
+		namingStrategyClassName = properties.getProperty("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
+		try {
+			namingStrategyClass = Class.forName(namingStrategyClassName);
+			namingStrategy = (NamingStrategy) namingStrategyClass.newInstance();
+		} catch (final Throwable oops) {
+			throw new RuntimeException(oops);
+		}
+
+		result.setNamingStrategy(namingStrategy);
+
+>>>>>>> Integración
 		metamodel = this.entityManagerFactory.getMetamodel();
 
 		entities = metamodel.getEntities();
@@ -221,10 +286,20 @@ public class DatabaseUtil {
 			public void execute(final Connection connection) throws SQLException {
 				Statement statement;
 
+<<<<<<< HEAD
 				statement = connection.createStatement();
 				for (final String line : script)
 					statement.execute(line);
 				connection.commit();
+=======
+				//System.out.println();
+				statement = connection.createStatement();
+				for (final String line : script)
+					//System.out.println(line);
+					statement.execute(line);
+				connection.commit();
+				//System.out.println();
+>>>>>>> Integración
 			}
 		});
 	}

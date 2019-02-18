@@ -79,4 +79,8 @@ public class March extends DomainEntity {
 		this.procession = procession;
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Integración

@@ -1,7 +1,11 @@
 /*
  * QueryDatabase.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -10,6 +14,7 @@
 
 package utilities;
 
+<<<<<<< HEAD
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -108,6 +113,14 @@ public class QueryDatabase {
 		}
 
 		return result;
+=======
+import utilities.internal.DatabaseEnquirer;
+
+public class QueryDatabase {
+
+	public static void main(final String[] args) {
+		DatabaseEnquirer.run("QueryDatabase 1.18.2");
+>>>>>>> Integración
 	}
 
 }

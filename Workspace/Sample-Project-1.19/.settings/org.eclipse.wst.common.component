@@ -4,7 +4,12 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
         <property name="java-output-path" value="/Acme-Shout/target/classes"/>
         <property name="context-root" value="Acme-Madruga"/>
+=======
+        <property name="java-output-path" value="/Sample-Project/target/classes"/>
+        <property name="context-root" value="Sample-Project"/>
+>>>>>>> Integración
     </wb-module>
 </project-modules>

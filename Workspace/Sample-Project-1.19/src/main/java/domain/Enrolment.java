@@ -44,6 +44,10 @@ public class Enrolment extends DomainEntity {
 	public void setMoment(Date moment) {
 		this.moment = moment;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> Integración
 	@ElementCollection
 	public List<Date> getDropOutMoment() {
 		return dropOutMoment;
@@ -94,4 +98,8 @@ public class Enrolment extends DomainEntity {
 		this.position = position;
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Integración

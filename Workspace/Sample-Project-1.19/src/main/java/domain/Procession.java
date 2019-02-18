@@ -94,7 +94,11 @@ public class Procession extends DomainEntity {
 	}
 
 	@Valid
+<<<<<<< HEAD
 	@OneToOne(optional=false)
+=======
+	@OneToOne(optional = false)
+>>>>>>> Integración
 	public Brotherhood getBrotherhood() {
 		return brotherhood;
 	}
@@ -103,4 +107,8 @@ public class Procession extends DomainEntity {
 		this.brotherhood = brotherhood;
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Integración

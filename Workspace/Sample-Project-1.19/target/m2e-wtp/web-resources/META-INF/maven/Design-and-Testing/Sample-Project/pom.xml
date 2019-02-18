@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <!-- 
   * pom.xml 
   * 
@@ -13,6 +14,13 @@
 <project 
 	xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+=======
+<!-- * pom.xml * * Copyright (C) 2019 Universidad de Sevilla * * The use 
+	of this project is hereby constrained to the conditions of the * TDG Licence, 
+	a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>>>>>>> Integración
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -21,19 +29,32 @@
 
 	<groupId>Design-and-Testing</groupId>
 	<artifactId>Sample-Project</artifactId>
+<<<<<<< HEAD
 	<version>1.18</version>
 	<packaging>war</packaging>
 	
 	<properties>
 	    	<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
   	</properties>
+=======
+	<version>1.0</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+	</properties>
+>>>>>>> Integración
 
 	<!-- Indexing information -->
 
 	<name>Sample Project</name>
 	<url>http://www.sample-project.com</url>
+<<<<<<< HEAD
 	<description>This is D&amp;T's sample project.</description>
 	
+=======
+
+>>>>>>> Integración
 	<!-- Build commands -->
 
 	<build>
@@ -87,6 +108,20 @@
 				</configuration>
 			</plugin>
 
+<<<<<<< HEAD
+=======
+			<!-- Surefire -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+
+>>>>>>> Integración
 		</plugins>
 	</build>
 
@@ -117,8 +152,13 @@
 		</repository>
 
 	</repositories>
+<<<<<<< HEAD
 	
 	<!--  Dependencies -->
+=======
+
+	<!-- Dependencies -->
+>>>>>>> Integración
 
 	<dependencies>
 
@@ -155,11 +195,19 @@
 			<exclusions>
 				<exclusion>
 					<groupId>org.aspectj</groupId>
+<<<<<<< HEAD
 					<artifactId>aspectjweaver</artifactId>									
 			</exclusion>
 			</exclusions>
 		</dependency>
 				
+=======
+					<artifactId>aspectjweaver</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+>>>>>>> Integración
 		<!-- Spring Framework - Data -->
 
 		<dependency>
@@ -187,14 +235,21 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>3.2.0.RELEASE</version>
 		</dependency>
+<<<<<<< HEAD
 		
 		<!-- Spring Framework - Testing -->
 		
+=======
+
+		<!-- Spring Framework - Testing -->
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>3.2.4.RELEASE</version>
 		</dependency>
+<<<<<<< HEAD
 		
 		<!-- Apache -->
 
@@ -204,6 +259,17 @@
 		    <version>2.2.2</version>
 		</dependency>
 		
+=======
+
+		<!-- Apache -->
+
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-servlet</artifactId>
@@ -225,25 +291,41 @@
 		</dependency>
 
 		<!-- Hibernate -->
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.0.Final</version>
 		</dependency>
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.3.1.Final</version>
 		</dependency>
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.2.3.Final</version>
 		</dependency>
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> Integración
 		<!-- Javax -->
 
 		<dependency>
@@ -265,7 +347,11 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> Integración
 		<!-- Display Tag -->
 
 		<dependency>
@@ -275,10 +361,17 @@
 		</dependency>
 
 		<!-- Standard taglibs -->
+<<<<<<< HEAD
 								
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>			
+=======
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+>>>>>>> Integración
 			<version>1.1.2</version>
 			<scope>provided</scope>
 		</dependency>
@@ -290,7 +383,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> Integración
 		<!-- Dependency patches -->
 
 		<dependency>
@@ -298,12 +395,17 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.2</version>
 		</dependency>
+<<<<<<< HEAD
 	            
+=======
+
+>>>>>>> Integración
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.5</version>
 		</dependency>
+<<<<<<< HEAD
 		
 		<dependency>
 		    <groupId>org.aspectj</groupId>
@@ -313,4 +415,16 @@
 		
 	</dependencies>
 
+=======
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+
+	</dependencies>
+
+	<description>This system allows people share their favourite Shouts.</description>
+>>>>>>> Integración
 </project> 

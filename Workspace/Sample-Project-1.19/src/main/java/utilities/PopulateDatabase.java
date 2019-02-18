@@ -1,7 +1,11 @@
 /*
  * PopulateDatabase.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -10,6 +14,7 @@
 
 package utilities;
 
+<<<<<<< HEAD
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
@@ -28,10 +33,14 @@ import utilities.internal.EclipseConsole;
 import utilities.internal.SchemaPrinter;
 import utilities.internal.ThrowablePrinter;
 import domain.DomainEntity;
+=======
+import utilities.internal.DatabasePopulator;
+>>>>>>> Integración
 
 public class PopulateDatabase {
 
 	public static void main(final String[] args) {
+<<<<<<< HEAD
 		DatabaseUtil databaseUtil;
 		ApplicationContext populationContext;
 		Map<String, DomainEntity> entityMap;
@@ -169,6 +178,9 @@ public class PopulateDatabase {
 			entity.setId(0);
 			entity.setVersion(0);
 		}
+=======
+		DatabasePopulator.run("PopulateDatabase 1.18.2", "classpath:PopulateDatabase.xml");
+>>>>>>> Integración
 	}
 
 }

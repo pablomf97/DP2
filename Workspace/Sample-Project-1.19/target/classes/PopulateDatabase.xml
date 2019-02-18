@@ -3,7 +3,11 @@
 <!-- 
  * PopulateDatabase.xml
  *
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
@@ -12,13 +16,18 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+=======
+	xsi:schemaLocation="
+>>>>>>> Integración
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 	
 	<!-- User accounts -->
+<<<<<<< HEAD
 	
 	<!-- ADMINISTRATORS -->
 	<bean id="userAdmin1" class="security.UserAccount">
@@ -42,10 +51,21 @@
 			<list>
 				<bean class="security.Authority">
 					<property name="authority" value="ADMINISTRATOR" />
+=======
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+>>>>>>> Integración
 				</bean>
 			</list>
 		</property>
 	</bean>
+<<<<<<< HEAD
 	
 	<!-- MEMBER -->
 	
@@ -70,10 +90,21 @@
 			<list>
 				<bean class="security.Authority">
 					<property name="authority" value="MEMBER" />
+=======
+
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="customer" />
+		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+>>>>>>> Integración
 				</bean>
 			</list>
 		</property>
 	</bean>
+<<<<<<< HEAD
 	
 
 	
@@ -100,11 +131,25 @@
 			<list>
 				<bean class="security.Authority">
 					<property name="authority" value="BROTHERHOOD" />
+=======
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="super" />
+		<property name="password" value="1b3231655cebb7a1f783eddf27d254ca" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+>>>>>>> Integración
 				</bean>
 			</list>
 		</property>
 	</bean>
 	
+<<<<<<< HEAD
 	<!-- SYSTEM CONFIGURATION -->
 	
 	<bean id="sysConf" class="domain.SystemConfiguration">
@@ -466,4 +511,8 @@ your processions." />
 		<property name="finder" ref="finder2" />
 	</bean>
 	
+=======
+	<!-- Other domain beans come here -->	
+	
+>>>>>>> Integración
 </beans>

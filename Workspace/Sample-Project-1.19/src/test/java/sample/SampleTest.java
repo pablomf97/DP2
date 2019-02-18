@@ -1,7 +1,11 @@
 /*
  * SampleTest.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -36,16 +40,25 @@ public class SampleTest extends AbstractTest {
 	// it using JUnit.
 
 	@Test
+<<<<<<< HEAD
 	public void samplePositiveTest() {
+=======
+	public void SamplePositiveTest() {
+>>>>>>> Integración
 		Assert.isTrue(true);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+<<<<<<< HEAD
 	public void sampleNegativeTest() {
+=======
+	public void SampleNegativeTest() {
+>>>>>>> Integración
 		Assert.isTrue(false);
 	}
 
 	@Test
+<<<<<<< HEAD
 	public void sampleDriver() {
 		final Object testingData[][] = {
 			{
@@ -54,18 +67,36 @@ public class SampleTest extends AbstractTest {
 				"userAccount2", 5, null
 			}, {
 				"userAccount3", 6, null
+=======
+	public void SampleDriver() {
+		final Object testingData[][] = {
+			{
+				"userAccount1", super.getEntityId("userAccount1"), null
+			}, {
+				"userAccount2", super.getEntityId("userAccount2"), null
+			}, {
+				"userAccount3", super.getEntityId("userAccount3"), null
+>>>>>>> Integración
 			}, {
 				"non-existent", 0, AssertionError.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
+<<<<<<< HEAD
 			this.sampleTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+=======
+			this.SampleTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+>>>>>>> Integración
 	}
 
 	// Ancillary methods ------------------------------------------------------
 
+<<<<<<< HEAD
 	protected void sampleTemplate(final String beanName, final int id, final Class<?> expected) {
+=======
+	protected void SampleTemplate(final String beanName, final int id, final Class<?> expected) {
+>>>>>>> Integración
 		Class<?> caught;
 		int dbId;
 

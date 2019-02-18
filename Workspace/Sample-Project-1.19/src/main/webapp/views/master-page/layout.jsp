@@ -1,7 +1,11 @@
 <%--
  * layout.jsp
  *
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
@@ -19,8 +23,12 @@
 <html>
 <head>
 
+<<<<<<< HEAD
 <base
 	href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/" />
+=======
+<base href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/" />
+>>>>>>> Integración
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 

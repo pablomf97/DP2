@@ -1,7 +1,11 @@
 /*
  * Authority.java
  * 
+<<<<<<< HEAD
  * Copyright (C) 2018 Universidad de Sevilla
+=======
+ * Copyright (C) 2019 Universidad de Sevilla
+>>>>>>> Integración
  * 
  * The use of this project is hereby constrained to the conditions of the
  * TDG Licence, a copy of which you may download from
@@ -27,12 +31,18 @@ public class Authority implements GrantedAuthority {
 
 	// Constructors -----------------------------------------------------------
 
+<<<<<<< HEAD
 	private static final long serialVersionUID = 1L;
+=======
+	private static final long	serialVersionUID	= 1L;
+
+>>>>>>> Integración
 
 	public Authority() {
 		super();
 	}
 
+<<<<<<< HEAD
 	// Values -----------------------------------------------------------------
 
 	public static final String ADMININISTRATOR = "ADMINISTRATOR";
@@ -46,6 +56,21 @@ public class Authority implements GrantedAuthority {
 	@NotBlank
 	@Pattern(regexp = "^" + Authority.ADMININISTRATOR + "|" + Authority.MEMBER
 			+ "|" + Authority.BROTHERHOOD + "$")
+=======
+
+	// Values -----------------------------------------------------------------
+
+	public static final String	ADMIN		= "ADMIN";
+	public static final String	CUSTOMER	= "CUSTOMER";
+
+	// Attributes -------------------------------------------------------------
+
+	private String				authority;
+
+
+	@NotBlank
+	@Pattern(regexp = "^" + Authority.ADMIN + "|" + Authority.CUSTOMER + "$")
+>>>>>>> Integración
 	@Override
 	public String getAuthority() {
 		return this.authority;
@@ -62,6 +87,7 @@ public class Authority implements GrantedAuthority {
 		result = new ArrayList<Authority>();
 
 		authority = new Authority();
+<<<<<<< HEAD
 		authority.setAuthority(Authority.ADMININISTRATOR);
 		result.add(authority);
 
@@ -71,6 +97,13 @@ public class Authority implements GrantedAuthority {
 
 		authority = new Authority();
 		authority.setAuthority(Authority.BROTHERHOOD);
+=======
+		authority.setAuthority(Authority.ADMIN);
+		result.add(authority);
+
+		authority = new Authority();
+		authority.setAuthority(Authority.CUSTOMER);
+>>>>>>> Integración
 		result.add(authority);
 
 		return result;
@@ -94,8 +127,12 @@ public class Authority implements GrantedAuthority {
 		else if (!this.getClass().isInstance(other))
 			result = false;
 		else
+<<<<<<< HEAD
 			result = (this.getAuthority().equals(((Authority) other)
 					.getAuthority()));
+=======
+			result = (this.getAuthority().equals(((Authority) other).getAuthority()));
+>>>>>>> Integración
 
 		return result;
 	}
