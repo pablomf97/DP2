@@ -1,3 +1,10 @@
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import domain.SystemConfiguration;
+
 //package services;
 //
 //import java.util.Collection;
@@ -14,9 +21,9 @@
 //import domain.Administrator;
 //import domain.SystemConfiguration;
 //
-//@Service
-//@Transactional
-//public class SystemConfigurationService {
+@Service
+@Transactional
+public class SystemConfigurationService {
 //
 //	// Managed Repository
 //
@@ -57,13 +64,13 @@
 //		Assert.notNull(principal, "not.allowed");
 //
 //		Map<String, String> wellMap = new HashMap<>();
-//		wellMap.put("EspaÒol",
-//				"°Bienvenidos a Acme Madrug·! Tu sitio para organizar procesiones.");
+//		wellMap.put("Espa√±ol",
+//				"¬°Bienvenidos a Acme Madrug√°! Tu sitio para organizar procesiones.");
 //		wellMap.put("English",
-//				"Welcome to Acme Madrug·, the site to organise your processions.");
+//				"Welcome to Acme Madrug√°, the site to organise your processions.");
 //
 //		SystemConfiguration systemConfiguration = new SystemConfiguration();
-//		systemConfiguration.setSystemName("Acme-Madrug·");
+//		systemConfiguration.setSystemName("Acme-Madrug√°");
 //		systemConfiguration.setWelcomeMessage(wellMap);
 //		systemConfiguration
 //				.setBanner("https://image.ibb.co/iuaDgV/Untitled.png");
@@ -71,10 +78,10 @@
 //		systemConfiguration.setTimeResultsCached(1);
 //		systemConfiguration.setMaxResults(10);
 //		systemConfiguration
-//				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millÛn,ha sido seleccionado");
+//				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un mill√≥n,ha sido seleccionado");
 //		systemConfiguration
-//				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fant·stico,excelente,genial,"
-//						+ "increÌble,increible,asombroso,bonito");
+//				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fant√°stico,excelente,genial,"
+//						+ "incre√≠ble,increible,asombroso,bonito");
 //		systemConfiguration
 //				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
 //		return systemConfiguration;
@@ -138,4 +145,4 @@
 //		return result;
 //	}
 //
-//}
+}
