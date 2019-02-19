@@ -1,0 +1,23 @@
+package domain;
+
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+
+@Entity
+@Access(AccessType.PROPERTY)
+public class Finder extends DomainEntity {
+
+	/* Attributes */
+
+	private String keyWord;
+	private String area;
+	private Date minimumMoment;
+	private Date maximumMoment;
+	private Date saerchMoment;
+
+	/* Getters&Setters */
+
+}

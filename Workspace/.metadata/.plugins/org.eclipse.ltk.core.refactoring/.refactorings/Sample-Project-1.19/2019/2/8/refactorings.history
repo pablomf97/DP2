@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;position&apos; in &apos;services.PositionService.create()&apos; to &apos;res&apos;&#x0D;&#x0A;- Original project: &apos;Sample-Project-1.19&apos;&#x0D;&#x0A;- Original element: &apos;services.PositionService.create().position&apos;&#x0D;&#x0A;- Renamed element: &apos;position&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;position&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src\/main\/java&lt;services{PositionService.java[PositionService~create@position!1241!1275!1250!1257!QPosition;!0!false" name="res" references="true" stamp="1550576209929" version="1.0"/>
+</session>

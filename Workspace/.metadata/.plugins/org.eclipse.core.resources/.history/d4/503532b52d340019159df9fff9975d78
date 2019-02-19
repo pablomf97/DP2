@@ -1,0 +1,45 @@
+package services;
+
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.SystemConfigurationRepository;
+import domain.SystemConfiguration;
+
+@Service
+@Transactional
+public class SystemConfigurationService {
+
+	// Managed Repository
+
+	@Autowired
+	private SystemConfigurationRepository systemConfigurationRepository;
+
+	// Supporting Services
+
+	// Simple CRUD methods
+
+	/* Find one by ID */
+	public SystemConfiguration findOne(final int systemConfigurationId) {
+		SystemConfiguration res;
+
+		res = this.systemConfigurationRepository.findOne(systemConfigurationId);
+
+		return res;
+
+	}
+
+	public Collection<SystemConfiguration> findAll() {
+		Collection<SystemConfiguration> result;
+
+		result = this.systemConfigurationRepository.findAll();
+
+		return result;
+	}
+
+}

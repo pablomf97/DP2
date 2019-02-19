@@ -1,0 +1,77 @@
+package services;
+
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.SystemConfigurationRepository;
+import domain.SystemConfiguration;
+
+@Service
+@Transactional
+public class SystemConfigurationService {
+
+	// Managed Repository
+
+	@Autowired
+	private SystemConfigurationRepository systemConfigurationRepository;
+
+	// Supporting Services
+
+	// Simple CRUD methods
+
+	/* Find one by ID */
+	public SystemConfiguration findOne(final int systemConfigurationId) {
+		SystemConfiguration res;
+
+		res = this.systemConfigurationRepository.findOne(systemConfigurationId);
+
+		return res;
+
+	}
+
+	/* Find all system configurations */
+	public Collection<SystemConfiguration> findAll() {
+		Collection<SystemConfiguration> result;
+
+		result = this.systemConfigurationRepository.findAll();
+
+		return result;
+	}
+
+	/* Create a system configuration */
+	public SystemConfiguration create() {
+		Assert.notNull(this.administratorService.findByPrincipal());
+
+		final Map<String, String> wellMap = new HashMap<>();
+		wellMap.put(
+				"Español",
+				"¡Bienvenidos a Acme Handy Worker!  Precio, calidad y confianza en el mismo sitio");
+		wellMap.put("English",
+				"Welcome to Acme Handy Worker!  Price, quality, and trust in a single place");
+
+		final SystemConfiguration systemConfiguration = new SystemConfiguration();
+		systemConfiguration.setSystemName("Acme-Handy-Worker");
+		systemConfiguration.setWelcomeMessage(wellMap);
+		systemConfiguration
+				.setBanner("https://irp-cdn.multiscreensite.com/3737b2b6/dms3rep/multi/desktop/4-2000x889.jpg");
+		systemConfiguration.setVAT(0.21);
+		systemConfiguration.setListCreditCardMakes("VISA,MASTER,DINNERS,AMEX");
+		systemConfiguration.setCountryCode("+034");
+		systemConfiguration.setTimeResultsCached(1);
+		systemConfiguration.setMaxResults(10);
+		systemConfiguration
+				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millón,ha sido seleccionado");
+		systemConfiguration
+				.setPositiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantástico,excelente,genial,"
+						+ "increíble,increible,asombroso,bonito");
+		systemConfiguration
+				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
+		return systemConfiguration;
+	}
+
+}

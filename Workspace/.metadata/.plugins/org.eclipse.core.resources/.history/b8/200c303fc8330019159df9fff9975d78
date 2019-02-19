@@ -1,0 +1,41 @@
+package services;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import repositories.MemberRepository;
+
+@Service
+@Transactional
+public class MemberService {
+
+	// Managed Repository
+
+	@Autowired
+	private MemberRepository memberRepository;
+
+	// Supporting Services
+
+	// Simple CRUD methods
+
+	public Administrator findOne(final int administratorId) {
+		Administrator result;
+
+		result = this.administratorRepository.findOne(administratorId);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	public Collection<Administrator> findAll() {
+		Collection<Administrator> result;
+
+		result = this.administratorRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+}
