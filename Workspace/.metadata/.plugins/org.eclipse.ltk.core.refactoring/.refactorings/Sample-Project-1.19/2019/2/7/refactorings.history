@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename field &apos;saerchMoment&apos; in &apos;domain.Finder&apos; to &apos;searchMoment&apos;&#x0D;&#x0A;- Original project: &apos;Sample-Project-1.19&apos;&#x0D;&#x0A;- Original element: &apos;domain.Finder.saerchMoment&apos;&#x0D;&#x0A;- Renamed element: &apos;domain.Finder.searchMoment&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;saerchMoment&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src\/main\/java&lt;domain{Finder.java[Finder^saerchMoment" name="searchMoment" references="true" setter="false" stamp="1550251024264" textual="false" version="1.0"/>
-</session>
