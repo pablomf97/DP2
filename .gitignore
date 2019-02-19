@@ -1,2 +1,18 @@
-\Workspace\.metadata/\Workspace\Servers/\Workspace/Sample-Project-1.19/target/\Workspace\Sample-Project-1.19\src\main\resources/
 
+# Created by https://www.gitignore.io/api/eclipse
+# Edit at https://www.gitignore.io/?templates=eclipse
+
+### Eclipse ###
+
+**/.metadata
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
