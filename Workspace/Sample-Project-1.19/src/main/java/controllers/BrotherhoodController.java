@@ -41,13 +41,12 @@ public class BrotherhoodController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView registerPOST(final Brotherhood brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
-		String emailError = "";
+		final String emailError = "";
 		Brotherhood brotherhood;
 		brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
-		if (brotherhood.getEmail() != null) {
+		if (brotherhood.getEmail() != null)
 			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		}
+		//	emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
 		if (binding.hasErrors() || !emailError.isEmpty()) {
 			result = new ModelAndView("brotherhood/register");
 			result.addObject("uri", "security/register.do");
@@ -56,7 +55,7 @@ public class BrotherhoodController extends AbstractController {
 			result.addObject("emailError", emailError);
 		} else
 			try {
-				brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
+				//	brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
 				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 				final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
 				brotherhood.getUserAccount().setPassword(hash);

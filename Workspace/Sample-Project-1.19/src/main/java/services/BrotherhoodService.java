@@ -44,9 +44,11 @@ public class BrotherhoodService {
 		auth.setAuthority(Authority.BROTHERHOOD);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
-		res.setBan(false);
-		res.setSpammer(false);
-		res.setScore(0.0);
+		/*
+		 * res.setBan(false);
+		 * res.setSpammer(false);
+		 * res.setScore(0.0);
+		 */
 		final Date establishmentDate = new Date();
 		res.setEstablishmentDate(establishmentDate);
 
@@ -93,9 +95,11 @@ public class BrotherhoodService {
 			brotherhood.setUserAccount(savedAccount);
 			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
 			//por si acaso, ya que con los nuevos forms no haga falta
-			brotherhood.setBan(false);
-			brotherhood.setSpammer(false);
-			brotherhood.setScore(0.0);
+			/*
+			 * brotherhood.setBan(false);
+			 * brotherhood.setSpammer(false);
+			 * brotherhood.setScore(0.0);
+			 */
 			final Date establishmentDate = new Date();
 			brotherhood.setEstablishmentDate(establishmentDate);
 			//Hasta aquí se borraría
@@ -133,14 +137,16 @@ public class BrotherhoodService {
 	public Brotherhood reconstruct(final Brotherhood brotherhood, final BindingResult binding) {
 		Brotherhood result;
 
-		if (brotherhood.getId() == 0) {
-			brotherhood.setBan(false);
-			final Date establishmentDate = new Date();
-			brotherhood.setEstablishmentDate(establishmentDate);
-			brotherhood.setScore(0.0);
-			brotherhood.setSpammer(false);
+		if (brotherhood.getId() == 0)
+			/*
+			 * brotherhood.setBan(false);
+			 * final Date establishmentDate = new Date();
+			 * brotherhood.setEstablishmentDate(establishmentDate);
+			 * brotherhood.setScore(0.0);
+			 * brotherhood.setSpammer(false);
+			 */
 			result = brotherhood;
-		} else {
+		else {
 			result = this.brotherhoodRepository.findOne(brotherhood.getId());
 			result.setAddress(brotherhood.getAddress());
 			result.setEmail(brotherhood.getEmail());

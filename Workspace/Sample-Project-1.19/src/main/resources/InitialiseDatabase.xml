@@ -23,8 +23,8 @@
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
 		<property name="authorities">
 			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="ADMIN" />
+				<bean class="security.Authority">		
+					<property name="authority" value="ADMINISTRATOR" />
 				</bean>
 			</list>
 		</property>

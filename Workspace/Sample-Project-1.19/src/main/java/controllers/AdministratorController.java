@@ -28,6 +28,7 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
 	@Autowired
 	private ActorService			actorService;
 
@@ -52,13 +53,12 @@ public class AdministratorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView registerPOST(final Administrator adminForm, final BindingResult binding) {
 		ModelAndView result;
-		String emailError = "";
+		final String emailError = "";
 		Administrator admin;
 		admin = this.administratorService.reconstruct(adminForm, binding);
-		if (admin.getEmail() != null) {
+		if (admin.getEmail() != null)
 			admin.setEmail(admin.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		}
+		//emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
 		if (binding.hasErrors() || !emailError.isEmpty()) {
 			result = new ModelAndView("administrator/register");
 			result.addObject("uri", "security/register.do");
@@ -67,7 +67,7 @@ public class AdministratorController extends AbstractController {
 			result.addObject("emailError", emailError);
 		} else
 			try {
-				admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));
+				//admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));
 				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 				final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
 				admin.getUserAccount().setPassword(hash);

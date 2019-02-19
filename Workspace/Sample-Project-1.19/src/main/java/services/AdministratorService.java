@@ -40,13 +40,14 @@ public class AdministratorService {
 		final UserAccount a = this.userAccountService.create();
 
 		final Authority auth = new Authority();
-		auth.setAuthority(Authority.ADMIN);
+		auth.setAuthority(Authority.ADMININISTRATOR);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
-		res.setBan(false);
-		res.setSpammer(false);
-		res.setScore(0.0);
-
+		/*
+		 * res.setBan(false);
+		 * res.setSpammer(false);
+		 * res.setScore(0.0);
+		 */
 		return res;
 	}
 
@@ -90,9 +91,11 @@ public class AdministratorService {
 			admin.setUserAccount(savedAccount);
 			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
 			//por si acaso, ya que con los nuevos forms no haga falta
-			admin.setBan(false);
-			admin.setSpammer(false);
-			admin.setScore(0.0);
+			/*
+			 * admin.setBan(false);
+			 * admin.setSpammer(false);
+			 * admin.setScore(0.0);
+			 */
 			//Hasta aquí se borraría
 			result = this.administratorRepository.save(admin);
 			//TODO: cuando este el sistema de box, crear los iniciales
@@ -128,13 +131,14 @@ public class AdministratorService {
 	public Administrator reconstruct(final Administrator administrator, final BindingResult binding) {
 		Administrator result;
 
-		if (administrator.getId() == 0) {
-			administrator.setBan(false);
-			administrator.setScore(0.0);
-			administrator.setSpammer(false);
+		if (administrator.getId() == 0)
+			/*
+			 * administrator.setBan(false);
+			 * administrator.setScore(0.0);
+			 * administrator.setSpammer(false);
+			 */
 			result = administrator;
-
-		} else {
+		else {
 			result = this.administratorRepository.findOne(administrator.getId());
 			result.setAddress(administrator.getAddress());
 			result.setEmail(administrator.getEmail());
