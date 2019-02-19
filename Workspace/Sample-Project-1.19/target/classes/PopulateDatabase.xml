@@ -107,7 +107,7 @@ Madrugá! Tu sitio para organizar procesiones." />
 your processions." />
 			</util:map>
 		</property>
-		<property name="banner" value="https://tinyurl.com/acme-madruga" />
+		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
 
 
 		<property name="countryCode" value="+034" />
@@ -1173,10 +1173,10 @@ your processions." />
 	</bean>
 
 	<!-- MARCH -->
-	
+
 	<bean id="march1" class="domain.March">
 		<property name="status" value="APPROVED" />
-		<property name="row" value="1"/>
+		<property name="row" value="1" />
 		<property name="col" value="2" />
 		<property name="reason" value="" />
 		<property name="member">
@@ -1186,12 +1186,13 @@ your processions." />
 			<ref bean="procession1" />
 		</property>
 	</bean>
-	
-		<bean id="march2" class="domain.March">
+
+	<bean id="march2" class="domain.March">
 		<property name="status" value="REJECTED" />
-		<property name="row" value="3"/>
+		<property name="row" value="3" />
 		<property name="col" value="5" />
-		<property name="reason" value="Demasiado alto para el palio, debe solicitar entrar en el Cristo." />
+		<property name="reason"
+			value="Demasiado alto para el palio, debe solicitar entrar en el Cristo." />
 		<property name="member">
 			<ref bean="member2" />
 		</property>
@@ -1199,7 +1200,7 @@ your processions." />
 			<ref bean="procession2" />
 		</property>
 	</bean>
-	
+
 </beans>
 
 
