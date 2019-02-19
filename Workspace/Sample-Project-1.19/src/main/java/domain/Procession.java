@@ -34,7 +34,7 @@ public class Procession extends DomainEntity {
 	/* Getters&Setters */
 
 	@NotBlank
-	//@Pattern(regexp = "")
+	// @Pattern(regexp = "")
 	// TODO Pattern
 	public String getTicker() {
 		return ticker;
