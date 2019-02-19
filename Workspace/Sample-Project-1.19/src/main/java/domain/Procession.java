@@ -36,7 +36,7 @@ public class Procession extends DomainEntity {
 	/* Getters&Setters */
 
 	@NotBlank
-	@Pattern(regexp = "")
+	//@Pattern(regexp = "")
 	// TODO Pattern
 	public String getTicker() {
 		return ticker;
@@ -75,11 +75,11 @@ public class Procession extends DomainEntity {
 		this.organisedMoment = organisedMoment;
 	}
 
-	public boolean isDraft() {
+	public boolean getIsDraft() {
 		return isDraft;
 	}
 
-	public void setDraft(boolean isDraft) {
+	public void setIsDraft(boolean isDraft) {
 		this.isDraft = isDraft;
 	}
 

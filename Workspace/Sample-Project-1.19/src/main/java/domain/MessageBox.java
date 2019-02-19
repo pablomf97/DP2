@@ -8,9 +8,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,7 +22,7 @@ public class MessageBox extends DomainEntity {
 	private boolean isPredefined;
 	private Collection<MessageBox> parentMessageBoxes;
 	private Collection<Message> messages;
-	private Actor actor;
+	
 
 	/* Getters&Setters */
 
@@ -37,11 +35,11 @@ public class MessageBox extends DomainEntity {
 		this.name = name;
 	}
 
-	public boolean isPredefined() {
+	public boolean getIsPredefined() {
 		return isPredefined;
 	}
 
-	public void setPredefined(boolean isPredefined) {
+	public void setIsPredefined(boolean isPredefined) {
 		this.isPredefined = isPredefined;
 	}
 
@@ -65,15 +63,5 @@ public class MessageBox extends DomainEntity {
 		this.messages = messages;
 	}
 
-	@Valid
-	@NotNull
-	@OneToOne(optional = false)
-	public Actor getActor() {
-		return actor;
-	}
-
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
+	
 }
