@@ -7,7 +7,5 @@ import domain.Position;
 
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Integer> {
-		
-
 
 }

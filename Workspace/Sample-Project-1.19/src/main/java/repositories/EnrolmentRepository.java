@@ -7,7 +7,5 @@ import domain.Enrolment;
 
 @Repository
 public interface EnrolmentRepository extends JpaRepository<Enrolment, Integer> {
-		
-
 
 }
