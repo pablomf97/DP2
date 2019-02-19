@@ -1,0 +1,19 @@
+package domain;
+
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+
+@Entity
+@Access(AccessType.PROPERTY)
+public class Brotherhood extends Actor {
+
+	/* Attributes */
+
+	private String title;
+	private Date establishmentDate;
+	private String pictures;
+
+}

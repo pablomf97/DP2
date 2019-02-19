@@ -1,0 +1,13 @@
+package domain;
+
+public class SocialProfile extends DomainEntity {
+
+	/* Attributes */
+
+	private String nick;
+	private String name;
+	private String linkProfile;
+
+	/* Getters&Setters */
+
+}

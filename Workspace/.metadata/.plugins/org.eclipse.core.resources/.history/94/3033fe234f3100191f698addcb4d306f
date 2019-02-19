@@ -1,0 +1,22 @@
+package domain;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+
+@Entity
+@Access(AccessType.PROPERTY)
+public class March extends DomainEntity {
+
+	/* Attributes */
+
+	private String status;
+	private Integer row;
+	private Integer column;
+	private String reason;
+	private Member member;
+	private Procession procession;
+
+	/* Getters&Setters */
+
+}

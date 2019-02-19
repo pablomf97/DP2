@@ -1,0 +1,63 @@
+package domain;
+
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+
+@Entity
+@Access(AccessType.PROPERTY)
+public class Finder extends DomainEntity {
+
+	/* Attributes */
+
+	private String keyWord;
+	private String area;
+	private Date minimumMoment;
+	private Date maximumMoment;
+	private Date searchMoment;
+
+	/* Getters&Setters */
+
+	public String getKeyWord() {
+		return keyWord;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public Date getMinimumMoment() {
+		return minimumMoment;
+	}
+
+	public void setMinimumMoment(Date minimumMoment) {
+		this.minimumMoment = minimumMoment;
+	}
+
+	public Date getMaximumMoment() {
+		return maximumMoment;
+	}
+
+	public void setMaximumMoment(Date maximumMoment) {
+		this.maximumMoment = maximumMoment;
+	}
+
+	public Date getSearchMoment() {
+		return searchMoment;
+	}
+
+	public void setSearchMoment(Date searchMoment) {
+		this.searchMoment = searchMoment;
+	}
+
+}

@@ -1,0 +1,45 @@
+package services;
+
+import java.util.Collection;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import repositories.MemberRepository;
+import domain.Administrator;
+import domain.Member;
+
+@Service
+@Transactional
+public class MemberService {
+
+	// Managed Repository
+
+	@Autowired
+	private MemberRepository memberRepository;
+
+	// Supporting Services
+
+	// Simple CRUD methods
+
+	public Member findOne(final int memberId) {
+		Member res;
+
+		res = this.memberRepository.findOne(memberId);
+
+		return res;
+
+	}
+
+	public Collection<Member> findAll() {
+		Collection<Member> res;
+
+		res = this.memberRepository.findAll();
+		Assert.notNull(res);
+
+		return res;
+	}
+}
