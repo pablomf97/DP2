@@ -1,5 +1,7 @@
 //
-//package controllers.handyWorker;
+//package controllers;
+//
+//import java.util.Collection;
 //
 //import javax.validation.Valid;
 //
@@ -12,7 +14,9 @@
 //import org.springframework.web.bind.annotation.RequestParam;
 //import org.springframework.web.servlet.ModelAndView;
 //
+//import services.ActorService;
 //import services.PlatformService;
+//import domain.Actor;
 //import domain.Brotherhood;
 //import domain.Platform;
 //
@@ -26,22 +30,26 @@
 //	private PlatformService	platformService;
 //	
 //	@Autowired
-//	private BrotherhoodService	brotherhoodService;
+//	private ActorService actorService;
 //
 //	// List 
 //	@RequestMapping(value = "/list")
 //	public ModelAndView list(@RequestParam int brotherhoodId) {
 //		ModelAndView result;
-//		Brotherhood principal;
-//		Collection<Brotherhood> brotherhoods = null;
+//		Actor principal;
+//		Brotherhood brotherhood;
+//		Collection<Platform> platforms = null;
 //		
-//		principal = this.brotherhoodService.findByPrincipal();
+//		principal = this.actorService.findByPrincipal();
+//		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
+//		
+//		brotherhood = (Brotherhood) principal;
 //
-//		res = new ModelAndView("brotherhood/list");
-//		res.addObject("brotherhoods", brotherhoods);
-//		res.addObject("principal", principal);
+//		result = new ModelAndView("brotherhood/list");
+//		result.addObject("platforms", brotherhood);
+//		result.addObject("principal", principal);
 //
-//		return res;
+//		return result;
 //	}
 //
 //	// Creation 
