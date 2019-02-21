@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -20,10 +21,11 @@ import domain.Actor;
 public class ActorService {
 
 	@Autowired
-	private ActorRepository actorRepository;
+	private ActorRepository				actorRepository;
 
 	@Autowired
-	private SystemConfigurationService systemConfigurationService;
+	private SystemConfigurationService	systemConfigurationService;
+
 
 	/**
 	 * Get all actors from db
@@ -68,20 +70,20 @@ public class ActorService {
 	 * @return messageCode
 	 */
 	public String checkEmail(final String email, final String authority) {
-		String result;
-		final Pattern pattern = Pattern
-				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
-		final Matcher matcher = pattern.matcher(email);
-		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
-			// TODO: faltaría comprobar si se intenta insertar un admin y que
-			// compruebe su correo para su caso
-			// falta el pattern de admin
-			final Pattern patternAdmin = Pattern
-					.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
-			final Matcher matcherAdmin = patternAdmin.matcher(email);
-			result = matcherAdmin.matches() ? "" : "actor.email.error";
-		} else
-			result = matcher.matches() ? "" : "actor.email.error";
+		final String result = "";
+		//		final Pattern pattern = Pattern
+		//				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
+		//		final Matcher matcher = pattern.matcher(email);
+		//		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
+		//			// TODO: faltaría comprobar si se intenta insertar un admin y que
+		//			// compruebe su correo para su caso
+		//			// falta el pattern de admin
+		//			final Pattern patternAdmin = Pattern
+		//					.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
+		//			final Matcher matcherAdmin = patternAdmin.matcher(email);
+		//			result = matcherAdmin.matches() ? "" : "actor.email.error";
+		//		} else
+		//			result = matcher.matches() ? "" : "actor.email.error";
 		return result;
 	}
 
@@ -96,9 +98,7 @@ public class ActorService {
 		final Matcher m = p.matcher(phoneNumber);
 		final boolean b = m.matches();
 		if (b)
-			phoneNumber = this.systemConfigurationService.findAll().iterator()
-					.next().getCountryCode()
-					+ " " + phoneNumber;
+			phoneNumber = this.systemConfigurationService.findAll().iterator().next().getCountryCode() + " " + phoneNumber;
 		return phoneNumber;
 	}
 
@@ -112,8 +112,7 @@ public class ActorService {
 	public boolean checkAuthority(final Actor actor, final String authority) {
 		Assert.notNull(actor);
 		boolean result = false;
-		if (actor.getUserAccount().getAuthorities().iterator().next()
-				.getAuthority().equals(authority))
+		if (actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals(authority))
 			result = true;
 		return result;
 	}

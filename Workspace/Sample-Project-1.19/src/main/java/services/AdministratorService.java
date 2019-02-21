@@ -22,6 +22,8 @@ import domain.Administrator;
 public class AdministratorService {
 
 	@Autowired
+	private ActorService			actorService;
+	@Autowired
 	private UserAccountService		userAccountService;
 	@Autowired
 	private AdministratorRepository	administratorRepository;
@@ -35,19 +37,8 @@ public class AdministratorService {
 	 * @return admin
 	 */
 	public Administrator create() {
-
+		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
 		final Administrator res = new Administrator();
-		final UserAccount a = this.userAccountService.create();
-
-		final Authority auth = new Authority();
-		auth.setAuthority(Authority.ADMININISTRATOR);
-		a.addAuthority(auth);
-		res.setUserAccount(a);
-		/*
-		 * res.setBan(false);
-		 * res.setSpammer(false);
-		 * res.setScore(0.0);
-		 */
 		return res;
 	}
 
@@ -85,18 +76,10 @@ public class AdministratorService {
 		if (admin.getId() == 0) {
 			final UserAccount account = admin.getUserAccount();
 			final Authority au = new Authority();
-			au.setAuthority(Authority.BROTHERHOOD);
+			au.setAuthority(Authority.ADMININISTRATOR);
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			admin.setUserAccount(savedAccount);
-			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
-			//por si acaso, ya que con los nuevos forms no haga falta
-			/*
-			 * admin.setBan(false);
-			 * admin.setSpammer(false);
-			 * admin.setScore(0.0);
-			 */
-			//Hasta aquí se borraría
 			result = this.administratorRepository.save(admin);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
@@ -130,15 +113,17 @@ public class AdministratorService {
 	 */
 	public Administrator reconstruct(final Administrator administrator, final BindingResult binding) {
 		Administrator result;
-
-		if (administrator.getId() == 0)
-			/*
-			 * administrator.setBan(false);
-			 * administrator.setScore(0.0);
-			 * administrator.setSpammer(false);
-			 */
+		if (administrator.getId() == 0) {
+			final UserAccount a = this.userAccountService.create();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.ADMININISTRATOR);
+			a.addAuthority(auth);
+			a.setIsBanned(false);
+			a.setUsername(administrator.getUserAccount().getUsername());
+			a.setPassword(administrator.getUserAccount().getPassword());
+			administrator.setUserAccount(a);
 			result = administrator;
-		else {
+		} else {
 			result = this.administratorRepository.findOne(administrator.getId());
 			result.setAddress(administrator.getAddress());
 			result.setEmail(administrator.getEmail());
@@ -147,9 +132,9 @@ public class AdministratorService {
 			result.setPhoneNumber(administrator.getPhoneNumber());
 			result.setPhoto(administrator.getPhoto());
 			result.setSurname(administrator.getSurname());
-
-			this.validator.validate(result, binding);
 		}
+		this.validator.validate(result, binding);
+
 		return result;
 	}
 }

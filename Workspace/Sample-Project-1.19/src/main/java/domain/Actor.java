@@ -1,3 +1,4 @@
+
 package domain;
 
 import javax.persistence.Access;
@@ -19,49 +20,51 @@ public abstract class Actor extends DomainEntity {
 
 	/* Attributes */
 
-	private String name;
-	private String middleName;
-	private String surname;
-	private String photo;
-	private String email;
-	private String phoneNumber;
-	private String address;
-	private UserAccount userAccount;
+	private String		name;
+	private String		middleName;
+	private String		surname;
+	private String		photo;
+	private String		email;
+	private String		phoneNumber;
+	private String		address;
+	private UserAccount	userAccount;
+	private Double		score;
+	private Boolean		spammer;
+
 
 	/* Getters&Setters */
-
 	@NotBlank
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public String getMiddleName() {
-		return middleName;
+		return this.middleName;
 	}
 
-	public void setMiddleName(String middleName) {
+	public void setMiddleName(final String middleName) {
 		this.middleName = middleName;
 	}
 
 	@NotBlank
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
 
-	public void setSurname(String surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 
 	@URL
 	public String getPhoto() {
-		return photo;
+		return this.photo;
 	}
 
-	public void setPhoto(String photo) {
+	public void setPhoto(final String photo) {
 		this.photo = photo;
 	}
 
@@ -70,26 +73,26 @@ public abstract class Actor extends DomainEntity {
 	// email, es mejor hacer la comprobación en vistas, controladores y/o
 	// servicios.
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return this.phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(final String address) {
 		this.address = address;
 	}
 
@@ -97,12 +100,29 @@ public abstract class Actor extends DomainEntity {
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	public UserAccount getUserAccount() {
-		return userAccount;
+		return this.userAccount;
 	}
 
-	public void setUserAccount(UserAccount userAccount) {
+	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
 
-	// TODO spammer y score
+	// TODO spammer y score: mirar restricciones
+
+	public Double getScore() {
+		return this.score;
+	}
+
+	public void setScore(final Double score) {
+		this.score = score;
+	}
+
+	public Boolean getSpammer() {
+		return this.spammer;
+	}
+
+	public void setSpammer(final Boolean spammer) {
+		this.spammer = spammer;
+	}
+
 }

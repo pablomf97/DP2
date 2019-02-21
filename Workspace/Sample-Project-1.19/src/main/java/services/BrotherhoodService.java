@@ -1,8 +1,8 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -38,19 +38,6 @@ public class BrotherhoodService {
 	public Brotherhood create() {
 
 		final Brotherhood res = new Brotherhood();
-		final UserAccount a = this.userAccountService.create();
-
-		final Authority auth = new Authority();
-		auth.setAuthority(Authority.BROTHERHOOD);
-		a.addAuthority(auth);
-		res.setUserAccount(a);
-		/*
-		 * res.setBan(false);
-		 * res.setSpammer(false);
-		 * res.setScore(0.0);
-		 */
-		final Date establishmentDate = new Date();
-		res.setEstablishmentDate(establishmentDate);
 
 		return res;
 	}
@@ -93,16 +80,6 @@ public class BrotherhoodService {
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			brotherhood.setUserAccount(savedAccount);
-			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
-			//por si acaso, ya que con los nuevos forms no haga falta
-			/*
-			 * brotherhood.setBan(false);
-			 * brotherhood.setSpammer(false);
-			 * brotherhood.setScore(0.0);
-			 */
-			final Date establishmentDate = new Date();
-			brotherhood.setEstablishmentDate(establishmentDate);
-			//Hasta aquí se borraría
 			result = this.brotherhoodRepository.save(brotherhood);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
@@ -136,17 +113,17 @@ public class BrotherhoodService {
 	 */
 	public Brotherhood reconstruct(final Brotherhood brotherhood, final BindingResult binding) {
 		Brotherhood result;
-
-		if (brotherhood.getId() == 0)
-			/*
-			 * brotherhood.setBan(false);
-			 * final Date establishmentDate = new Date();
-			 * brotherhood.setEstablishmentDate(establishmentDate);
-			 * brotherhood.setScore(0.0);
-			 * brotherhood.setSpammer(false);
-			 */
+		if (brotherhood.getId() == 0) {
+			final UserAccount a = this.userAccountService.create();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.BROTHERHOOD);
+			a.addAuthority(auth);
+			a.setIsBanned(false);
+			a.setUsername(brotherhood.getUserAccount().getUsername());
+			a.setPassword(brotherhood.getUserAccount().getPassword());
+			brotherhood.setUserAccount(a);
 			result = brotherhood;
-		else {
+		} else {
 			result = this.brotherhoodRepository.findOne(brotherhood.getId());
 			result.setAddress(brotherhood.getAddress());
 			result.setEmail(brotherhood.getEmail());
@@ -157,9 +134,16 @@ public class BrotherhoodService {
 			result.setPictures(brotherhood.getPictures());
 			result.setSurname(brotherhood.getSurname());
 			result.setTitle(brotherhood.getTitle());
-
-			this.validator.validate(result, binding);
 		}
+		this.validator.validate(result, binding);
 		return result;
+	}
+
+	public Collection<String> getPictures(final String pictures) {
+		final Collection<String> res = new ArrayList<>();
+		final String[] slice = pictures.split("<>");
+		for (final String p : slice)
+			res.add(p);
+		return res;
 	}
 }
