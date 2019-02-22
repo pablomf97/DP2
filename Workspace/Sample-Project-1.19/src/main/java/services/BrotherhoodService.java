@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
+import forms.BrotherhoodForm;
 
 @Service
 @Transactional
@@ -38,6 +40,12 @@ public class BrotherhoodService {
 	public Brotherhood create() {
 
 		final Brotherhood res = new Brotherhood();
+
+		return res;
+	}
+	public BrotherhoodForm createForm() {
+
+		final BrotherhoodForm res = new BrotherhoodForm();
 
 		return res;
 	}
@@ -111,35 +119,47 @@ public class BrotherhoodService {
 	 * @param binding
 	 * @return brotherhood
 	 */
-	public Brotherhood reconstruct(final Brotherhood brotherhood, final BindingResult binding) {
-		Brotherhood result;
-		if (brotherhood.getId() == 0) {
+	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
+		Brotherhood result = this.create();
+		if (brotherhoodForm.getId() == 0) {
 			final UserAccount a = this.userAccountService.create();
 			final Authority auth = new Authority();
 			auth.setAuthority(Authority.BROTHERHOOD);
 			a.addAuthority(auth);
 			a.setIsBanned(false);
-			a.setUsername(brotherhood.getUserAccount().getUsername());
-			a.setPassword(brotherhood.getUserAccount().getPassword());
-			brotherhood.setUserAccount(a);
-			result = brotherhood;
+			a.setUsername(brotherhoodForm.getUsername());
+			a.setPassword(brotherhoodForm.getPassword());
+			result.setUserAccount(a);
+			if (brotherhoodForm.getPictures() == null)
+				result.setPictures("");
+			final Date establishmentDate = new Date();
+			result.setEstablishmentDate(establishmentDate);
+			result.setAddress(brotherhoodForm.getAddress());
+			result.setEmail(brotherhoodForm.getEmail());
+			result.setMiddleName(brotherhoodForm.getMiddleName());
+			result.setName(brotherhoodForm.getName());
+			result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+			result.setPhoto(brotherhoodForm.getPhoto());
+			result.setPictures("");//TODO: ver como meter todas las imágenes
+			result.setSurname(brotherhoodForm.getSurname());
+			result.setTitle(brotherhoodForm.getTitle());
 		} else {
-			result = this.brotherhoodRepository.findOne(brotherhood.getId());
-			result.setAddress(brotherhood.getAddress());
-			result.setEmail(brotherhood.getEmail());
-			result.setMiddleName(brotherhood.getMiddleName());
-			result.setName(brotherhood.getName());
-			result.setPhoneNumber(brotherhood.getPhoneNumber());
-			result.setPhoto(brotherhood.getPhoto());
-			result.setPictures(brotherhood.getPictures());
-			result.setSurname(brotherhood.getSurname());
-			result.setTitle(brotherhood.getTitle());
+			result = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
+			result.setAddress(brotherhoodForm.getAddress());
+			result.setEmail(brotherhoodForm.getEmail());
+			result.setMiddleName(brotherhoodForm.getMiddleName());
+			result.setName(brotherhoodForm.getName());
+			result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+			result.setPhoto(brotherhoodForm.getPhoto());
+			result.setPictures("");//TODO: ver como meter todas las imágenes
+			result.setSurname(brotherhoodForm.getSurname());
+			result.setTitle(brotherhoodForm.getTitle());
 		}
 		this.validator.validate(result, binding);
 		return result;
 	}
 
-	public Collection<String> getPictures(final String pictures) {
+	public Collection<String> getSplitPictures(final String pictures) {
 		final Collection<String> res = new ArrayList<>();
 		final String[] slice = pictures.split("<>");
 		for (final String p : slice)

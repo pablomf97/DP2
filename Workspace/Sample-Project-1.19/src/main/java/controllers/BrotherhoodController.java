@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.BrotherhoodService;
 import domain.Brotherhood;
+import forms.BrotherhoodForm;
 
 @Controller
 @RequestMapping("/brotherhood")
@@ -39,7 +40,7 @@ public class BrotherhoodController extends AbstractController {
 			result = new ModelAndView("brotherhood/display");
 			b = this.brotherhoodService.findOne(id);
 			Assert.isTrue(b.equals(this.actorService.findByPrincipal()));
-			final Collection<String> pictures = this.brotherhoodService.getPictures(b.getPictures());
+			final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 			result.addObject("brotherhood", b);
 			result.addObject("pictures", pictures);
 
@@ -54,18 +55,20 @@ public class BrotherhoodController extends AbstractController {
 	public ModelAndView editGET(@RequestParam final int id) {
 		ModelAndView result;
 		Brotherhood b;
+		BrotherhoodForm bf;
+		bf = this.brotherhoodService.createForm();
 		if (id == 0) {
 			result = new ModelAndView("brotherhood/edit");
-			b = this.brotherhoodService.create();
-			result.addObject("brotherhood", b);
+			result.addObject("brotherhoodForm", bf);
 		} else
 			try {
 				result = new ModelAndView("brotherhood/edit");
 				b = this.brotherhoodService.findOne(id);
 				Assert.isTrue(b.equals(this.actorService.findByPrincipal()));
+				result.addObject("brotherhoodForm", bf);
 				result.addObject("brotherhood", b);
 				result.addObject("uri", "brotherhood/edit.do");
-				final Collection<String> pictures = this.brotherhoodService.getPictures(b.getPictures());
+				final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 				result.addObject("pictures", pictures);
 
 			} catch (final Throwable opps) {
@@ -75,22 +78,26 @@ public class BrotherhoodController extends AbstractController {
 		return result;
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView editPOST(Brotherhood brotherhood, final BindingResult binding) {
+	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
 		String emailError = "";
-		brotherhood = this.brotherhoodService.reconstruct(brotherhood, binding);
-		final Collection<String> pictures = this.brotherhoodService.getPictures(brotherhood.getPictures());
+		String check = "";
+		Brotherhood brotherhood;
+		brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
+		final Collection<String> pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
 		if (brotherhood.getEmail() != null) {
 			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
 			emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
 		}
-		if (binding.hasErrors() || !emailError.isEmpty()) {
+		if (brotherhoodForm.getCheckBox().equals(false))
+			check = "actor.check.law";
+		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty()) {
 			result = new ModelAndView("brotherhood/edit");
 			result.addObject("uri", "brotherhood/edit.do");
 			brotherhood.getUserAccount().setPassword("");
 			result.addObject("brotherhood", brotherhood);
 			result.addObject("emailError", emailError);
-
+			result.addObject("checkLaw", check);
 		} else
 			try {
 				brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
