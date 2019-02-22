@@ -18,6 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+
 <script>
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber");
@@ -36,13 +37,13 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="administrator/edit.do" modelAttribute="administrator"
+<form:form action="brotherhood/edit.do" modelAttribute="brotherhood"
 	methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
 
-	<jstl:if test="${administrator.id == 0}">
+	<jstl:if test="${brotherhood.id == 0}">
 
 		<form:hidden path="userAccount.authorities[0].authority" />
 
@@ -103,13 +104,6 @@
 	<form:input path="phoneNumber" value="${administrator.phoneNumber}"
 		id="phoneNumber" />
 	<form:errors cssClass="error" path="phoneNumber" />
-	<br>
-
-	<form:label path="address">
-		<spring:message code="actor.address" />:
-		</form:label>
-	<form:input path="address" value="${administrator.address}" />
-	<form:errors cssClass="error" path="address" />
 	<br>
 
 	<input type="submit" name="save" id="save"

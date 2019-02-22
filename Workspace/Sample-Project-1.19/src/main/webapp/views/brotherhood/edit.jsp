@@ -8,12 +8,14 @@
  * http://www.tdg-seville.info/License.html
  --%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <script>
@@ -34,31 +36,35 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="brotherhood/edit.do" modelAttribute="brotherhood"
+<form:form action="brotherhood/edit.do" modelAttribute="brotherhoodForm"
 	methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
 
-	<jstl:if test="${brotherhood.id == 0}">
+	<security:authorize access="isAnonymous()">
 
-		<form:hidden path="userAccount.authorities[0].authority" />
-
-		<form:label path="userAccount.username">
+		<form:label path="username">
 			<spring:message code="actor.userAccount.username" />:
 			</form:label>
-		<form:input path="userAccount.username" />
-		<form:errors cssClass="error" path="userAccount.username" />
+		<form:input path="username" />
+		<form:errors cssClass="error" path="username" />
 		<br />
 
-		<form:label path="userAccount.password">
+		<form:label path="password">
 			<spring:message code="actor.userAccount.password" />:
 			</form:label>
-		<form:password path="userAccount.password" />
-		<form:errors cssClass="error" path="userAccount.password" />
+		<form:password path="password" />
+		<form:errors cssClass="error" path="password" />
 		<br />
 
-	</jstl:if>
+		<form:label path="password2">
+			<spring:message code="actor.userAccount.password2" />:
+			</form:label>
+		<form:password path="password2" />
+		<form:errors cssClass="error" path="password2" />
+		<br />
+	</security:authorize>
 
 	<form:label path="surname">
 		<spring:message code="actor.surname" />:
@@ -109,21 +115,29 @@
 	<form:input path="address" value="${brotherhood.address}" />
 	<form:errors cssClass="error" path="address" />
 	<br>
-	
-		<form:label path="title">
+
+	<form:label path="title">
 		<spring:message code="brotherhood.title" />:
 		</form:label>
-	<form:input path="title" value="${brotherhood.title}"
-		id="title" />
+	<form:input path="title" value="${brotherhood.title}" id="title" />
 	<form:errors cssClass="error" path="title" />
 	<br>
 
-	<!-- <form:label path="pictures">
+	<%-- 
+TODO falta implementar el sistema de incluir múltiples imágenes
+	<form:label path="pictures">
 		<spring:message code="brotherhood.pictures" />:
 		</form:label>
 	<form:input path="pictures" value="${brotherhood.pictures}" />
 	<form:errors cssClass="error" path="pictures" />
-	<br> -->
+	<br> --%>
+	
+	<form:label path="title">
+		<spring:message code="actor.check.law" />:
+		</form:label>
+	<form:checkbox path="checkBox" default="false" id="checkBox" />
+	<spring:message cssClass="error" code="actor.check.law.error" />
+	<br>
 
 	<input type="submit" name="save" id="save"
 		value='<spring:message code="actor.save"/>' onclick="checkPhone()" />
