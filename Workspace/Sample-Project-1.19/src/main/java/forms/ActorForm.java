@@ -1,6 +1,9 @@
 
 package forms;
 
+import javax.persistence.Column;
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
@@ -93,6 +96,8 @@ public class ActorForm extends DomainEntity {
 	}
 
 	@NotBlank
+	@Size(min = 5, max = 32)
+	@Column(unique = true)
 	public String getUsername() {
 		return this.username;
 	}
@@ -101,6 +106,7 @@ public class ActorForm extends DomainEntity {
 		this.username = username;
 	}
 	@NotBlank
+	@Size(min = 5, max = 32)
 	public String getPassword() {
 		return this.password;
 	}
@@ -109,6 +115,7 @@ public class ActorForm extends DomainEntity {
 		this.password = password;
 	}
 	@NotBlank
+	@Size(min = 5, max = 32)
 	public String getPassword2() {
 		return this.password2;
 	}

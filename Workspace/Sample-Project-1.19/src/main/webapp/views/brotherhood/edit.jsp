@@ -49,6 +49,9 @@
 			</form:label>
 		<form:input path="username" />
 		<form:errors cssClass="error" path="username" />
+		<jstl:if test="${not empty uniqueUsername}">
+			<a class="error"><spring:message code="${uniqueUsername}" /></a>
+		</jstl:if>
 		<br />
 
 		<form:label path="password">
@@ -56,6 +59,9 @@
 			</form:label>
 		<form:password path="password" />
 		<form:errors cssClass="error" path="password" />
+		<jstl:if test="${not empty checkPass}">
+			<a class="error"><spring:message code="${checkPass}" /></a>
+		</jstl:if>
 		<br />
 
 		<form:label path="password2">
@@ -131,13 +137,14 @@ TODO falta implementar el sistema de incluir múltiples imágenes
 	<form:input path="pictures" value="${brotherhood.pictures}" />
 	<form:errors cssClass="error" path="pictures" />
 	<br> --%>
-	
-	<form:label path="title">
+	<%-- <form:label path="checkBox">
 		<spring:message code="actor.check.law" />:
-		</form:label>
-	<form:checkbox path="checkBox" default="false" id="checkBox" />
-	<spring:message cssClass="error" code="actor.check.law.error" />
-	<br>
+				</form:label>
+	<form:radiobutton path="checkBox" value="true" />
+	<jstl:if test="${not empty checkLaw}">
+	<a class="error"><spring:message code="${checkLaw}" /></a>
+	</jstl:if>
+	<br> --%>
 
 	<input type="submit" name="save" id="save"
 		value='<spring:message code="actor.save"/>' onclick="checkPhone()" />

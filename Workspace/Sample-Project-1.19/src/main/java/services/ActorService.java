@@ -14,7 +14,9 @@ import org.springframework.util.Assert;
 import repositories.ActorRepository;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountRepository;
 import domain.Actor;
+import forms.ActorForm;
 
 @Service
 @Transactional
@@ -24,9 +26,18 @@ public class ActorService {
 	private ActorRepository				actorRepository;
 
 	@Autowired
+	private UserAccountRepository		userAccountRepository;
+
+	@Autowired
 	private SystemConfigurationService	systemConfigurationService;
 
 
+	public ActorForm createForm() {
+
+		final ActorForm res = new ActorForm();
+
+		return res;
+	}
 	/**
 	 * Get all actors from db
 	 * 
@@ -114,6 +125,39 @@ public class ActorService {
 		boolean result = false;
 		if (actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals(authority))
 			result = true;
+		return result;
+	}
+
+	/**
+	 * Check the terms and consitions acceptance of the actor
+	 * 
+	 * @param actor
+	 * @param authority
+	 * @return boolean
+	 */
+	public String checkLaw(final Boolean law) {
+		String result = "";
+		if (law != true)
+			result = "actor.check.law";
+		return result;
+	}
+	/**
+	 * Check the password of the actor
+	 * 
+	 * @param actor
+	 * @param authority
+	 * @return boolean
+	 */
+	public String checkPass(final String password1, final String password2) {
+		String result = "";
+		if (!password1.equals(password2))
+			result = "actor.check.passW";
+		return result;
+	}
+	public String checkUniqueUser(final String username) {
+		String result = "";
+		if (this.userAccountRepository.findByUsername(username) != null)
+			result = "actor.check.unique.user";
 		return result;
 	}
 

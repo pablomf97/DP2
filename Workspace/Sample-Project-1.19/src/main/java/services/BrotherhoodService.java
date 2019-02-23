@@ -40,6 +40,16 @@ public class BrotherhoodService {
 	public Brotherhood create() {
 
 		final Brotherhood res = new Brotherhood();
+		final Date establishmentDate = new Date();
+		res.setEstablishmentDate(establishmentDate);
+		final UserAccount a = this.userAccountService.create();
+		final Authority auth = new Authority();
+		auth.setAuthority(Authority.BROTHERHOOD);
+		a.addAuthority(auth);
+		a.setIsBanned(false);
+
+		res.setUserAccount(a);
+		res.setPictures("");
 
 		return res;
 	}
@@ -122,16 +132,9 @@ public class BrotherhoodService {
 	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		Brotherhood result = this.create();
 		if (brotherhoodForm.getId() == 0) {
-			final UserAccount a = this.userAccountService.create();
-			final Authority auth = new Authority();
-			auth.setAuthority(Authority.BROTHERHOOD);
-			a.addAuthority(auth);
-			a.setIsBanned(false);
-			a.setUsername(brotherhoodForm.getUsername());
-			a.setPassword(brotherhoodForm.getPassword());
-			result.setUserAccount(a);
-			if (brotherhoodForm.getPictures() == null)
-				result.setPictures("");
+			result.getUserAccount().setUsername(brotherhoodForm.getUsername());
+			result.getUserAccount().setPassword(brotherhoodForm.getPassword());
+			result.setPictures("");//TODO: ver como meter todas las imágenes  brotherhoodForm.getPictures()
 			final Date establishmentDate = new Date();
 			result.setEstablishmentDate(establishmentDate);
 			result.setAddress(brotherhoodForm.getAddress());
@@ -140,23 +143,47 @@ public class BrotherhoodService {
 			result.setName(brotherhoodForm.getName());
 			result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
 			result.setPhoto(brotherhoodForm.getPhoto());
-			result.setPictures("");//TODO: ver como meter todas las imágenes
 			result.setSurname(brotherhoodForm.getSurname());
 			result.setTitle(brotherhoodForm.getTitle());
+			this.validator.validate(brotherhoodForm, binding);
+
 		} else {
 			result = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
-			result.setAddress(brotherhoodForm.getAddress());
-			result.setEmail(brotherhoodForm.getEmail());
-			result.setMiddleName(brotherhoodForm.getMiddleName());
-			result.setName(brotherhoodForm.getName());
-			result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
-			result.setPhoto(brotherhoodForm.getPhoto());
-			result.setPictures("");//TODO: ver como meter todas las imágenes
-			result.setSurname(brotherhoodForm.getSurname());
-			result.setTitle(brotherhoodForm.getTitle());
+			if (this.checkValidation(brotherhoodForm, binding, result)) {
+				result.setAddress(brotherhoodForm.getAddress());
+				result.setEmail(brotherhoodForm.getEmail());
+				result.setMiddleName(brotherhoodForm.getMiddleName());
+				result.setName(brotherhoodForm.getName());
+				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				result.setPhoto(brotherhoodForm.getPhoto());
+				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setSurname(brotherhoodForm.getSurname());
+				result.setTitle(brotherhoodForm.getTitle());
+			} else {
+				result = this.create();
+				result.setAddress(brotherhoodForm.getAddress());
+				result.setEmail(brotherhoodForm.getEmail());
+				result.setMiddleName(brotherhoodForm.getMiddleName());
+				result.setName(brotherhoodForm.getName());
+				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				result.setPhoto(brotherhoodForm.getPhoto());
+				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setSurname(brotherhoodForm.getSurname());
+				result.setTitle(brotherhoodForm.getTitle());
+			}
 		}
-		this.validator.validate(result, binding);
 		return result;
+	}
+	private boolean checkValidation(final BrotherhoodForm brotherhoodForm, final BindingResult binding, final Brotherhood brotherhood) {
+		boolean check = true;
+		brotherhoodForm.setCheckBox(true);
+		brotherhoodForm.setPassword(brotherhood.getUserAccount().getPassword());
+		brotherhoodForm.setPassword2(brotherhood.getUserAccount().getPassword());
+		brotherhoodForm.setUsername(brotherhood.getUserAccount().getUsername());
+		this.validator.validate(brotherhoodForm, binding);
+		if (binding.hasErrors())
+			check = false;
+		return check;
 	}
 
 	public Collection<String> getSplitPictures(final String pictures) {
