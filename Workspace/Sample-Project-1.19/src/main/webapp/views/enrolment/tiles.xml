@@ -10,14 +10,9 @@
 
 <tiles-definitions>
 
-	<definition name="misc/panic" extends="master.page">
-		<put-attribute name="title" value="Panic" />
-		<put-attribute name="body" value="/views/misc/panic.jsp" />
-	</definition>
-
-	<definition name="misc/403" extends="master.page">
-		<put-attribute name="title" value="Sin permisos" />
-		<put-attribute name="body" value="/views/misc/403.jsp" />
+	<definition name="enrolment/list" extends="master.page">
+		<put-attribute name="title" value="List of enrollments" />
+		<put-attribute name="body" value="/views/enrolment/list.jsp" />
 	</definition>
 
 </tiles-definitions>
