@@ -16,6 +16,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import forms.AdministratorForm;
 
 @Service
 @Transactional
@@ -39,6 +40,18 @@ public class AdministratorService {
 	public Administrator create() {
 		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
 		final Administrator res = new Administrator();
+		final UserAccount a = this.userAccountService.create();
+		final Authority auth = new Authority();
+		auth.setAuthority(Authority.ADMININISTRATOR);
+		a.addAuthority(auth);
+		a.setIsBanned(false);
+		res.setUserAccount(a);
+		return res;
+	}
+
+	public AdministratorForm createForm() {
+		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
+		final AdministratorForm res = new AdministratorForm();
 		return res;
 	}
 
@@ -111,30 +124,55 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-	public Administrator reconstruct(final Administrator administrator, final BindingResult binding) {
-		Administrator result;
-		if (administrator.getId() == 0) {
-			final UserAccount a = this.userAccountService.create();
-			final Authority auth = new Authority();
-			auth.setAuthority(Authority.ADMININISTRATOR);
-			a.addAuthority(auth);
-			a.setIsBanned(false);
-			a.setUsername(administrator.getUserAccount().getUsername());
-			a.setPassword(administrator.getUserAccount().getPassword());
-			administrator.setUserAccount(a);
-			result = administrator;
-		} else {
-			result = this.administratorRepository.findOne(administrator.getId());
-			result.setAddress(administrator.getAddress());
-			result.setEmail(administrator.getEmail());
-			result.setMiddleName(administrator.getMiddleName());
-			result.setName(administrator.getName());
-			result.setPhoneNumber(administrator.getPhoneNumber());
-			result.setPhoto(administrator.getPhoto());
-			result.setSurname(administrator.getSurname());
-		}
-		this.validator.validate(result, binding);
+	public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+		Administrator result = this.create();
+		if (administratorForm.getId() == 0) {
+			result.getUserAccount().setUsername(administratorForm.getUsername());
+			result.getUserAccount().setPassword(administratorForm.getPassword());
+			result.setAddress(administratorForm.getAddress());
+			result.setEmail(administratorForm.getEmail());
+			result.setMiddleName(administratorForm.getMiddleName());
+			result.setName(administratorForm.getName());
+			result.setPhoneNumber(administratorForm.getPhoneNumber());
+			result.setPhoto(administratorForm.getPhoto());
+			result.setSurname(administratorForm.getSurname());
+			this.validator.validate(administratorForm, binding);
 
+		} else {
+			result = this.administratorRepository.findOne(administratorForm.getId());
+			if (this.checkValidation(administratorForm, binding, result)) {
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+			} else {
+				result = this.create();
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setId(administratorForm.getId());
+			}
+		}
 		return result;
+	}
+
+	private boolean checkValidation(final AdministratorForm administratorForm, final BindingResult binding, final Administrator brotherhood) {
+		boolean check = true;
+		administratorForm.setCheckBox(true);
+		administratorForm.setPassword(brotherhood.getUserAccount().getPassword());
+		administratorForm.setPassword2(brotherhood.getUserAccount().getPassword());
+		administratorForm.setUsername(brotherhood.getUserAccount().getUsername());
+		this.validator.validate(administratorForm, binding);
+		if (binding.hasErrors())
+			check = false;
+		return check;
 	}
 }

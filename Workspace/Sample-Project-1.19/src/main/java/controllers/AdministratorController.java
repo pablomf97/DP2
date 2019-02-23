@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.AdministratorService;
 import domain.Administrator;
+import forms.AdministratorForm;
 
 @Controller
 @RequestMapping("/administrator")
@@ -63,15 +64,21 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView editGET(@RequestParam final int id) {
 		ModelAndView result;
 		Administrator a;
+		AdministratorForm af;
+		af = this.administratorService.createForm();
 		if (id == 0) {
 			result = new ModelAndView("administrator/edit");
 			a = this.administratorService.create();
+			a.setId(0);
 			result.addObject("administrator", a);
+			result.addObject("administratorForm", af);
 		} else
 			try {
 				result = new ModelAndView("administrator/edit");
 				a = this.administratorService.findOne(id);
 				Assert.isTrue(a.equals(this.actorService.findByPrincipal()));
+				af.setId(a.getId());
+				result.addObject("administratorForm", af);
 				result.addObject("administrator", a);
 				result.addObject("uri", "administrator/edit.do");
 
@@ -83,20 +90,27 @@ public class AdministratorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView editPOST(Administrator admin, final BindingResult binding) {
+	public ModelAndView editPOST(final AdministratorForm administratorForm, final BindingResult binding) {
 		ModelAndView result;
 		String emailError = "";
-		admin = this.administratorService.reconstruct(admin, binding);
-		if (admin.getEmail() != null) {
-			admin.setEmail(admin.getEmail().toLowerCase());
-			emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
+		String passW = "";
+		String uniqueUsername = "";
+		Administrator admin;
+		admin = this.administratorService.reconstruct(administratorForm, binding);
+		if (admin.getId() == 0) {
+			passW = this.actorService.checkPass(administratorForm.getPassword(), administratorForm.getPassword2());
+			uniqueUsername = this.actorService.checkUniqueUser(administratorForm.getUsername());
 		}
-		if (binding.hasErrors() || !emailError.isEmpty()) {
+		admin.setEmail(admin.getEmail().toLowerCase());
+		emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
+		if (binding.hasErrors() || !emailError.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
 			result = new ModelAndView("administrator/edit");
 			result.addObject("uri", "administrator/edit.do");
 			admin.getUserAccount().setPassword("");
 			result.addObject("administrator", admin);
 			result.addObject("emailError", emailError);
+			result.addObject("checkPass", passW);
+			result.addObject("uniqueUsername", uniqueUsername);
 		} else
 			try {
 				admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));

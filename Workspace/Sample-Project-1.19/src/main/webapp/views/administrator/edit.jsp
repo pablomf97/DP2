@@ -37,30 +37,38 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="brotherhood/edit.do" modelAttribute="brotherhood"
-	methodParam="post"
+<form:form action="administrator/edit.do"
+	modelAttribute="administratorForm" methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
-
 	<form:hidden path="id" />
-
-	<jstl:if test="${brotherhood.id == 0}">
-
-		<form:hidden path="userAccount.authorities[0].authority" />
-
-		<form:label path="userAccount.username">
+	
+	<jstl:if test="${administrator.id == 0}">
+		<form:label path="username">
 			<spring:message code="actor.userAccount.username" />:
 			</form:label>
-		<form:input path="userAccount.username" />
-		<form:errors cssClass="error" path="userAccount.username" />
+		<form:input path="username" />
+		<form:errors cssClass="error" path="username" />
+		<jstl:if test="${not empty uniqueUsername}">
+			<a class="error"><spring:message code="${uniqueUsername}" /></a>
+		</jstl:if>
 		<br />
 
-		<form:label path="userAccount.password">
+		<form:label path="password">
 			<spring:message code="actor.userAccount.password" />:
 			</form:label>
-		<form:password path="userAccount.password" />
-		<form:errors cssClass="error" path="userAccount.password" />
+		<form:password path="password" />
+		<form:errors cssClass="error" path="password" />
+		<jstl:if test="${not empty checkPass}">
+			<a class="error"><spring:message code="${checkPass}" /></a>
+		</jstl:if>
 		<br />
 
+		<form:label path="password2">
+			<spring:message code="actor.userAccount.password2" />:
+			</form:label>
+		<form:password path="password2" />
+		<form:errors cssClass="error" path="password2" />
+		<br />
 	</jstl:if>
 
 	<form:label path="surname">
