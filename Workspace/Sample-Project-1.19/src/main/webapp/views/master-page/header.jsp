@@ -76,7 +76,7 @@
 
 				</ul></li>	
 			
-			<li><a class="fNiv" href="finder/member/finder.do"><spring:message
+			<li><a class="fNiv" href="finder/member/search.do"><spring:message
 						code="master.page.member.finder" /></a></li>
 			
 		</security:authorize>

@@ -38,6 +38,14 @@
 		</div>
 	</jstl:if>
 	
-	<input type="submit" value="<spring:message code="security.login" />" />
+	<input onclick="myFunction()" type="submit" value="<spring:message code="security.login" />" />
+	
+	
+
+<script>
+function myFunction() {
+  alert("By logging in you accept all our terms and conditions");
+}
+</script>
 	
 </form:form>

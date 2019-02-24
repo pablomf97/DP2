@@ -26,6 +26,8 @@
 		<value>/views/administrator/messages</value>
 		<value>/views/brotherhood/messages</value>
 		<value>/views/profile/messages</value>
+		<value>/views/terms/messages</value>
+		<value>/views/finder/messages</value>
 	</util:list>
 
 </beans>
