@@ -43,7 +43,6 @@ public class BrotherhoodController extends AbstractController {
 			final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 			result.addObject("brotherhood", b);
 			result.addObject("pictures", pictures);
-
 		} catch (final Throwable opps) {
 			//TODO: ver la posibilidada de una pantalla de error
 			result = new ModelAndView("redirect:/welcome/index.do");
@@ -83,7 +82,7 @@ public class BrotherhoodController extends AbstractController {
 	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
 		ModelAndView result;
 		String emailError = "";
-		final String check = "";
+		String check = "";
 		String passW = "";
 		String uniqueUsername = "";
 		Brotherhood brotherhood;
@@ -91,7 +90,7 @@ public class BrotherhoodController extends AbstractController {
 		if (brotherhood.getId() == 0) {
 			passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
 			uniqueUsername = this.actorService.checkUniqueUser(brotherhoodForm.getUsername());
-			//check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
+			check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
 		}
 		final Collection<String> pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
 
@@ -122,7 +121,6 @@ public class BrotherhoodController extends AbstractController {
 				brotherhood.getUserAccount().setPassword("");
 				result.addObject("brotherhood", brotherhood);
 			}
-
 		result.addObject("pictures", pictures);
 		return result;
 	}

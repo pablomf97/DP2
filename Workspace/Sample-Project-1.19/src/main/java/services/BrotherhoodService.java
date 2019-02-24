@@ -188,7 +188,7 @@ public class BrotherhoodService {
 
 	public Collection<String> getSplitPictures(final String pictures) {
 		final Collection<String> res = new ArrayList<>();
-		final String[] slice = pictures.split("<>");
+		final String[] slice = pictures.split("< >");
 		for (final String p : slice)
 			res.add(p);
 		return res;

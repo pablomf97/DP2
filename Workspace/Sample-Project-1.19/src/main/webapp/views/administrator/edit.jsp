@@ -41,7 +41,7 @@
 	modelAttribute="administratorForm" methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 	<form:hidden path="id" />
-	
+
 	<jstl:if test="${administrator.id == 0}">
 		<form:label path="username">
 			<spring:message code="actor.userAccount.username" />:
@@ -97,6 +97,9 @@
 		</form:label>
 	<form:input path="email" value="${administrator.email}" id="email" />
 	<form:errors cssClass="error" path="email" />
+	<jstl:if test="${not empty emailError}">
+		<a class="error"><spring:message code="${emailError}" /></a>
+	</jstl:if>
 	<br>
 
 	<form:label path="photo">

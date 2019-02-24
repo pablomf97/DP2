@@ -67,14 +67,14 @@
 </p>
 <p>
 	<b><spring:message code="brotherhood.pictures" /></b>:
-	<jstl:if test="${not empty pictures}">
+	<jstl:if test="${empty pictures}">
 		<display:table name="pictures" id="row">
 			<display:column>
 				<img class="picture" src="${row}" />
 			</display:column>
 		</display:table>
 	</jstl:if>
-	<jstl:if test="${empty pictures}">
+	<jstl:if test="${not empty pictures}">
 		<b><spring:message code="brotherhood.picture.empty" /></b>
 	</jstl:if>
 </p>

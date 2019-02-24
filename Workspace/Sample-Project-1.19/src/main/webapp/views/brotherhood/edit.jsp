@@ -18,17 +18,27 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<!-- 	<p id="demo"></p>
+			document.getElementById("demo").innerHTML = pat; -->
+	
 <script>
-	function checkPhone(msg) {
-		var phone = document.getElementById("phoneNumber");
-		var phonePattern = new RegExp(/^(((([+][1-9]{1}[0-9]{0,2}[\s]){0,1}([(][1-9]{1}[0-9]{0,2}[)][\s]){0,1})){0,1}([0-9]{4}){1}([0-9]{0,}))$/);
 
-		if (phonePattern.test(phone)) {
+	function checkPhone(msg) {
+		var phone = document.getElementById("phoneNumber").value;
+		var phonePattern =  new RegExp(
+			/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/);
+		var pat = phonePattern.test(phone);
+		if (pat) {
 			return true;
 		} else {
 			return confirm(msg);
 		}
 	}
+	function unCheck() {
+		var checkbox = document.getElementById('checkBox');
+		checkbox.checked = false;
+	}
+	window.onload = unCheck;
 </script>
 
 <p>
@@ -37,8 +47,7 @@
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
 <form:form action="brotherhood/edit.do" modelAttribute="brotherhoodForm"
-	methodParam="post"
-	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
+	methodParam="post" onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
 
@@ -98,6 +107,9 @@
 		</form:label>
 	<form:input path="email" value="${brotherhood.email}" id="email" />
 	<form:errors cssClass="error" path="email" />
+	<jstl:if test="${not empty emailError}">
+		<a class="error"><spring:message code="${emailError}" /></a>
+	</jstl:if>
 	<br>
 
 	<form:label path="photo">
@@ -137,17 +149,20 @@ TODO falta implementar el sistema de incluir múltiples imágenes
 	<form:input path="pictures" value="${brotherhood.pictures}" />
 	<form:errors cssClass="error" path="pictures" />
 	<br> --%>
-	<%-- <form:label path="checkBox">
-		<spring:message code="actor.check.law" />:
+	<security:authorize access="isAnonymous()">
+
+		<form:label path="checkBox">
+			<spring:message code="actor.check.law" />:
 				</form:label>
-	<form:radiobutton path="checkBox" value="true" />
-	<jstl:if test="${not empty checkLaw}">
-	<a class="error"><spring:message code="${checkLaw}" /></a>
-	</jstl:if>
-	<br> --%>
+		<form:checkbox path="checkBox" id="checkBox" value="true" />
+		<jstl:if test="${not empty checkLaw}">
+			<a class="error"><spring:message code="${checkLaw}" /></a>
+		</jstl:if>
+		<br>
+	</security:authorize>
 
 	<input type="submit" name="save" id="save"
-		value='<spring:message code="actor.save"/>' onclick="checkPhone()" />
+		value='<spring:message code="actor.save"/>' />
 	<input type="button" name="cancel"
 		value="<spring:message code="actor.cancel" />"
 		onclick="javascript: relativeRedir('actor/display.do');" />

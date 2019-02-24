@@ -81,20 +81,17 @@ public class ActorService {
 	 * @return messageCode
 	 */
 	public String checkEmail(final String email, final String authority) {
-		final String result = "";
-		//		final Pattern pattern = Pattern
-		//				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
-		//		final Matcher matcher = pattern.matcher(email);
-		//		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
-		//			// TODO: faltaría comprobar si se intenta insertar un admin y que
-		//			// compruebe su correo para su caso
-		//			// falta el pattern de admin
-		//			final Pattern patternAdmin = Pattern
-		//					.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
-		//			final Matcher matcherAdmin = patternAdmin.matcher(email);
-		//			result = matcherAdmin.matches() ? "" : "actor.email.error";
-		//		} else
-		//			result = matcher.matches() ? "" : "actor.email.error";
+		String result = "";
+		final Pattern pattern = Pattern.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
+		final Matcher matcher = pattern.matcher(email);
+		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
+			// TODO: faltaría comprobar si se intenta insertar un admin y que
+			// compruebe su correo para su caso
+			final Pattern patternAdmin = Pattern.compile("(^((([a-z]|[0-9]){1,}[@])$)|(^(([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]>))$)");
+			final Matcher matcherAdmin = patternAdmin.matcher(email);
+			result = matcherAdmin.matches() ? "" : "actor.email.error";
+		} else
+			result = matcher.matches() ? "" : "actor.email.error";
 		return result;
 	}
 
