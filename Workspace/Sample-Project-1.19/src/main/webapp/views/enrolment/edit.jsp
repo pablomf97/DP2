@@ -31,18 +31,18 @@
 
 		<jstl:choose>
 			<jstl:when test="${language == 'es'}">
-				<select name="position">
+				<select name="positionT">
 					<jstl:forEach items="${positions}" var="x">
-						<option value="${x}">
+						<option value="${x.name.get('Español')}">
 							<jstl:out value="${x.name.get('Español')}" />
 						</option>
 					</jstl:forEach>
 				</select>
 			</jstl:when>
 			<jstl:otherwise>
-				<select name="position">
+				<select name="positionT">
 					<jstl:forEach items="${positions}" var="x">
-						<option value="${x}">
+						<option value="${x.name.get('English')}">
 							<jstl:out value="${x.name.get('English')}" />
 						</option>
 					</jstl:forEach>

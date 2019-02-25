@@ -111,14 +111,14 @@ public class EnrolmentService {
 	}
 
 	/* Reconstruct */
-	public Enrolment reconstruct(Enrolment enrolment, String position,
+	public Enrolment reconstruct(Enrolment enrolment, String[] position,
 			BindingResult binding) {
 		Enrolment res;
 		Position fullPosition;
 
 		res = this.enrolmentRepository.findOne(enrolment.getId());
 
-		fullPosition = this.positionService.findByName(position);
+		fullPosition = this.positionService.findByName(position[0]);
 
 		res.setPosition(fullPosition);
 

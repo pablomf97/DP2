@@ -205,8 +205,8 @@ public class EnrollmentController extends AbstractController {
 	/* Saving an enrollment */
 	@RequestMapping(value = "/brotherhood/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Enrolment enrolment,
-			@RequestParam("position") String position, BindingResult binding,
-			Locale locale) {
+			@RequestParam("positionT") String[] position,
+			BindingResult binding, Locale locale) {
 
 		ModelAndView res;
 		Actor principal;
