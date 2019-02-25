@@ -60,7 +60,12 @@
 
 		<input type="submit" name="save" id="save"
 			value="<spring:message code="finder.showResults" />" />
-		<br />
+		
+	&#160;
+		<jstl:if test="${finder.id!=0}">
+			<input type="submit" name="delete" id="delete"
+				value='<spring:message code="finder.delete"/>' />
+		</jstl:if>
 
 	</form:form>
 </security:authorize>

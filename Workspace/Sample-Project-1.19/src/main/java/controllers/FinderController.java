@@ -1,6 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +20,8 @@ import domain.Procession;
 
 import services.FinderService;
 import services.MemberService;
-import services.ProcessionService;
+
+
 
 @Controller
 @RequestMapping("/finder/member")
@@ -33,8 +34,6 @@ public class FinderController extends AbstractController{
 	@Autowired
 	private MemberService memberService;
 	
-	@Autowired
-	private ProcessionService processionService;
 
 	// Constructors
 
@@ -48,21 +47,14 @@ public class FinderController extends AbstractController{
 	public ModelAndView list() {
 		final ModelAndView result;
 		Finder finder;
-		Collection<Procession> processions = new ArrayList<Procession>();
+		
 		Member principal;
 
 		principal = this.memberService.findByPrincipal();
 		finder = principal.getFinder();
 		 
+		Collection<Procession> processions = finder.getSearchResults();
 	
-		for(Procession p:finder.getSearchResults()){
-		//	if(p.getIsDraft()==false){
-				processions.add(p);
-			//}
-		}
-		if(finder.getSearchResults()==null){
-			processions=this.processionService.findAll();
-		}
 		
 		result = new ModelAndView("finder/list");
 		result.addObject("processions", processions);
@@ -79,11 +71,29 @@ public class FinderController extends AbstractController{
 		Member principal;
 
 		principal = this.memberService.findByPrincipal();
-		finder = principal.getFinder();
+		
+			finder = principal.getFinder();
+		
+		
 		
 		result=new ModelAndView("finder/search");
 		result.addObject("finder",finder);
 		result.addObject("requestUri", "finder/member/search.do");
+		return result;
+	}
+	//DELETE
+	@RequestMapping(value="/edit",method=RequestMethod.POST,params="delete")
+	public ModelAndView delete(final Finder finder,final BindingResult binding) {
+		ModelAndView result;
+
+		try {
+			this.finderService.delete(finder);
+			result = new ModelAndView("redirect:search.do");
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(finder,
+					"finder.commit.error");
+		}
+
 		return result;
 	}
 

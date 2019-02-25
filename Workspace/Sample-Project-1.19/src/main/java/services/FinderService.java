@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -32,9 +32,6 @@ public class FinderService {
 	// Supporting services -----------------------
 	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
-	private ProcessionService processionService;
 
 
 
@@ -132,10 +129,11 @@ public class FinderService {
 	// Other business methods
 
 	//expiración de la busqueda cuando termina tiempo caché
-	public void deleteExpiredFinders() {
+	public Boolean deleteExpiredFinders() {
 		Collection<Finder> finders;
 		Date maxLivedMoment = new Date();
 		int timeChachedFind;
+		Boolean res=false;
 		//comprobar q solo puede borrar el admin
 		timeChachedFind = this.systemConfigurationService
 				.findMySystemConfiguration().getTimeResultsCached();
@@ -146,65 +144,79 @@ public class FinderService {
 		for (final Finder finder : finders)
 			if (finder.getSearchMoment().before(maxLivedMoment)) {
 				finder.setSearchResults(new ArrayList<Procession>());
+				res=true;
 			}
+		return res;
 	}
 
 
 	public Collection<Procession> search(final Finder finder){
 		Member principal;
 		Collection<Procession> results=new ArrayList<Procession>();
-		//int nResults;
-		//Date minimumMoment;
-		//Date maximumMoment;
-		//String keyword;
-		//String area;
+		int nResults;
 
-		//nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
+		Collection<Procession> resultsPagebles=new ArrayList<Procession>();
+
+		nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
 
 		principal=this.memberService.findByPrincipal();
 		Assert.notNull(principal);
 
-		/*		minimumMoment=finder.getMinimumMoment();
-		if(minimumMoment==null){
-			minimumMoment=new Date(126204000000L);
+		if(finder.getMinimumMoment()!=null&& finder.getMaximumMoment()!=null){
+
+			results=this.finderRepository.searchProcessionsDate(finder.getMinimumMoment(), finder.getMaximumMoment());
+		}else if(finder.getMinimumMoment()!=null && finder.getMaximumMoment()==null){
+			Date max=new Date(19249488600000L);
+			results=this.finderRepository.searchProcessionsDate(finder.getMinimumMoment(), max);
 		}
-		maximumMoment=finder.getMaximumMoment();
-		if(maximumMoment==null){
-			maximumMoment=new Date(19249488600000L);
+
+		else if(finder.getMinimumMoment()==null && finder.getMaximumMoment()!=null){
+			Date min=new Date(126204000000L);
+			results=this.finderRepository.searchProcessionsDate(min, finder.getMaximumMoment());
 		}
-		keyword=finder.getKeyWord();
-		if(keyword==null){
-			keyword = "";
 
-			keyword = "%" + keyword + "%";
+		else if (!finder.getKeyWord().isEmpty()){
+			results=this.finderRepository.searchProcessionsKeyword("%"+finder.getKeyWord()+"%");
+
+		}else if (!finder.getArea().isEmpty()){
+			results=this.finderRepository.searchProcessionsArea("%"+finder.getArea()+"%");
+
+		}else if (finder.getMinimumMoment()==null&& finder.getMaximumMoment()==null&&finder.getKeyWord().isEmpty()&&finder.getArea().isEmpty()){
+			results=this.finderRepository.searchAllProcession();
 		}
-		area=finder.getArea();
-		if(area==null){
-			area="";
-			area="%"+area+"%";
-
+		Assert.notNull(results);
+	for(Procession p:results){
+			if(nResults>=results.size()){
+				
+					resultsPagebles.add(p);
+				
+			}
+			
 		}
-		 */	if(finder.getMinimumMoment()!=null&& finder.getMaximumMoment()!=null){
-			 
-			 results=this.finderRepository.searchProcessionsDate(finder.getMinimumMoment(), finder.getMaximumMoment());
-		 }else if (!finder.getKeyWord().isEmpty()){
-		results=this.finderRepository.searchProcessionsKeyword("%"+finder.getKeyWord()+"%");
+		finder.setSearchResults(new ArrayList<Procession> (resultsPagebles));
 
-		 }else if (!finder.getArea().isEmpty()){
-			 results=this.finderRepository.searchProcessionsArea("%"+finder.getArea()+"%");
-		 
-		 }else if (finder.getMinimumMoment()==null&& finder.getMaximumMoment()==null&&finder.getKeyWord().isEmpty()&&finder.getArea().isEmpty()){
-			 results=this.processionService.findAll();
-		 }
-		 Assert.notNull(results);
+		this.save(finder);
 
-		 finder.setSearchResults(new ArrayList<Procession> (results));
-
-		 this.save(finder);
-
-		 return results;
+		return results;
 
 	}
 
+	Double[] statsFinder(){
+		Double [] res;
+		res=this.finderRepository.StatsFinder();
+		return res;
+	} 
+
+	Double ratioFinder(Finder finder){
+
+		Double res=0.0;
+		if(!finder.getArea().isEmpty()||!finder.getKeyWord().isEmpty()||finder.getMaximumMoment()!=null||finder.getMinimumMoment()!=null){
+			res=1.0;
+		}
+		return res;
+
+
+
+	}
 
 }
