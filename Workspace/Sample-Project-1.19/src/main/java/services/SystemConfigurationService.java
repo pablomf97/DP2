@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.SystemConfigurationRepository;
 import domain.Actor;
@@ -27,6 +29,9 @@ public class SystemConfigurationService {
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private Validator validator;
 
 	// Simple CRUD methods
 
@@ -117,7 +122,7 @@ public class SystemConfigurationService {
 	// Other business methods
 
 	/* Find system configuration */
-	SystemConfiguration findMySystemConfiguration() {
+	public SystemConfiguration findMySystemConfiguration() {
 		final SystemConfiguration result;
 
 		result = this.systemConfigurationRepository.findSystemConf();
@@ -142,6 +147,44 @@ public class SystemConfigurationService {
 		result = this.findMySystemConfiguration().getWelcomeMessage();
 
 		return result;
+	}
+
+	public SystemConfiguration reconstruct(
+			SystemConfiguration systemConfiguration, String nameES,
+			String nameEN, BindingResult binding) {
+		SystemConfiguration res;
+
+		if (systemConfiguration.getId() == 0) {
+			systemConfiguration
+					.setWelcomeMessage(new HashMap<String, String>());
+
+			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("English", nameEN);
+			res = systemConfiguration;
+		} else {
+			res = this.systemConfigurationRepository
+					.findOne(systemConfiguration.getId());
+
+			systemConfiguration
+					.setWelcomeMessage(new HashMap<String, String>());
+
+			systemConfiguration.getWelcomeMessage().put("Español", nameES);
+			systemConfiguration.getWelcomeMessage().put("English", nameEN);
+
+			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
+			res.setSystemName(systemConfiguration.getSystemName());
+			res.setBanner(systemConfiguration.getBanner());
+			res.setCountryCode(systemConfiguration.getCountryCode());
+			res.setTimeResultsCached(systemConfiguration.getTimeResultsCached());
+			res.setMaxResults(systemConfiguration.getMaxResults());
+			res.setMessagePriority(systemConfiguration.getMessagePriority());
+			res.setSpamWords(systemConfiguration.getSpamWords());
+			res.setPossitiveWords(systemConfiguration.getPossitiveWords());
+			res.setNegativeWords(systemConfiguration.getNegativeWords());
+		}
+		this.validator.validate(res, binding);
+
+		return res;
 	}
 
 }
