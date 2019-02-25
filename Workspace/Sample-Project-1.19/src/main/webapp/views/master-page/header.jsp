@@ -28,51 +28,41 @@
 						code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message
-								code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message
-								code="master.page.administrator.action.2" /></a></li>
+					<li><a href="administrator/edit.do?id=0"><spring:message
+								code="master.page.administrator.register" /></a></li>
+					<li><a href="administrator/dashboard.do"><spring:message
+								code="master.page.administrator.dashboard" /></a></li>
 				</ul></li>
-		</security:authorize>
-
-		<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
-				</ul></li>
-		</security:authorize>
-
-		<security:authorize access="isAnonymous()">
-			<li><a class="fNiv" href="security/login.do"><spring:message
-						code="master.page.login" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
-			<li><a class="fNiv"> <spring:message
+			<li><a class="fNiv" href="actor/display.do"><spring:message
 						code="master.page.profile" /> (<security:authentication
-						property="principal.username" />)
-			</a>
+						property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="profile/action-1.do"><spring:message
-								code="master.page.profile.action.1" /></a></li>
-					<li><a href="profile/action-2.do"><spring:message
-								code="master.page.profile.action.2" /></a></li>
-					<li><a href="profile/action-3.do"><spring:message
-								code="master.page.profile.action.3" /></a></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
+					<li><a href="actor/edit.do"><spring:message
+								code="master.page.profile.edit" /></a></li>
+				</ul></li>
+			<li><a class="fNiv" href="j_spring_security_logout"><spring:message
+						code="master.page.logout" /> </a></li>
+		</security:authorize>
+
+		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv"><spring:message
+						code="master.page.signup" /></a>
+				<ul>
+					<li><a href="security/login.do"><spring:message
+								code="master.page.login" /></a></li>
+					<li><a href="brotherhood/edit.do?id=0"><spring:message
+								code="master.page.register.brotherhood" /></a></li>
 				</ul></li>
 		</security:authorize>
 	</ul>
 </div>
 
 <div>
+
 	<a href="?language=en">en</a> | <a href="?language=es">es</a>
 </div>
 
