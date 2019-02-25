@@ -23,6 +23,7 @@
 
 		<value>/views/position/tiles.xml</value>
 		<value>/views/enrolment/tiles.xml</value>
+		<value>/views/system-configuration/tiles.xml</value>
 
 	</util:list>
 

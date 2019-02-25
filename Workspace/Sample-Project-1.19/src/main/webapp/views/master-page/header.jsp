@@ -33,17 +33,32 @@
 					<li><a href="position/administrator/create.do"><spring:message
 								code="master.page.administrator.create.position" /></a></li>
 				</ul></li>
-		</security:authorize>
-
-		<security:authorize access="hasRole('CUSTOMER')">
 			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
+						code="master.page.brotherhood.system" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
+					<li><a href="sysconfig/administrator/display.do"><spring:message
+								code="master.page.brotherhood.sysconfig.manage" /></a></li>
+				</ul></li>
+		</security:authorize>
+
+		<security:authorize access="hasRole('MEMBER')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="enrolment/member/list.do"><spring:message
+								code="master.page.member.enrollments" /></a></li>
+				</ul></li>
+		</security:authorize>
+
+		<security:authorize access="hasRole('BROTHERHOOD')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.brotherhood.enrolments" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="enrolment/brotherhood/list.do"><spring:message
+								code="master.page.brotherhood.enrolments.manage" /></a></li>
 				</ul></li>
 		</security:authorize>
 

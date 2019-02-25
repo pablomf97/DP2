@@ -48,10 +48,10 @@
 				<spring:message code="enrolment.pending" var="message3" />
 
 				<jstl:choose>
-					<jstl:when test="${enrolment.isOut}">
+					<jstl:when test="${enrolment.isOut == true}">
 						<display:column value="${message1}" titleKey="enrolment.status" />
 					</jstl:when>
-					<jstl:when test="${!enrolment.isOut}">
+					<jstl:when test="${enrolment.isOut == false}">
 						<display:column value="${message2}" titleKey="enrolment.status" />
 					</jstl:when>
 					<jstl:otherwise>

@@ -10,12 +10,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.EnrolmentRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
+import domain.Position;
 
 @Service
 @Transactional
@@ -32,10 +35,13 @@ public class EnrolmentService {
 	private MemberService memberService;
 
 	@Autowired
-	private BrotherhoodService brotherhoodService;
+	private Validator validator;
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private PositionService positionService;
 
 	// Simple CRUD methods
 
@@ -97,4 +103,28 @@ public class EnrolmentService {
 	public Collection<Enrolment> getEnrollmentsByMember(int memberID) {
 		return this.enrolmentRepository.getEnrollmentsByMember(memberID);
 	}
+
+	/* Find enrollments by brotheerhoodID */
+	public Collection<Enrolment> getEnrollmentsByBrotherhood(int brotherhoodID) {
+		return this.enrolmentRepository
+				.getEnrollmentsByBrotherhood(brotherhoodID);
+	}
+
+	/* Reconstruct */
+	public Enrolment reconstruct(Enrolment enrolment, String position,
+			BindingResult binding) {
+		Enrolment res;
+		Position fullPosition;
+
+		res = this.enrolmentRepository.findOne(enrolment.getId());
+
+		fullPosition = this.positionService.findByName(position);
+
+		res.setPosition(fullPosition);
+
+		this.validator.validate(res, binding);
+
+		return res;
+	}
+
 }

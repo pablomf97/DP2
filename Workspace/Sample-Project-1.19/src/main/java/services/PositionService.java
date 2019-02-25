@@ -130,4 +130,20 @@ public class PositionService {
 		return res;
 	}
 
+	/* Find position by name */
+	public Position findByName(String name) {
+		Position res;
+		Collection<Position> positions;
+
+		res = null;
+		positions = this.findAll();
+		for (Position position : positions) {
+			if (position.getName().containsValue(name)) {
+				res = position;
+				break;
+			}
+		}
+
+		return res;
+	}
 }
