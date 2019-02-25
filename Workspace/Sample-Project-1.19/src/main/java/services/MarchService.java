@@ -130,8 +130,17 @@ public class MarchService {
 			result.setCol(march.getCol());
 			result.setReason(march.getReason());
 			
-			validator.validate(result, binding);
 		}
+		
+		validator.validate(result, binding);
+		
+		return result;
+	}
+	
+	public Collection<March> findMarchsByMemberId(int memberId) {
+		Collection<March> result;
+		
+		result = this.marchRepository.findMarchsByMemberId(memberId);
 		
 		return result;
 	}

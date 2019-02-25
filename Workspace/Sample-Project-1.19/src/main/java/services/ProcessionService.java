@@ -111,19 +111,41 @@ public class ProcessionService {
 	
 	public Procession reconstruct(Procession procession, BindingResult binding) {
 		Procession result;
+		Actor principal = null;
 		
 		if(procession.getId() == 0) {
+			principal = this.actorService.findByPrincipal();
+			
 			result = procession;
+			result.setBrotherhood((Brotherhood) principal);
+
 		} else {
 			result = this.findOne(procession.getId());
 			
+			result.setTitle(procession.getTitle());
 			result.setDescription(procession.getDescription());
 			result.setPlatforms(procession.getPlatforms());
-			result.setTitle(procession.getTitle());
 			result.setIsDraft(procession.getIsDraft());
 			
-			validator.validate(result, binding);
 		}
+
+		validator.validate(result, binding);
+		
+		return result;
+	}
+	
+	public Collection<Procession> findProcessionsByBrotherhoodId(int brotherhoodId) {
+		Collection<Procession> result;
+		
+		result = this.processionRepository.findProcessionsByBrotherhoodId(brotherhoodId);
+		
+		return result;
+	}
+	
+	public Collection<Procession> findProcessionsByMemberId(int memberId) {
+		Collection<Procession> result;
+		
+		result = this.processionRepository.findProcessionsByMemberId(memberId);
 		
 		return result;
 	}

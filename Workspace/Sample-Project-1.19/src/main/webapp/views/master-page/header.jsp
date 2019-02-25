@@ -71,7 +71,7 @@
 						code="master.page.member.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/member/list.do"><spring:message
+					<li><a href="procession/member,brotherhood/list.do"><spring:message
 								code="master.page.member.procession.show" /></a></li>
 
 				</ul></li>	
@@ -87,9 +87,9 @@
 						code="master.page.member.platform" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="platform/brotherhood/list.do"><spring:message
+					<li><a href="platform/list.do"><spring:message
 								code="master.page.member.platform.show" /></a></li>
-					<li><a href="platform/brotherhood/create.do"><spring:message
+					<li><a href="platform/create.do"><spring:message
 								code="master.page.member.platform.new" /></a></li>
 				</ul></li>	
 			
@@ -97,7 +97,7 @@
 						code="master.page.member.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="procession/brotherhood/list.do"><spring:message
+					<li><a href="procession/member,brotherhood/list.do"><spring:message
 								code="master.page.member.procession.show" /></a></li>
 					
 					<li><a href="procession/brotherhood/create.do"><spring:message

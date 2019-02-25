@@ -1,7 +1,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -43,7 +42,6 @@ public class PlatformService {
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
 		
 		result = new Platform();
-		result.setEstablismentDate((new Date(System.currentTimeMillis() - 1)));
 
 		return result;
 	}
@@ -95,8 +93,7 @@ public class PlatformService {
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
-		Assert.isTrue(platform.getBrotherhood().equals(principal));
+		Assert.isTrue(platform.getBrotherhood().getId() == principal.getId(), "not.allowed");
 
 		this.platformRepository.delete(platform.getId());
 
@@ -106,9 +103,13 @@ public class PlatformService {
 
 	public Platform reconstruct(Platform platform, BindingResult binding) {
 		Platform result;
+		Actor principal = null;
 		
 		if(platform.getId() == 0) {
+			principal = this.actorService.findByPrincipal();
+			
 			result = platform;
+			result.setBrotherhood((Brotherhood) principal);
 		} else {
 			result = this.findOne(platform.getId());
 			
@@ -116,8 +117,17 @@ public class PlatformService {
 			result.setDescription(platform.getDescription());
 			result.setPictures(platform.getPictures());
 			
-			validator.validate(result, binding);
 		}
+
+		validator.validate(result, binding);
+		
+		return result;
+	}
+	
+	public Collection<Platform> findPlatformsByBrotherhoodId(int brotherhoodId) {
+		Collection<Platform> result;
+		
+		result = this.platformRepository.findPlatformsByBrotherhoodId(brotherhoodId);
 		
 		return result;
 	}
