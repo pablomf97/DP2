@@ -85,7 +85,6 @@ public class Enrolment extends DomainEntity {
 	}
 
 	@Valid
-	@NotNull
 	@ManyToOne(optional = true)
 	public Position getPosition() {
 		return position;
