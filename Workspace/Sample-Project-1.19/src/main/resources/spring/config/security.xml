@@ -61,9 +61,6 @@
 		<security:intercept-url pattern="/profile/action-3.do"
 			access="isAuthenticated()" />
 
-		<security:intercept-url pattern="/**"
-			access="hasRole('NONE')" />
-
 		<security:form-login login-page="/security/login.do"
 			password-parameter="password" username-parameter="username"
 			authentication-failure-url="/security/loginFailure.do" />
@@ -76,7 +73,7 @@
 			access="isAuthenticated()" />
 
 		<security:intercept-url pattern="/actor/display.do"
-			access="isAuthenticated()" />
+			access="isAuthenticated()"/>
 
 		<!-- Administrator -->
 		<security:intercept-url pattern="/administrator/edit.do"
@@ -89,13 +86,20 @@
 			access="hasRole('ADMINISTRATOR')" />
 
 		<!-- Brotherhood -->
-		<!-- TODO Mirar que sea anonimo o brotherhood -->
+		<!-- TODO Mirar que sea anonimo o brotherhood en el edit-->
 		<security:intercept-url pattern="/brotherhood/edit.do"
 			access="permitAll" />
 
 		<security:intercept-url pattern="/brotherhood/display.do"
 			access="permitAll" />
 			
+		<!-- Member -->
+		<!-- TODO Mirar que sea anonimo o brotherhood en el edit-->
+		<security:intercept-url pattern="/member/edit.do"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/member/display.do"
+			access="permitAll" />
 	</security:http>
 
 </beans>
