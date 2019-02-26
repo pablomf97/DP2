@@ -109,18 +109,12 @@
 					<li class="arrow"><a href="procession/member/list.do"><spring:message
 								code="master.page.member.procession.show" /></a></li>
 
-<<<<<<< HEAD
-				</ul></li>
 
-			<a class="fNiv" href="finder/member/finder.do"><spring:message
-					code="master.page.member.finder" /></a>
-=======
-				</ul></li>	
-			
+			</ul></li>
 			<li><a class="fNiv" href="finder/member/search.do"><spring:message
 						code="master.page.member.finder" /></a></li>
 			
->>>>>>> Jesús
+
 		</security:authorize>
 
 		<security:authorize access="hasRole('BROTHERHOOD')">
