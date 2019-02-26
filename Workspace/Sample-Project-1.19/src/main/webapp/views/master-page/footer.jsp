@@ -12,10 +12,17 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:useBean id="date" class="java.util.Date" />
 
-<hr />
+<jsp:useBean id="date" class="java.util.Date" />
+<div style="bottom: 0">
+	<hr>
 
 <div><a href="terms.do"><spring:message
 								code="terms" /></a></div>
 <b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Acme Madrugá Co., Inc.</b>
+</div>
+
+<hr />
+
+
+
