@@ -72,7 +72,15 @@
 					<li><a href="zone/administrator/create.do"><spring:message
 								code="master.page.administrator.zone.new" /></a></li>
 				</ul></li>
+			
+			<li><a class="fNiv" href="zone/administrator/list.do"><spring:message
+						code="master.page.administrator.zones.show" /></a>
+				<ul>
+					<li><a href="zone/administrator/create.do"><spring:message
+								code="master.page.administrator.zone.new" /></a></li>
+				</ul></li>
 
+			
 
 			<li><a class="fNiv"><spring:message
 						code="master.page.brotherhood.system" /></a>
