@@ -17,6 +17,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
+import domain.Enrolment;
 
 @Service
 @Transactional
@@ -29,6 +30,8 @@ public class BrotherhoodService {
 	@Autowired
 	private Validator				validator;
 
+	@Autowired
+	private EnrolmentService enrolmentService;
 
 	/**
 	 * Create a new empty brotherhood
@@ -162,4 +165,58 @@ public class BrotherhoodService {
 		}
 		return result;
 	}
+
+	public Brotherhood largestBrotherhood(){
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = b;
+			}
+
+			if(this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size()){
+				result = b;
+			}
+
+			count++;
+		}
+
+		return result;
+	}
+
+	
+	public Brotherhood smallestBrotherhood(){
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = b;
+			}
+
+			if(this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() > enrolments.size()){
+				result = b;
+			}
+
+			count++;
+		}
+
+		return result;
+	}
+
 }

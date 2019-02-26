@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import repositories.MarchRepository;
 import domain.March;
@@ -105,4 +106,39 @@ public class MarchService {
 
 	// Other business methods -------------------------------
 
+	public Double ratioApprovedRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioApprovedRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
+	public Double ratioPendingRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioPendingRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
+	public Double ratioRejectedRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioRejectedRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
+	public Collection<March> findByMember(int memberId){
+		Collection<March> result;
+		
+		result = this.marchRepository.findByMember(memberId);
+		Assert.notNull(result);
+		
+		return result;
+	}
 }
