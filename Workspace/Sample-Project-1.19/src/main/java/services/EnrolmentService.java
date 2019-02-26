@@ -110,6 +110,26 @@ public class EnrolmentService {
 				.getEnrollmentsByBrotherhood(brotherhoodID);
 	}
 
+	
+	public Collection<Enrolment> findActiveEnrolmentByBrotherhood(int brotherhoodId){
+		Collection<Enrolment> result;
+		
+		result = this.enrolmentRepository.findActiveEnrolmentsByBrotherhood(brotherhoodId);
+		Assert.notNull(result);
+		
+		return result;
+		
+	}
+	
+	public Collection<Enrolment> findActiveEnrolments(){
+		Collection<Enrolment> result;
+		
+		result = this.enrolmentRepository.findActiveEnrolments();
+		Assert.notNull(result);
+		
+		return result;
+	}
+
 	/* Reconstruct */
 	public Enrolment reconstruct(Enrolment enrolment, String[] position,
 			BindingResult binding) {
@@ -127,4 +147,8 @@ public class EnrolmentService {
 		return res;
 	}
 
+
 }
+
+
+

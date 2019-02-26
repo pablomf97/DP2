@@ -21,9 +21,14 @@
 		<value>/views/brotherhood/messages</value>
 		<value>/views/profile/messages</value>
 
+
 		<value>/views/position/messages</value>
 		<value>/views/enrolment/messages</value>
 		<value>/views/system-configuration/messages</value>
+
+
+		<value>/views/zone/messages</value>
+		
 
 	</util:list>
 

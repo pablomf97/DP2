@@ -1,11 +1,16 @@
 package services;
 
+
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import repositories.ProcessionRepository;
 import domain.Procession;
@@ -91,4 +96,16 @@ public class ProcessionService {
 
 	// Other business methods -------------------------------
 
+	public Collection<Procession> findEarlyProcessions(){
+		Collection<Procession>result;
+		Calendar c = new GregorianCalendar();
+		c.add(Calendar.DATE, 30);
+		Date maxDate = c.getTime();
+		
+		result = this.processionRepository.findEarlyProcessions(maxDate);
+		Assert.notNull(result);
+		
+		return result;
+		
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
- * tiles.xml
+ * tiles_es.xml
  *
  * Copyright (C) 2019 Universidad de Sevilla
  * 
@@ -13,17 +13,17 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
-       
+      
 <tiles-definitions>
 
-	<definition name="administrator/edit" extends="master.page">	
-		<put-attribute name="title" value="Administrator: edition" />
-		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+	<definition name="zone/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de areas" />
+		<put-attribute name="body" value="/views/zone/list.jsp" />
 	</definition>
 	
-	<definition name="administrator/statistics" extends="master.page">	
-		<put-attribute name="title" value="Administrator: statistic dashboard" />
-		<put-attribute name="body" value="/views/administrator/statistics.jsp" />
+	<definition name="zone/edit" extends="master.page">	
+		<put-attribute name="title" value="Edit area" />
+		<put-attribute name="body" value="/views/zone/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

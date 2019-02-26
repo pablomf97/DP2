@@ -18,7 +18,9 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.Brotherhood;
 import domain.Finder;
+import domain.March;
 import domain.Member;
 
 @Service
@@ -33,7 +35,20 @@ public class MemberService {
 	// Supporting Services
 
 	@Autowired
+
 	private Validator validator;
+
+	private BrotherhoodService brotherhoodService;
+
+	@Autowired
+	private EnrolmentService enrolmentService;
+
+	@Autowired
+	private AdministratorService AdministratorService;
+	
+	@Autowired
+	private MarchService marchService;
+
 
 	// Simple CRUD methods
 
@@ -130,6 +145,7 @@ public class MemberService {
 		return res;
 	}
 
+
 	// Reconstruct
 	public Member reconstruct(Member member, BindingResult binding) {
 		Member res;
@@ -151,4 +167,123 @@ public class MemberService {
 
 		return res;
 	}
+
+
+	public Collection<Member> findAllMembersByBrotherhood(int brotherhoodId){
+		Collection<Member> result;
+
+		result = this.memberRepository.findAllMembersByBrotherhood(brotherhoodId);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+
+	//Dashboard --------------------------------------------------------------------
+
+	public Double averageMemberPerBrotherhood(){
+
+		Collection<Brotherhood> brotherhoods;
+		Collection<Member> members;
+		int total = 0;
+		Double result;
+
+		brotherhoods = this.brotherhoodService.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			members = this.findAllMembersByBrotherhood(b.getId());
+			total = total + members.size();
+		}
+
+		result = (double) (total / brotherhoods.size());
+
+		return result;
+	}
+
+	public Double minMemberPerBrotherhood(){
+		Collection<Brotherhood> brotherhoods;
+		Collection<Member> members;
+		int count = 0;
+		Double result = 0.0;
+
+		brotherhoods = this.brotherhoodService.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			members = this.findAllMembersByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = (double) members.size();
+			}
+
+			if(members.size()< result){
+				result = (double) members.size();
+
+			}
+			count++;
+		}
+		return result;
+	}
+	
+	public Double maxMemberPerBrotherhood(){
+		Collection<Brotherhood> brotherhoods;
+		Collection<Member> members;
+		int count = 0;
+		Double result = 0.0;
+
+		brotherhoods = this.brotherhoodService.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			members = this.findAllMembersByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = (double) members.size();
+			}
+
+			if(members.size()> result){
+				result = (double) members.size();
+
+			}
+			count++;
+		}
+		return result;
+	}
+	
+	public Collection<Member> acceptedMembers(){
+		Collection<Member> members;
+		Collection<March> marchsByMember,marchs;
+		int totalAccepted = 0;
+		Double percent;
+		
+		marchs = this.marchService.findAll();
+		Assert.notNull(marchs);
+		
+		members = this.findAll();
+		Assert.notNull(members);
+		
+		
+		
+		percent = totalAccepted*0.1;
+		
+		for(Member m: members){
+			marchsByMember = this.marchService.findByMember(m.getId());
+			
+			for(March ma: marchsByMember){
+				if(ma.getStatus().equals("APPROVED")){
+					totalAccepted++;
+				}
+			}
+			
+			
+			
+			
+		}
+		return members;
+		
+	}
+
+
 }

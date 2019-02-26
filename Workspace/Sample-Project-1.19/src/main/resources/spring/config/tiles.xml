@@ -25,6 +25,10 @@
 		<value>/views/enrolment/tiles.xml</value>
 		<value>/views/system-configuration/tiles.xml</value>
 
+
+		<value>/views/zone/tiles.xml</value>
+		
+
 	</util:list>
 
 </beans>
