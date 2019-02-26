@@ -23,12 +23,23 @@
 	<display:table name="processions" id="row"
 		requestURI="finder/member/list.do" pagesize="10" class="displaytag">
 
-		<spring:message code="procession.ticker" var="ticker" />
-		<display:column property="ticker" title="${ticker}"
-			sortable="true" />
-					<spring:message code="procession.title" var="title" />
-		<display:column property="title" title="${title}"
-			sortable="true" />
+					<!-- Attributes-->
+
+			<display:column property="title" titleKey="procession.title" sortable="true" />
+
+			<display:column property="ticker" titleKey="procession.ticker" sortable="true" />
+
+			<display:column property="description" titleKey="procession.description"/>
+
+			<display:column property="organisedMoment" titleKey="procession.organisedMoment" sortable="true" />
+
+			<!-- Action links -->
+
+			<display:column>
+				<a href="procession/display.do?processionId=${row.id}"> <spring:message
+							code="procession.display" />
+				</a>		
+			</display:column>
 
 
 	</display:table>
