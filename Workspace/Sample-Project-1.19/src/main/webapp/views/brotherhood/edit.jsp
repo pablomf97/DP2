@@ -22,7 +22,6 @@
 			document.getElementById("demo").innerHTML = pat; -->
 	
 <script>
-
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber").value;
 		var phonePattern =  new RegExp(
@@ -37,6 +36,15 @@
 	function unCheck() {
 		var checkbox = document.getElementById('checkBox');
 		checkbox.checked = false;
+	}
+	function addFields() {
+		// Container <div> where dynamic content will be placed
+		var container = document.getElementById("container");
+		// Create an <input> element, set its type and name attributes
+		var input = document.createElement("input");
+		input.type = "text";
+		input.name = "pictures";
+		container.appendChild(input);
 	}
 	window.onload = unCheck;
 </script>
@@ -149,8 +157,19 @@ TODO falta implementar el sistema de incluir múltiples imágenes
 	<form:input path="pictures" value="${brotherhood.pictures}" />
 	<form:errors cssClass="error" path="pictures" />
 	<br> --%>
+	
+	<spring:message code="brotherhood.pictures" />
+ 		:
+		<button type="button" onClick="addFields()">
+		<spring:message code="brotherhood.pictures.add" />
+	</button>
+	<div id="container"></div>
+	<jstl:forEach items="${pictures}" var="pic">
+		<input name=pictures value="${pic}" />
+	</jstl:forEach>
+	<form:errors path="pictures" cssClass="error" />
+	
 	<security:authorize access="isAnonymous()">
-
 		<form:label path="checkBox">
 			<spring:message code="actor.check.law" />:
 				</form:label>
