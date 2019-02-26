@@ -23,8 +23,8 @@
 	<jstl:out value="${username }" />
 </h2>
 
-<img src="${actor.photoURL }" height="250"
-	alt="<spring:message code="profile.photo" /> <jstl:out value="${username }"/>" />
+<img src="${brotherhood.photo }" height="250"
+	alt="<spring:message code="profile.photo" /> <jstl:out value="${brotherhood.userAccount.username }"/>" />
 <p>
 	<b><spring:message code="profile.name" /></b>:
 	<jstl:out value="${brotherhood.surname }" />
