@@ -37,15 +37,6 @@
 		var checkbox = document.getElementById('checkBox');
 		checkbox.checked = false;
 	}
-	function addFields() {
-		// Container <div> where dynamic content will be placed
-		var container = document.getElementById("container");
-		// Create an <input> element, set its type and name attributes
-		var input = document.createElement("input");
-		input.type = "text";
-		input.name = "pictures";
-		container.appendChild(input);
-	}
 	window.onload = unCheck;
 </script>
 
@@ -54,7 +45,7 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="brotherhood/edit.do" modelAttribute="brotherhoodForm"
+<form:form action="member/edit.do" modelAttribute="memberForm"
 	methodParam="post" onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
@@ -92,28 +83,28 @@
 	<form:label path="surname">
 		<spring:message code="actor.surname" />:
 		</form:label>
-	<form:input path="surname" value="${brotherhood.surname}" />
+	<form:input path="surname" value="${member.surname}" />
 	<form:errors cssClass="error" path="surname" />
 	<br>
 
 	<form:label path="name">
 		<spring:message code="actor.name" />:
 		</form:label>
-	<form:input path="name" value="${brotherhood.name}" />
+	<form:input path="name" value="${member.name}" />
 	<form:errors cssClass="error" path="name" />
 	<br>
 
 	<form:label path="middleName">
 		<spring:message code="actor.middlename" />:
 		</form:label>
-	<form:input path="middleName" value="${brotherhood.middleName}" />
+	<form:input path="middleName" value="${member.middleName}" />
 	<form:errors cssClass="error" path="middleName" />
 	<br>
 
 	<form:label path="email">
 		<spring:message code="actor.email" />:
 		</form:label>
-	<form:input path="email" value="${brotherhood.email}" id="email" />
+	<form:input path="email" value="${member.email}" id="email" />
 	<form:errors cssClass="error" path="email" />
 	<jstl:if test="${not empty emailError}">
 		<a class="error"><spring:message code="${emailError}" /></a>
@@ -123,14 +114,14 @@
 	<form:label path="photo">
 		<spring:message code="actor.photo" />:
 		</form:label>
-	<form:input path="photo" value="${brotherhood.photo}" />
+	<form:input path="photo" value="${member.photo}" />
 	<form:errors cssClass="error" path="photo" />
 	<br>
 
 	<form:label path="phoneNumber">
 		<spring:message code="actor.phone" />:
 		</form:label>
-	<form:input path="phoneNumber" value="${brotherhood.phoneNumber}"
+	<form:input path="phoneNumber" value="${member.phoneNumber}"
 		id="phoneNumber" />
 	<form:errors cssClass="error" path="phoneNumber" />
 	<br>
@@ -138,36 +129,9 @@
 	<form:label path="address">
 		<spring:message code="actor.address" />:
 		</form:label>
-	<form:input path="address" value="${brotherhood.address}" />
+	<form:input path="address" value="${member.address}" />
 	<form:errors cssClass="error" path="address" />
 	<br>
-
-	<form:label path="title">
-		<spring:message code="brotherhood.title" />:
-		</form:label>
-	<form:input path="title" value="${brotherhood.title}" id="title" />
-	<form:errors cssClass="error" path="title" />
-	<br>
-
-	<%-- 
-TODO falta implementar el sistema de incluir múltiples imágenes
-	<form:label path="pictures">
-		<spring:message code="brotherhood.pictures" />:
-		</form:label>
-	<form:input path="pictures" value="${brotherhood.pictures}" />
-	<form:errors cssClass="error" path="pictures" />
-	<br> --%>
-	
-	<spring:message code="brotherhood.pictures" />
- 		:
-		<button type="button" onClick="addFields()">
-		<spring:message code="brotherhood.pictures.add" />
-	</button>
-	<div id="container"></div>
-	<jstl:forEach items="${pictures}" var="pic">
-		<input name=pictures value="${pic}" />
-	</jstl:forEach>
-	<form:errors path="pictures" cssClass="error" />
 	
 	<security:authorize access="isAnonymous()">
 		<form:label path="checkBox">

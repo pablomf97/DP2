@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
- * tiles.xml
+ * tiles_es.xml
  *
  * Copyright (C) 2019 Universidad de Sevilla
  * 
@@ -13,17 +13,17 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
-       
+      
 <tiles-definitions>
 
-	<definition name="brotherhood/edit" extends="master.page">	
-		<put-attribute name="title" value="Brotherhood: edit" />
-		<put-attribute name="body" value="/views/brotherhood/edit.jsp" />
+	<definition name="member/edit" extends="master.page">	
+		<put-attribute name="title" value="Miembro: editar" />
+		<put-attribute name="body" value="/views/member/edit.jsp" />
 	</definition>
 	
-	<definition name="brotherhood/display" extends="master.page">	
-		<put-attribute name="title" value="Brotherhood: see profile" />
-		<put-attribute name="body" value="/views/brotherhood/display.jsp" />
+	<definition name="member/display" extends="master.page">	
+		<put-attribute name="title" value="Miembro: ver perfil" />
+		<put-attribute name="body" value="/views/member/display.jsp" />
 	</definition>
 	
 </tiles-definitions>
