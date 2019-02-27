@@ -122,6 +122,59 @@ public class BrotherhoodService {
 		this.brotherhoodRepository.delete(id);
 	}
 
+	public Brotherhood largestBrotherhood(){
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = b;
+			}
+
+			if(this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size()){
+				result = b;
+			}
+
+			count++;
+		}
+
+		return result;
+	}
+
+	
+	public Brotherhood smallestBrotherhood(){
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for(Brotherhood b: brotherhoods){
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if(count == 0){
+				result = b;
+			}
+
+			if(this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() > enrolments.size()){
+				result = b;
+			}
+
+			count++;
+		}
+
+		return result;
+	}
+
 	/**
 	 * Change the incomplete brotherhood to an domain object
 	 * 
@@ -134,7 +187,7 @@ public class BrotherhoodService {
 		if (brotherhoodForm.getId() == 0) {
 			result.getUserAccount().setUsername(brotherhoodForm.getUsername());
 			result.getUserAccount().setPassword(brotherhoodForm.getPassword());
-			result.setPictures("");//TODO: ver como meter todas las imágenes  brotherhoodForm.getPictures()
+			result.setPictures("");//TODO: ver como meter todas las imï¿½genes  brotherhoodForm.getPictures()
 			final Date establishmentDate = new Date();
 			result.setEstablishmentDate(establishmentDate);
 			result.setAddress(brotherhoodForm.getAddress());
@@ -156,7 +209,7 @@ public class BrotherhoodService {
 				result.setName(brotherhoodForm.getName());
 				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
 				result.setPhoto(brotherhoodForm.getPhoto());
-				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setPictures("");//TODO: ver como meter todas las imï¿½genes
 				result.setSurname(brotherhoodForm.getSurname());
 				result.setTitle(brotherhoodForm.getTitle());
 			} else {
@@ -167,7 +220,7 @@ public class BrotherhoodService {
 				result.setName(brotherhoodForm.getName());
 				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
 				result.setPhoto(brotherhoodForm.getPhoto());
-				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setPictures("");//TODO: ver como meter todas las imï¿½genes
 				result.setSurname(brotherhoodForm.getSurname());
 				result.setTitle(brotherhoodForm.getTitle());
 			}
