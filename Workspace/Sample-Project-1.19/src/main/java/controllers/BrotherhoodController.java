@@ -4,7 +4,6 @@ package controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -80,6 +79,7 @@ public class BrotherhoodController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
+		System.out.println(brotherhoodForm.getPictures());
 		ModelAndView result;
 		String emailError = "";
 		String check = "";
@@ -93,7 +93,6 @@ public class BrotherhoodController extends AbstractController {
 			check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
 		}
 		final Collection<String> pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
-
 		brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
 		emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
 		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
@@ -108,9 +107,6 @@ public class BrotherhoodController extends AbstractController {
 		} else
 			try {
 				brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
-				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
-				brotherhood.getUserAccount().setPassword(hash);
 				this.brotherhoodService.save(brotherhood);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final Throwable opps) {
