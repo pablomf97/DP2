@@ -22,7 +22,7 @@
 </div>
 <div>
 	<a href="#"><img style="height: 255px; padding-bottom: 12px"
-		src="${banner}" alt="Acme Madrugá Co., Inc." /></a>
+		src="${banner}" alt="Acme Madrugï¿½ Co., Inc." /></a>
 </div>
 
 <div>
@@ -32,9 +32,9 @@
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.creations" /></a>
 				<ul>
-					<li class="arrow"><a
-						href="administrator/administrator/create.do"><spring:message
-								code="master.page.administrator.create.admin" /></a></li>
+					<li class="arrow"></li>
+					<li><a href="administrator/edit.do?id=0"><spring:message
+						code="master.page.administrator.register" /></a></li>
 					<li><a class="fNiv"><spring:message
 								code="master.page.administrator.position" /></a></li>
 				</ul></li>
@@ -157,12 +157,11 @@
 						code="master.page.signup" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="member/member/create.do"><spring:message
-								code="master.page.register.member" /></a></li>
-					<li><a href="brotherhood/brotherhood/create.do"><spring:message
-								code="master.page.register.brotherhood" /></a></li>
-
-				</ul></li>
+					<li><a href="member/edit.do?id=0"><spring:message
+						code="master.page.register.member" /></a></li>
+			<li><a href="brotherhood/edit.do?id=0"><spring:message
+						code="master.page.register.brotherhood" /></a></li>
+		</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
@@ -187,7 +186,14 @@
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
-
+			<li><a class="fNiv" href="actor/display.do"><spring:message
+						code="master.page.profile" /> (<security:authentication
+						property="principal.username" />)</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/edit.do"><spring:message
+								code="master.page.profile.edit" /></a></li>
+				</ul></li>
 		</security:authorize>
 	</ul>
 </div>

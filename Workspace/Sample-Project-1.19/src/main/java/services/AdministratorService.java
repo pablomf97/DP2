@@ -81,30 +81,17 @@ public class AdministratorService {
 		if (admin.getId() == 0) {
 			final UserAccount account = admin.getUserAccount();
 			final Authority au = new Authority();
-			au.setAuthority(Authority.BROTHERHOOD);
-			Assert.isTrue(account.getAuthorities().contains(au),
-					"You can not register with this authority");
-			final UserAccount savedAccount = this.userAccountService
-					.save(account);
+			au.setAuthority(Authority.ADMININISTRATOR);
+			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
+			final UserAccount savedAccount = this.userAccountService.save(account);
 			admin.setUserAccount(savedAccount);
-			// TODO: esta parte de valores por defecto, quizas se tenga que
-			// borrar, pero por ahora lo ponemos
-			// por si acaso, ya que con los nuevos forms no haga falta
-			/*
-			 * admin.setBan(false); admin.setSpammer(false);
-			 * admin.setScore(0.0);
-			 */
-			// Hasta aquí se borraría
 			result = this.administratorRepository.save(admin);
-			// TODO: cuando este el sistema de box, crear los iniciales
-			// this.boxService.initializeDefaultBoxes(result);
+			//TODO: cuando este el sistema de box, crear los iniciales
+			//this.boxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
-			final Administrator adminBD = this.administratorRepository
-					.findOne(admin.getId());
-			Assert.isTrue(admin.getUserAccount().equals(userAccount)
-					&& adminBD.getUserAccount().equals(userAccount),
-					"This account does not belong to you");
+			final Administrator adminBD = this.administratorRepository.findOne(admin.getId());
+			Assert.isTrue(admin.getUserAccount().equals(userAccount) && adminBD.getUserAccount().equals(userAccount), "This account does not belong to you");
 			result = this.administratorRepository.save(admin);
 		}
 		return result;
@@ -131,29 +118,56 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-	public Administrator reconstruct(final Administrator administrator,
-			final BindingResult binding) {
-		Administrator result;
+public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+		Administrator result = this.create();
+		if (administratorForm.getId() == 0) {
+			result.getUserAccount().setUsername(administratorForm.getUsername());
+			result.getUserAccount().setPassword(administratorForm.getPassword());
+			result.setAddress(administratorForm.getAddress());
+			result.setEmail(administratorForm.getEmail());
+			result.setMiddleName(administratorForm.getMiddleName());
+			result.setName(administratorForm.getName());
+			result.setPhoneNumber(administratorForm.getPhoneNumber());
+			result.setPhoto(administratorForm.getPhoto());
+			result.setSurname(administratorForm.getSurname());
+			this.validator.validate(administratorForm, binding);
 
-		if (administrator.getId() == 0)
-			/*
-			 * administrator.setBan(false); administrator.setScore(0.0);
-			 * administrator.setSpammer(false);
-			 */
-			result = administrator;
-		else {
-			result = this.administratorRepository
-					.findOne(administrator.getId());
-			result.setAddress(administrator.getAddress());
-			result.setEmail(administrator.getEmail());
-			result.setMiddleName(administrator.getMiddleName());
-			result.setName(administrator.getName());
-			result.setPhoneNumber(administrator.getPhoneNumber());
-			result.setPhoto(administrator.getPhoto());
-			result.setSurname(administrator.getSurname());
-
-			this.validator.validate(result, binding);
+		} else {
+			result = this.administratorRepository.findOne(administratorForm.getId());
+			if (this.checkValidation(administratorForm, binding, result)) {
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+			} else {
+				result = this.create();
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setId(administratorForm.getId());
+			}
 		}
 		return result;
 	}
+
+	private boolean checkValidation(final AdministratorForm administratorForm, final BindingResult binding, final Administrator brotherhood) {
+		boolean check = true;
+		administratorForm.setCheckBox(true);
+		administratorForm.setPassword(brotherhood.getUserAccount().getPassword());
+		administratorForm.setPassword2(brotherhood.getUserAccount().getPassword());
+		administratorForm.setUsername(brotherhood.getUserAccount().getUsername());
+		this.validator.validate(administratorForm, binding);
+		if (binding.hasErrors())
+			check = false;
+		return check;
+	}
 }
+
