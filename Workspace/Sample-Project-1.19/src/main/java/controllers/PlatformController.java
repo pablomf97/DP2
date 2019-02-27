@@ -1,4 +1,3 @@
-//
 //package controllers.handyWorker;
 //
 //import javax.validation.Valid;
@@ -23,18 +22,18 @@
 //	// Services
 //
 //	@Autowired
-//	private PlatformService	platformService;
-//	
-//	@Autowired
-//	private BrotherhoodService	brotherhoodService;
+//	private PlatformService platformService;
 //
-//	// List 
+//	@Autowired
+//	private BrotherhoodService brotherhoodService;
+//
+//	// List
 //	@RequestMapping(value = "/list")
 //	public ModelAndView list(@RequestParam int brotherhoodId) {
 //		ModelAndView result;
 //		Brotherhood principal;
 //		Collection<Brotherhood> brotherhoods = null;
-//		
+//
 //		principal = this.brotherhoodService.findByPrincipal();
 //
 //		res = new ModelAndView("brotherhood/list");
@@ -44,8 +43,8 @@
 //		return res;
 //	}
 //
-//	// Creation 
-//	
+//	// Creation
+//
 //	@RequestMapping(value = "/create", method = RequestMethod.GET)
 //	public ModelAndView create() {
 //		final ModelAndView result;
@@ -73,7 +72,8 @@
 //	}
 //
 //	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-//	public ModelAndView save(@Valid final Platform platform, final BindingResult binding) {
+//	public ModelAndView save(@Valid final Platform platform,
+//			final BindingResult binding) {
 //		ModelAndView result;
 //
 //		if (binding.hasErrors())
@@ -83,14 +83,16 @@
 //				this.platformService.save(platform);
 //				result = new ModelAndView("redirect:brotherhood/display.do");
 //			} catch (final Throwable oops) {
-//				result = this.createEditModelAndView(platform, "mr.commit.error");
+//				result = this.createEditModelAndView(platform,
+//						"mr.commit.error");
 //			}
 //
 //		return result;
 //	}
 //
 //	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-//	public ModelAndView delete(final Platform platform, final BindingResult binding) {
+//	public ModelAndView delete(final Platform platform,
+//			final BindingResult binding) {
 //		ModelAndView result;
 //
 //		try {
@@ -103,7 +105,7 @@
 //		return result;
 //	}
 //
-//	//Ancillary methods
+//	// Ancillary methods
 //	protected ModelAndView createEditModelAndView(final Platform platform) {
 //		ModelAndView result;
 //
@@ -112,13 +114,14 @@
 //		return result;
 //	}
 //
-//	protected ModelAndView createEditModelAndView(final Platform platform, final String messageCode) {
+//	protected ModelAndView createEditModelAndView(final Platform platform,
+//			final String messageCode) {
 //		final ModelAndView result;
 //		Brotherhood principal;
 //		boolean isBrotherhood = false;
-//		
+//
 //		principal = this.brotherhoodService.findByPrincipal();
-//		if(principal != null) {
+//		if (principal != null) {
 //			isBrotherhood = true;
 //		}
 //
