@@ -1,2 +1,23 @@
-\Workspace\.metadata/\Workspace\Servers/\Workspace/Sample-Project-1.19/target/\Workspace\Sample-Project-1.19\src\main\resources/
+### Eclipse ###
 
+**\.metadata
+**/.metadata
+.metadata
+**\Servers
+**/Servers
+**\Entities.map
+**/Entities.map
+**\target
+**/target
+**\resources
+**/resources
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders

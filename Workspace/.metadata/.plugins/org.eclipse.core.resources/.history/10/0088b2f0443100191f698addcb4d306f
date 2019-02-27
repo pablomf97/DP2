@@ -1,7 +1,0 @@
-package domain;
-
-@Entity
-@Access(AccessType.PROPERTY)
-public class Finder extends DomainEntity {
-
-}
