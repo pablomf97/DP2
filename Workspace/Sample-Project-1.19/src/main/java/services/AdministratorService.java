@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -16,21 +15,17 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
-import forms.AdministratorForm;
 
 @Service
 @Transactional
 public class AdministratorService {
 
 	@Autowired
-	private ActorService			actorService;
+	private UserAccountService userAccountService;
 	@Autowired
-	private UserAccountService		userAccountService;
+	private AdministratorRepository administratorRepository;
 	@Autowired
-	private AdministratorRepository	administratorRepository;
-	@Autowired
-	private Validator				validator;
-
+	private Validator validator;
 
 	/**
 	 * Create a new empty admin
@@ -38,20 +33,17 @@ public class AdministratorService {
 	 * @return admin
 	 */
 	public Administrator create() {
-		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
+
 		final Administrator res = new Administrator();
 		final UserAccount a = this.userAccountService.create();
-		final Authority auth = new Authority();
-		auth.setAuthority(Authority.ADMININISTRATOR);
-		a.addAuthority(auth);
-		a.setIsBanned(false);
-		res.setUserAccount(a);
-		return res;
-	}
 
-	public AdministratorForm createForm() {
-		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
-		final AdministratorForm res = new AdministratorForm();
+		final Authority auth = new Authority();
+		auth.setAuthority(Authority.ADMINISTRATOR);
+		a.addAuthority(auth);
+		res.setUserAccount(a);
+		/*
+		 * res.setBan(false); res.setSpammer(false); res.setScore(0.0);
+		 */
 		return res;
 	}
 
@@ -111,9 +103,11 @@ public class AdministratorService {
 	 * @param id
 	 */
 	public void delete(final int id) {
-		final Administrator brotherhood = this.administratorRepository.findOne(id);
+		final Administrator brotherhood = this.administratorRepository
+				.findOne(id);
 		final UserAccount userAccount = LoginService.getPrincipal();
-		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount), "This account does not belong to you");
+		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount),
+				"This account does not belong to you");
 		this.administratorRepository.delete(id);
 	}
 
@@ -124,7 +118,7 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-	public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
 		Administrator result = this.create();
 		if (administratorForm.getId() == 0) {
 			result.getUserAccount().setUsername(administratorForm.getUsername());
@@ -176,3 +170,4 @@ public class AdministratorService {
 		return check;
 	}
 }
+
