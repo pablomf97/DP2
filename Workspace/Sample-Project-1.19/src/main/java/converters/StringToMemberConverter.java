@@ -8,20 +8,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import repositories.BrotherhoodRepository;
-import domain.Brotherhood;
+import repositories.MemberRepository;
+import domain.Member;
 
 @Component
 @Transactional
-public class StringToBrotherhoodConverter implements Converter<String, Brotherhood> {
+public class StringToMemberConverter implements Converter<String, Member> {
 
 	@Autowired
-	private BrotherhoodRepository	brotherhoodrRepository;
+	private MemberRepository	memberRepository;
 
 
 	@Override
-	public Brotherhood convert(final String text) {
-		Brotherhood result;
+	public Member convert(final String text) {
+		Member result;
 		final int id;
 
 		try {
@@ -29,7 +29,7 @@ public class StringToBrotherhoodConverter implements Converter<String, Brotherho
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				result = this.brotherhoodrRepository.findOne(id);
+				result = this.memberRepository.findOne(id);
 			}
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);

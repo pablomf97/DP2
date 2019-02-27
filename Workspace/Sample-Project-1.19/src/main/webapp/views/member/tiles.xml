@@ -16,14 +16,14 @@
        
 <tiles-definitions>
 
-	<definition name="brotherhood/edit" extends="master.page">	
-		<put-attribute name="title" value="Brotherhood: edit" />
-		<put-attribute name="body" value="/views/brotherhood/edit.jsp" />
+	<definition name="member/edit" extends="master.page">	
+		<put-attribute name="title" value="Member: edit" />
+		<put-attribute name="body" value="/views/member/edit.jsp" />
 	</definition>
 	
-	<definition name="brotherhood/display" extends="master.page">	
-		<put-attribute name="title" value="Brotherhood: see profile" />
-		<put-attribute name="body" value="/views/brotherhood/display.jsp" />
+	<definition name="member/display" extends="master.page">	
+		<put-attribute name="title" value="Member: see profile" />
+		<put-attribute name="body" value="/views/member/display.jsp" />
 	</definition>
 	
 </tiles-definitions>
