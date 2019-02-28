@@ -50,6 +50,15 @@
 
 		<input type="submit" id="submit" name="save"
 			value="<spring:message code='position.save' />">
+
+		<jstl:if test="${position.id != 0}">
+			<input type="submit" id="submit" name="delete"
+				value="<spring:message code='position.delete' />" />
+		</jstl:if>
+		<input type="button" name="cancel"
+			onclick="redirect: location.href = 'position/administrator/list.do';"
+			value="<spring:message code='position.cancel' />" />
+		<form:errors cssClass="error" code="${message}" />
 	</form:form>
 
 	<script>
@@ -58,10 +67,6 @@
 						'change invalid',
 						function() {
 							var textfield = $(this).get(0);
-
-							// 'setCustomValidity not only sets the message, but also marks
-							// the field as invalid. In order to see whether the field really is
-							// invalid, we have to remove the message first
 							textfield.setCustomValidity('');
 
 							if (!textfield.validity.valid) {

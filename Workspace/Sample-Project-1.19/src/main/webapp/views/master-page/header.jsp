@@ -39,18 +39,6 @@
 								code="master.page.administrator.position" /></a></li>
 				</ul></li>
 
-
-			<li><a class="fNiv"><spring:message
-						code="master.page.administrator.creations" /></a>
-				<ul>
-					<li><a class="arrow"></a>
-					<li><a href="position/administrator/list.do"><spring:message
-								code="master.page.administrator.list.position" /></a></li>
-					<li><a href="pos
-					ition/administrator/create.do"><spring:message
-								code="master.page.administrator.create.position" /></a></li>
-				</ul></li>
-
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.positions" /></a>
 				<ul>

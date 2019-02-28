@@ -31,7 +31,7 @@
 				requestURI="position/administrator/list.do" id="position">
 
 				<jstl:choose>
-					<jstl:when test="${language == 'es'}">
+					<jstl:when test="${pageContext.response.locale.language == 'es'}">
 						<display:column value="${position.name.get('Español')}"
 							titleKey="position.name" sortable="true" />
 					</jstl:when>

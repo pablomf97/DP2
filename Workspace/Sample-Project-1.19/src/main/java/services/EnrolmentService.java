@@ -121,10 +121,19 @@ public class EnrolmentService {
 		fullPosition = this.positionService.findByName(position[0]);
 
 		res.setPosition(fullPosition);
+		res.setIsOut(false);
 
 		this.validator.validate(res, binding);
 
 		return res;
 	}
 
+	public boolean isAssigned(Position position) {
+		Collection<Enrolment> enrolments;
+
+		enrolments = this.enrolmentRepository
+				.getEnrolmentsUsingPosition(position.getId());
+
+		return !(enrolments.isEmpty());
+	}
 }

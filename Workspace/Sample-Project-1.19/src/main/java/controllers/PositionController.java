@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.Collection;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.EnrolmentService;
 import services.PositionService;
 import domain.Actor;
 import domain.Position;
@@ -29,6 +29,9 @@ public class PositionController extends AbstractController {
 	@Autowired
 	private ActorService actorService;
 
+	@Autowired
+	private EnrolmentService enrolmentService;
+
 	// Constructor
 
 	public PositionController() {
@@ -40,12 +43,11 @@ public class PositionController extends AbstractController {
 	/* Listing */
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(Locale locale) {
+	public ModelAndView list() {
 		ModelAndView res;
 		Actor principal;
 		Collection<Position> positions;
 		Boolean err;
-		String language;
 
 		try {
 			principal = this.actorService.findByPrincipal();
@@ -53,11 +55,9 @@ public class PositionController extends AbstractController {
 					"ADMINISTRATOR"));
 
 			positions = this.positionService.findAll();
-			language = locale.getLanguage();
 
 			res = new ModelAndView("position/list");
 			res.addObject("positions", positions);
-			res.addObject("language", language);
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
@@ -144,6 +144,34 @@ public class PositionController extends AbstractController {
 			} catch (Throwable oopsie) {
 				res = this.createEditModelAndView(position, binding.toString());
 			}
+		}
+		return res;
+	}
+
+	/* Delete position */
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(Position position, BindingResult binding) {
+		ModelAndView res;
+		Actor principal;
+		Position toDelete;
+
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"ADMINISTRATOR"));
+
+			toDelete = this.positionService.findOne(position.getId());
+
+			Assert.isTrue(!this.enrolmentService.isAssigned(toDelete));
+
+			this.positionService.delete(toDelete);
+
+			res = new ModelAndView("redirect:list.do");
+		} catch (Throwable oops) {
+			res = this.createEditModelAndView(
+					this.positionService.findOne(position.getId()),
+					"position.cannot.delete");
 		}
 		return res;
 	}
