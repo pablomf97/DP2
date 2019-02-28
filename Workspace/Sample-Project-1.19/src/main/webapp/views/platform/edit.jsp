@@ -43,11 +43,10 @@
 					<input type="submit" name="delete" value="<spring:message code="platform.delete" />"
 						onclick="return confirm('<spring:message code="platform.confirm.delete" />')" />&nbsp;
 				</jstl:if>
-				<jstl:if test="${platform.id!=0}">
+				
 				<input type="button" name="cancel" value="<spring:message code="platform.cancel" />"
 					onclick="redirect: location.href = 'platform/list.do';" />
 				<br />
-				</jstl:if>
 				
 		</form:form>
 	</jstl:when>

@@ -53,8 +53,6 @@
 			access="hasRole('ADMINISTRATOR')" />
 
 		<!-- Brotherhood -->
-		<security:intercept-url pattern="/brotherhood/edit.do"
-			access="permitAll" />
 
 		<security:intercept-url pattern="/brotherhood/display.do"
 			access="permitAll" />
