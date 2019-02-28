@@ -1,7 +1,11 @@
 package services;
 
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.transaction.Transactional;
 
@@ -181,4 +185,16 @@ public class ProcessionService {
 	
 	
 
+	public Collection<Procession> findEarlyProcessions(){
+		Collection<Procession>result;
+		Calendar c = new GregorianCalendar();
+		c.add(Calendar.DATE, 30);
+		Date maxDate = c.getTime();
+		
+		result = this.processionRepository.findEarlyProcessions(maxDate);
+		Assert.notNull(result);
+		
+		return result;
+		
+	}
 }

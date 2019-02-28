@@ -18,6 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+
 <script>
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber");
@@ -36,30 +37,38 @@
 </p>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<form:form action="administrator/edit.do" modelAttribute="administrator"
-	methodParam="post"
+<form:form action="administrator/edit.do"
+	modelAttribute="administratorForm" methodParam="post"
 	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
-
 	<form:hidden path="id" />
 
 	<jstl:if test="${administrator.id == 0}">
-
-		<form:hidden path="userAccount.authorities[0].authority" />
-
-		<form:label path="userAccount.username">
+		<form:label path="username">
 			<spring:message code="actor.userAccount.username" />:
 			</form:label>
-		<form:input path="userAccount.username" />
-		<form:errors cssClass="error" path="userAccount.username" />
+		<form:input path="username" />
+		<form:errors cssClass="error" path="username" />
+		<jstl:if test="${not empty uniqueUsername}">
+			<a class="error"><spring:message code="${uniqueUsername}" /></a>
+		</jstl:if>
 		<br />
 
-		<form:label path="userAccount.password">
+		<form:label path="password">
 			<spring:message code="actor.userAccount.password" />:
 			</form:label>
-		<form:password path="userAccount.password" />
-		<form:errors cssClass="error" path="userAccount.password" />
+		<form:password path="password" />
+		<form:errors cssClass="error" path="password" />
+		<jstl:if test="${not empty checkPass}">
+			<a class="error"><spring:message code="${checkPass}" /></a>
+		</jstl:if>
 		<br />
 
+		<form:label path="password2">
+			<spring:message code="actor.userAccount.password2" />:
+			</form:label>
+		<form:password path="password2" />
+		<form:errors cssClass="error" path="password2" />
+		<br />
 	</jstl:if>
 
 	<form:label path="surname">
@@ -88,6 +97,9 @@
 		</form:label>
 	<form:input path="email" value="${administrator.email}" id="email" />
 	<form:errors cssClass="error" path="email" />
+	<jstl:if test="${not empty emailError}">
+		<a class="error"><spring:message code="${emailError}" /></a>
+	</jstl:if>
 	<br>
 
 	<form:label path="photo">
@@ -103,13 +115,6 @@
 	<form:input path="phoneNumber" value="${administrator.phoneNumber}"
 		id="phoneNumber" />
 	<form:errors cssClass="error" path="phoneNumber" />
-	<br>
-
-	<form:label path="address">
-		<spring:message code="actor.address" />:
-		</form:label>
-	<form:input path="address" value="${administrator.address}" />
-	<form:errors cssClass="error" path="address" />
 	<br>
 
 	<input type="submit" name="save" id="save"

@@ -1,4 +1,3 @@
-
 package controllers;
 
 import java.util.Collection;
@@ -169,5 +168,4 @@ public class PlatformController extends AbstractController {
 		return result;
 
 	}
-
 }

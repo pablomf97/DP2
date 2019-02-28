@@ -22,7 +22,7 @@
 </div>
 <div>
 	<a href="#"><img style="height: 255px; padding-bottom: 12px"
-		src="${banner}" alt="Acme Madrugá Co., Inc." /></a>
+		src="${banner}" alt="Acme Madrugï¿½ Co., Inc." /></a>
 </div>
 
 <div>
@@ -33,8 +33,22 @@
 						code="master.page.administrator.creations" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/administrator/create.do"><spring:message
-								code="master.page.administrator.create.admin" /></a></li>
+					<li><a href="administrator/edit.do?id=0"><spring:message
+						code="master.page.administrator.register" /></a></li>
+					<li><a class="fNiv"><spring:message
+								code="master.page.administrator.position" /></a></li>
+				</ul></li>
+
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.administrator.creations" /></a>
+				<ul>
+					<li><a class="arrow"></a>
+					<li><a href="position/administrator/list.do"><spring:message
+								code="master.page.administrator.list.position" /></a></li>
+					<li><a href="pos
+					ition/administrator/create.do"><spring:message
+								code="master.page.administrator.create.position" /></a></li>
 				</ul></li>
 
 			<li><a class="fNiv"><spring:message
@@ -48,26 +62,48 @@
 				</ul></li>
 
 			<li><a class="fNiv" href="statistics/administrator/display.do"><spring:message
-						code="master.page.administrator.dashboard" /></a></li>
-
-			<li><a class="fNiv"><spring:message
-						code="master.page.administrator.zone" /></a>
+						code="master.page.administrator.dashboard" /></a>
 				<ul>
+					<li><a class="fNiv"><spring:message
+								code="master.page.administrator.zone" /></a>
 					<li class="arrow"></li>
 					<li><a href="zone/administrator/list.do"><spring:message
 								code="master.page.administrator.zones.show" /></a></li>
 					<li><a href="zone/administrator/create.do"><spring:message
 								code="master.page.administrator.zone.new" /></a></li>
 				</ul></li>
+			
+			<li><a class="fNiv" href="zone/administrator/list.do"><spring:message
+						code="master.page.administrator.zones.show" /></a>
+				<ul>
+					<li><a href="zone/administrator/create.do"><spring:message
+								code="master.page.administrator.zone.new" /></a></li>
+				</ul></li>
 
+			
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.brotherhood.system" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sysconfig/administrator/display.do"><spring:message
+								code="master.page.brotherhood.sysconfig.manage" /></a></li>
+				</ul></li>
 
 		</security:authorize>
-		
 
-	
+
 		<security:authorize access="hasRole('MEMBER')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.member" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="enrolment/member/list.do"><spring:message
+								code="master.page.member.enrollments" /></a></li>
+				</ul></li>
 
-				<li><a class="fNiv"><spring:message
+
+			<li><a class="fNiv"><spring:message
 						code="master.page.member.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -79,6 +115,8 @@
 				<li><a class="fNiv"><spring:message
 						code="master.page.member.march" /></a>
 				<ul>
+				<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+					code="master.page.member.march" /></a></li>
 					<li class="arrow"></li>
 					<li><a href="march/member,brotherhood/list.do"><spring:message
 								code="master.page.member.march.show" /></a></li>
@@ -86,65 +124,78 @@
 								code="master.page.member.march.new" /></a></li>
 				</ul></li>
 			
-			<li><a class="fNiv" href="finder/member/finder.do"><spring:message
-						code="master.page.member.finder" /></a></li>
-			
-		</security:authorize>
-		
-				<security:authorize access="hasRole('BROTHERHOOD')">
+			<ul><li><a class="fNiv" href="finder/member/finder.do"><spring:message code="master.page.member.finder" /></a></li>
+					<li class="arrow"><a href="procession/member/list.do"><spring:message
+								code="master.page.member.procession.show" /></a></li>
 
-				<li><a class="fNiv"><spring:message
-						code="master.page.brotherhood.platform" /></a>
+			</ul>
+
+			<ul>
+			<li><a class="fNiv"><spring:message
+					code="master.page.brotherhood.platform" /></a></li>
+				<li class="arrow"></li>
+				<li><a href="platform/list.do"><spring:message
+							code="master.page.brotherhood.platform.show" /></a></li>
+				<li><a href="platform/create.do"><spring:message
+							code="master.page.brotherhood.platform.new" /></a></li>
+			</ul>
+		
+		</security:authorize>
+
+		<security:authorize access="hasRole('BROTHERHOOD')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.brotherhood.enrolments" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="platform/list.do"><spring:message
-								code="master.page.brotherhood.platform.show" /></a></li>
-					<li><a href="platform/create.do"><spring:message
-								code="master.page.brotherhood.platform.new" /></a></li>
-				</ul></li>	
-				
-				<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
-						code="master.page.member.march" /></a></li>
-			
-				<li><a class="fNiv"><spring:message
+					<li><a href="enrolment/brotherhood/list.do"><spring:message
+								code="master.page.brotherhood.enrolments.manage" /></a></li>
+				</ul></li>
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.member.platform" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="platform/brotherhood/list.do"><spring:message
+								code="master.page.member.platform.show" /></a></li>
+					<li><a href="platform/brotherhood/create.do"><spring:message
+								code="master.page.member.platform.new" /></a></li>
+				</ul></li>
+
+			<li><a class="fNiv"><spring:message
 						code="master.page.member.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>
-					
+								code="master.page.member.procession.show" /></a></li>					
 					<li><a href="procession/create.do"><spring:message
 								code="master.page.member.procession.new" /></a></li>
-
-				</ul></li>	
-				
-			
+				</ul></li>
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.signup" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="member/member/create.do"><spring:message
-								code="master.page.register.member" /></a></li>
-					<li><a href="brotherhood/brotherhood/create.do"><spring:message
-								code="master.page.register.brotherhood" /></a></li>
+					<li><a href="member/edit.do?id=0"><spring:message
+						code="master.page.register.member" /></a></li>
+			<li><a href="brotherhood/edit.do?id=0"><spring:message
+						code="master.page.register.brotherhood" /></a></li>
+		</ul></li>
 
-				</ul></li>
-				
-				<li><a class="fNiv" href="brotherhood/list.do"><spring:message
+			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
 
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
-		
-				<li><a class="fNiv" href="brotherhood/brotherhood/list.do"><spring:message
+
+			<li><a class="fNiv" href="brotherhood/brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
-		
+
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
 						property="principal.username" />)
@@ -157,6 +208,14 @@
 								code="master.page.profile.message.boxes" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
+				</ul></li>
+			<li><a class="fNiv" href="actor/display.do"><spring:message
+						code="master.page.profile" /> (<security:authentication
+						property="principal.username" />)</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/edit.do"><spring:message
+								code="master.page.profile.edit" /></a></li>
 				</ul></li>
 		</security:authorize>
 	</ul>

@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -16,11 +17,14 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import forms.AdministratorForm;
 
 @Service
 @Transactional
 public class AdministratorService {
 
+	@Autowired
+	private ActorService			actorService;
 	@Autowired
 	private UserAccountService		userAccountService;
 	@Autowired
@@ -40,17 +44,18 @@ public class AdministratorService {
 		final UserAccount a = this.userAccountService.create();
 
 		final Authority auth = new Authority();
-		auth.setAuthority(Authority.ADMININISTRATOR);
+		auth.setAuthority(Authority.ADMINISTRATOR);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
-		/*
-		 * res.setBan(false);
-		 * res.setSpammer(false);
-		 * res.setScore(0.0);
-		 */
+
 		return res;
 	}
 
+	public AdministratorForm createForm() {
+		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
+		final AdministratorForm res = new AdministratorForm();
+		return res;
+	}
 	/**
 	 * Find one admin by id
 	 * 
@@ -85,18 +90,13 @@ public class AdministratorService {
 		if (admin.getId() == 0) {
 			final UserAccount account = admin.getUserAccount();
 			final Authority au = new Authority();
-			au.setAuthority(Authority.BROTHERHOOD);
+			au.setAuthority(Authority.ADMINISTRATOR);
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			admin.setUserAccount(savedAccount);
-			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
-			//por si acaso, ya que con los nuevos forms no haga falta
-			/*
-			 * admin.setBan(false);
-			 * admin.setSpammer(false);
-			 * admin.setScore(0.0);
-			 */
-			//Hasta aquí se borraría
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
+			admin.getUserAccount().setPassword(hash);
 			result = this.administratorRepository.save(admin);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
@@ -108,7 +108,6 @@ public class AdministratorService {
 		}
 		return result;
 	}
-
 	/**
 	 * Remove the admin
 	 * 
@@ -128,28 +127,55 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-	public Administrator reconstruct(final Administrator administrator, final BindingResult binding) {
-		Administrator result;
+	public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+		Administrator result = this.create();
+		if (administratorForm.getId() == 0) {
+			result.getUserAccount().setUsername(administratorForm.getUsername());
+			result.getUserAccount().setPassword(administratorForm.getPassword());
+			result.setAddress(administratorForm.getAddress());
+			result.setEmail(administratorForm.getEmail());
+			result.setMiddleName(administratorForm.getMiddleName());
+			result.setName(administratorForm.getName());
+			result.setPhoneNumber(administratorForm.getPhoneNumber());
+			result.setPhoto(administratorForm.getPhoto());
+			result.setSurname(administratorForm.getSurname());
+			this.validator.validate(administratorForm, binding);
 
-		if (administrator.getId() == 0)
-			/*
-			 * administrator.setBan(false);
-			 * administrator.setScore(0.0);
-			 * administrator.setSpammer(false);
-			 */
-			result = administrator;
-		else {
-			result = this.administratorRepository.findOne(administrator.getId());
-			result.setAddress(administrator.getAddress());
-			result.setEmail(administrator.getEmail());
-			result.setMiddleName(administrator.getMiddleName());
-			result.setName(administrator.getName());
-			result.setPhoneNumber(administrator.getPhoneNumber());
-			result.setPhoto(administrator.getPhoto());
-			result.setSurname(administrator.getSurname());
-
-			this.validator.validate(result, binding);
+		} else {
+			result = this.administratorRepository.findOne(administratorForm.getId());
+			if (this.checkValidation(administratorForm, binding, result)) {
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+			} else {
+				result = this.create();
+				result.setAddress(administratorForm.getAddress());
+				result.setEmail(administratorForm.getEmail());
+				result.setMiddleName(administratorForm.getMiddleName());
+				result.setName(administratorForm.getName());
+				result.setPhoneNumber(administratorForm.getPhoneNumber());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setSurname(administratorForm.getSurname());
+				result.setPhoto(administratorForm.getPhoto());
+				result.setId(administratorForm.getId());
+			}
 		}
 		return result;
+	}
+
+	private boolean checkValidation(final AdministratorForm administratorForm, final BindingResult binding, final Administrator brotherhood) {
+		boolean check = true;
+		administratorForm.setCheckBox(true);
+		administratorForm.setPassword(brotherhood.getUserAccount().getPassword());
+		administratorForm.setPassword2(brotherhood.getUserAccount().getPassword());
+		administratorForm.setUsername(brotherhood.getUserAccount().getUsername());
+		this.validator.validate(administratorForm, binding);
+		if (binding.hasErrors())
+			check = false;
+		return check;
 	}
 }

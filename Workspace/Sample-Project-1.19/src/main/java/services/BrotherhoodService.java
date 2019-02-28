@@ -1,12 +1,14 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,8 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
+import domain.Enrolment;
+import forms.BrotherhoodForm;
 
 @Service
 @Transactional
@@ -28,6 +32,9 @@ public class BrotherhoodService {
 	private BrotherhoodRepository	brotherhoodRepository;
 	@Autowired
 	private Validator				validator;
+
+	@Autowired
+	private EnrolmentService		enrolmentService;
 
 
 	/**
@@ -54,7 +61,12 @@ public class BrotherhoodService {
 
 		return res;
 	}
+	public BrotherhoodForm createForm() {
 
+		final BrotherhoodForm res = new BrotherhoodForm();
+
+		return res;
+	}
 	/**
 	 * Find one brotherhood by id
 	 * 
@@ -91,18 +103,11 @@ public class BrotherhoodService {
 			final Authority au = new Authority();
 			au.setAuthority(Authority.BROTHERHOOD);
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
+			brotherhood.getUserAccount().setPassword(hash);
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			brotherhood.setUserAccount(savedAccount);
-			//TODO: esta parte de valores por defecto, quizas se tenga que borrar, pero por ahora lo ponemos
-			//por si acaso, ya que con los nuevos forms no haga falta
-			/*
-			 * brotherhood.setBan(false);
-			 * brotherhood.setSpammer(false);
-			 * brotherhood.setScore(0.0);
-			 */
-			final Date establishmentDate = new Date();
-			brotherhood.setEstablishmentDate(establishmentDate);
-			//Hasta aquí se borraría
 			result = this.brotherhoodRepository.save(brotherhood);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
@@ -134,32 +139,117 @@ public class BrotherhoodService {
 	 * @param binding
 	 * @return brotherhood
 	 */
-	public Brotherhood reconstruct(final Brotherhood brotherhood, final BindingResult binding) {
-		Brotherhood result;
+	public Brotherhood reconstruct(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
+		Brotherhood result = this.create();
+		if (brotherhoodForm.getId() == 0) {
+			result.getUserAccount().setUsername(brotherhoodForm.getUsername());
+			result.getUserAccount().setPassword(brotherhoodForm.getPassword());
+			result.setPictures("");//TODO: ver como meter todas las imágenes  brotherhoodForm.getPictures()
+			final Date establishmentDate = new Date();
+			result.setEstablishmentDate(establishmentDate);
+			result.setAddress(brotherhoodForm.getAddress());
+			result.setEmail(brotherhoodForm.getEmail());
+			result.setMiddleName(brotherhoodForm.getMiddleName());
+			result.setName(brotherhoodForm.getName());
+			result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+			result.setPhoto(brotherhoodForm.getPhoto());
+			result.setSurname(brotherhoodForm.getSurname());
+			result.setTitle(brotherhoodForm.getTitle());
+			this.validator.validate(brotherhoodForm, binding);
 
-		if (brotherhood.getId() == 0)
-			/*
-			 * brotherhood.setBan(false);
-			 * final Date establishmentDate = new Date();
-			 * brotherhood.setEstablishmentDate(establishmentDate);
-			 * brotherhood.setScore(0.0);
-			 * brotherhood.setSpammer(false);
-			 */
-			result = brotherhood;
-		else {
-			result = this.brotherhoodRepository.findOne(brotherhood.getId());
-			result.setAddress(brotherhood.getAddress());
-			result.setEmail(brotherhood.getEmail());
-			result.setMiddleName(brotherhood.getMiddleName());
-			result.setName(brotherhood.getName());
-			result.setPhoneNumber(brotherhood.getPhoneNumber());
-			result.setPhoto(brotherhood.getPhoto());
-			result.setPictures(brotherhood.getPictures());
-			result.setSurname(brotherhood.getSurname());
-			result.setTitle(brotherhood.getTitle());
-
-			this.validator.validate(result, binding);
+		} else {
+			result = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
+			if (this.checkValidation(brotherhoodForm, binding, result)) {
+				result.setAddress(brotherhoodForm.getAddress());
+				result.setEmail(brotherhoodForm.getEmail());
+				result.setMiddleName(brotherhoodForm.getMiddleName());
+				result.setName(brotherhoodForm.getName());
+				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				result.setPhoto(brotherhoodForm.getPhoto());
+				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setSurname(brotherhoodForm.getSurname());
+				result.setTitle(brotherhoodForm.getTitle());
+			} else {
+				result = this.create();
+				result.setAddress(brotherhoodForm.getAddress());
+				result.setEmail(brotherhoodForm.getEmail());
+				result.setMiddleName(brotherhoodForm.getMiddleName());
+				result.setName(brotherhoodForm.getName());
+				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				result.setPhoto(brotherhoodForm.getPhoto());
+				result.setPictures("");//TODO: ver como meter todas las imágenes
+				result.setSurname(brotherhoodForm.getSurname());
+				result.setTitle(brotherhoodForm.getTitle());
+			}
 		}
 		return result;
 	}
+	private boolean checkValidation(final BrotherhoodForm brotherhoodForm, final BindingResult binding, final Brotherhood brotherhood) {
+		boolean check = true;
+		brotherhoodForm.setCheckBox(true);
+		brotherhoodForm.setPassword(brotherhood.getUserAccount().getPassword());
+		brotherhoodForm.setPassword2(brotherhood.getUserAccount().getPassword());
+		brotherhoodForm.setUsername(brotherhood.getUserAccount().getUsername());
+		this.validator.validate(brotherhoodForm, binding);
+		if (binding.hasErrors())
+			check = false;
+		return check;
+	}
+
+	public Collection<String> getSplitPictures(final String pictures) {
+		final Collection<String> res = new ArrayList<>();
+		final String[] slice = pictures.split("< >");
+		for (final String p : slice)
+			res.add(p);
+		return res;
+	}
+
+	public Brotherhood largestBrotherhood() {
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for (final Brotherhood b : brotherhoods) {
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if (count == 0)
+				result = b;
+
+			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size())
+				result = b;
+
+			count++;
+		}
+
+		return result;
+	}
+
+	public Brotherhood smallestBrotherhood() {
+		Brotherhood result = null;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Enrolment> enrolments;
+		int count = 0;
+
+		brotherhoods = this.findAll();
+		Assert.notEmpty(brotherhoods);
+
+		for (final Brotherhood b : brotherhoods) {
+			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
+
+			if (count == 0)
+				result = b;
+
+			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() > enrolments.size())
+				result = b;
+
+			count++;
+		}
+
+		return result;
+	}
+
 }

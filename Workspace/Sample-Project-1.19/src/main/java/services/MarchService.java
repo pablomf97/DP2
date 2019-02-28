@@ -157,4 +157,31 @@ public class MarchService {
 		return result;
 	}
 
+	public Double ratioApprovedRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioApprovedRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
+	public Double ratioPendingRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioPendingRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
+	public Double ratioRejectedRequests(){
+		Double result;
+		
+		result = this.marchRepository.ratioRejectedRequests();
+		Assert.notNull(result);
+		
+		return result;
+	}
+	
 }
