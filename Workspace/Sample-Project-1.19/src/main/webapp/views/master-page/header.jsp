@@ -75,6 +75,16 @@
 								code="master.page.member.procession.show" /></a></li>
 
 				</ul></li>	
+				
+				<li><a class="fNiv"><spring:message
+						code="master.page.member.march" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="march/member,brotherhood/list.do"><spring:message
+								code="master.page.member.march.show" /></a></li>
+					<li><a href="march/create.do"><spring:message
+								code="master.page.member.march.new" /></a></li>
+				</ul></li>
 			
 			<li><a class="fNiv" href="finder/member/finder.do"><spring:message
 						code="master.page.member.finder" /></a></li>
@@ -84,14 +94,17 @@
 				<security:authorize access="hasRole('BROTHERHOOD')">
 
 				<li><a class="fNiv"><spring:message
-						code="master.page.member.platform" /></a>
+						code="master.page.brotherhood.platform" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="platform/list.do"><spring:message
-								code="master.page.member.platform.show" /></a></li>
+								code="master.page.brotherhood.platform.show" /></a></li>
 					<li><a href="platform/create.do"><spring:message
-								code="master.page.member.platform.new" /></a></li>
+								code="master.page.brotherhood.platform.new" /></a></li>
 				</ul></li>	
+				
+				<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+						code="master.page.member.march" /></a></li>
 			
 				<li><a class="fNiv"><spring:message
 						code="master.page.member.procession" /></a>
@@ -100,7 +113,7 @@
 					<li><a href="procession/member,brotherhood/list.do"><spring:message
 								code="master.page.member.procession.show" /></a></li>
 					
-					<li><a href="procession/brotherhood/create.do"><spring:message
+					<li><a href="procession/create.do"><spring:message
 								code="master.page.member.procession.new" /></a></li>
 
 				</ul></li>	

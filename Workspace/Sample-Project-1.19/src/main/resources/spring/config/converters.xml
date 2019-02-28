@@ -24,6 +24,12 @@
 			<bean class="converters.StringToAdministratorConverter" /> 
 			<bean class="converters.BrotherhoodToStringConverter" /> 
 			<bean class="converters.StringToBrotherhoodConverter" /> 
+			<bean class="converters.MarchToStringConverter" /> 
+			<bean class="converters.StringToMarchConverter" /> 
+			<bean class="converters.PlatformToStringConverter" /> 
+			<bean class="converters.StringToPlatformConverter" />
+			<bean class="converters.ProcessionToStringConverter" /> 
+			<bean class="converters.StringToProcessionConverter" />  
 			
 	</util:list>
 	

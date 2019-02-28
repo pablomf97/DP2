@@ -151,9 +151,9 @@ public class PlatformController extends AbstractController {
 
 		
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
+		Assert.isTrue(this.actorService.checkAuthority(principal, "ME"), "not.allowed");
 		
-		if(this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
+		if(this.actorService.checkAuthority(principal, "MEMBER")) {
 			isBrotherhood = true;
 		}
 		

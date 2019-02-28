@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.PlatformService;
 import services.ProcessionService;
 import domain.Actor;
+import domain.Platform;
 import domain.Procession;
 
 @Controller
@@ -25,6 +27,9 @@ public class ProcessionController extends AbstractController {
 
 	@Autowired
 	private ProcessionService	processionService;
+	
+	@Autowired
+	private PlatformService	platformService;
 
 	@Autowired
 	private ActorService actorService;
@@ -75,13 +80,17 @@ public class ProcessionController extends AbstractController {
 			return result;
 
 		} else {
+			
+			Collection<Procession> toApply;
 
-			processions = this.processionService.findProcessionsByMemberId(principal.getId());
+			processions = this.processionService.findAcceptedProcessionsByMemberId(principal.getId());
+			toApply = this.processionService.processionsToApply(principal.getId());
 			
 			String requestURI = "procession/member,brotherhood/list.do?memberId=" + principal.getId();
 			result = new ModelAndView("procession/list");
 			result.addObject("requestURI", requestURI);
 			result.addObject("processions", processions);
+			result.addObject("toApply", toApply);
 
 			return result;
 		}
@@ -114,32 +123,54 @@ public class ProcessionController extends AbstractController {
 
 		return result;
 	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Procession procession, final BindingResult binding) {
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
+	public ModelAndView saveFinal(Procession procession, final BindingResult binding) {
 		ModelAndView result;
-		
-		procession = processionService.reconstruct(procession, binding);
+
+		procession.setIsDraft(false);
+		procession = this.processionService.reconstruct(procession, binding);
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
 		else
 			try {
 				this.processionService.save(procession);
-				result = new ModelAndView("redirect:list.do");
+				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(procession, "procession.commit.error");
+				result = this.createEditModelAndView(procession,
+						"procession.commit.error");
 			}
+		return result;
+	}
 
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(Procession procession, final BindingResult binding) {
+		ModelAndView result;
+
+		procession.setIsDraft(true);
+		procession = this.processionService.reconstruct(procession, binding);
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(procession);
+		else
+			try {
+				this.processionService.save(procession);
+				result = new ModelAndView("redirect:member,brotherhood/list.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(procession,
+						"procession.commit.error");
+			}
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Procession procession, final BindingResult binding) {
+	public ModelAndView delete(Procession procession, final BindingResult binding) {
 		ModelAndView result;
 
+		procession.setIsDraft(false);
+		procession = this.processionService.reconstruct(procession, binding);
 		try {
 			this.processionService.delete(procession);
-			result = new ModelAndView("redirect:list.do");
+			result = new ModelAndView("redirect:member,brotherhood/list.do");
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(procession, "procession.commit.error");
 		}
@@ -159,27 +190,24 @@ public class ProcessionController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Procession procession, final String messageCode) {
 		final ModelAndView result;
 		Actor principal;
-		boolean isBrotherhood = false;
 		boolean isPrincipal = false;
+		Collection<Platform> platforms;
 		
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
 		
-		if(this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
-			isBrotherhood = true;
-		}
-		
 		if(procession.getId() != 0 && procession.getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
+		
+		platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
 				
 		result = new ModelAndView("procession/edit");
 		result.addObject("procession", procession);
-		result.addObject("isBrotherhood", isBrotherhood);
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("message", messageCode);
+		result.addObject("platforms", platforms);
 
 		return result;
-
 	}
 
 }

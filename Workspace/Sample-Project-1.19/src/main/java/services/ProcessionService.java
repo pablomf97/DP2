@@ -32,6 +32,9 @@ public class ProcessionService {
 	private ActorService actorService;
 	
 	@Autowired
+	private UtilityService utilityService;
+	
+	@Autowired
 	private Validator validator;
 
 	// Simple CRUD methods -----------------------------------
@@ -44,9 +47,6 @@ public class ProcessionService {
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
 		
 		result = new Procession();
-		
-		result.setPlatforms(new ArrayList<Platform>());
-		result.setIsDraft(true);
 
 		return result;
 	}
@@ -117,6 +117,9 @@ public class ProcessionService {
 			principal = this.actorService.findByPrincipal();
 			
 			result = procession;
+			result.setTicker(this.utilityService.generateTicker());
+			result.setPlatforms(new ArrayList<Platform>());
+			result.setIsDraft(true);
 			result.setBrotherhood((Brotherhood) principal);
 
 		} else {
@@ -126,7 +129,6 @@ public class ProcessionService {
 			result.setDescription(procession.getDescription());
 			result.setPlatforms(procession.getPlatforms());
 			result.setIsDraft(procession.getIsDraft());
-			
 		}
 
 		validator.validate(result, binding);
@@ -142,12 +144,41 @@ public class ProcessionService {
 		return result;
 	}
 	
-	public Collection<Procession> findProcessionsByMemberId(int memberId) {
+	public Collection<Procession> findAcceptedProcessionsByMemberId(int memberId) {
 		Collection<Procession> result;
 		
-		result = this.processionRepository.findProcessionsByMemberId(memberId);
+		result = this.processionRepository.findAcceptedProcessionsByMemberId(memberId);
 		
 		return result;
 	}
+	
+	private Collection<Procession> findProcessionsNotToApply(int memberId) {
+		Collection<Procession> result;
+		
+		result = this.processionRepository.findProcessionsNotToApply(memberId);
+		
+		return result;
+	}
+	
+	public Collection<Procession> processionsToApply(int memberId) {
+		Collection<Procession> toApply;
+		
+		Collection<Procession> notToApply = this.findProcessionsNotToApply(memberId);
+
+		toApply = this.findFinalProcessions();
+		toApply.removeAll(notToApply);
+		
+		return toApply;
+	}
+	
+	private Collection<Procession> findFinalProcessions() {
+		Collection<Procession> result;
+		
+		result = this.processionRepository.findFinalProcessions();
+		
+		return result;
+	}
+	
+	
 
 }

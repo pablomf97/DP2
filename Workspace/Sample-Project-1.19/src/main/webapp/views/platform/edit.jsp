@@ -8,7 +8,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <jstl:choose>
-	<jstl:when test="${isPrincipal }">
+	<jstl:when test="${isPrincipal || platform.id ==0}">
 		<form:form modelAttribute="platform" action="platform/edit.do"
 			id="form">
 			<fieldset>

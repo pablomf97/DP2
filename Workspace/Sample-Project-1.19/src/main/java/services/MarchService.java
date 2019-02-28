@@ -119,9 +119,13 @@ public class MarchService {
 	
 	public March reconstruct(March march, BindingResult binding) {
 		March result;
+		Actor principal = null;
 		
 		if(march.getId() == 0) {
+			principal = this.actorService.findByPrincipal();
 			result = march;
+			result.setStatus("PENDING");
+			result.setMember((Member) principal);
 		} else {
 			result = this.findOne(march.getId());
 			
@@ -141,6 +145,14 @@ public class MarchService {
 		Collection<March> result;
 		
 		result = this.marchRepository.findMarchsByMemberId(memberId);
+		
+		return result;
+	}
+	
+	public Collection<March> findMarchsByBrotherhoodId(int brotherhoodId) {
+		Collection<March> result;
+		
+		result = this.marchRepository.findMarchsByBrotherhoodId(brotherhoodId);
 		
 		return result;
 	}

@@ -24,62 +24,58 @@
 
 	<table class="displayStyle">
 		<tr>
-			<td><strong> <spring:message
-						code="procession.title" /> :
+			<td><strong> <spring:message code="procession.title" />
+					:
 			</strong></td>
-			<td><jstl:out value="${procession.title}">
-				</jstl:out></td>
+			<td><jstl:out value="${procession.title}" /></td>
 		</tr>
 
 		<tr>
 			<td><strong> <spring:message code="procession.ticker" />
 					:
 			</strong></td>
-			<td><jstl:out value="${procession.ticker}">
-				</jstl:out></td>
+			<td><jstl:out value="${procession.ticker}" /></td>
 		</tr>
-		
+
 		<tr>
-			<td><strong> <spring:message code="procession.description" />
-					:
+			<td><strong> <spring:message
+						code="procession.description" /> :
 			</strong></td>
-			<td><jstl:out value="${procession.description}">
-				</jstl:out></td>
+			<td><jstl:out value="${procession.description}" /></td>
 		</tr>
 
 		<tr>
 			<td><strong> <spring:message
 						code="procession.organisedMoment" /> :
 			</strong></td>
-			<td><jstl:out value="${procession.organisedMoment}">
-				</jstl:out></td>
+			<td><jstl:out value="${procession.organisedMoment}" /></td>
 
 		</tr>
-		
-				<tr>
-			<td><strong> <spring:message
-						code="procession.isDraft" /> :
+
+		<tr>
+			<td><strong> <spring:message code="procession.isDraft" />
+					:
 			</strong></td>
-			<td><jstl:out value="${procession.isDraft}">
-				</jstl:out></td>
+			<td><jstl:out value="${procession.isDraft}" /></td>
 
 		</tr>
-		
+
 	</table>
 	<div></div>
 	<p>
-	<strong> <spring:message code="procession.platform" />	</strong>
+		<strong> <spring:message code="procession.platform" />
+		</strong>
 	</p>
-	
-		<input type="button" name="back"
+
+	<input type="button" name="back"
 		value="<spring:message code="procession.back" />"
 		onclick="window.history.back()" />
-		
-		<jstl:if test="${isPrincipal}">
-			<input type="button" name="edit"
+
+	<jstl:if test="${isPrincipal && procession.isDraft}">
+		<input type="button" name="edit"
 			value="<spring:message code="procession.edit" />"
 			onclick="redirect: location.href = 'procession/edit.do?processionId=${procession.id}';" />
-		</jstl:if>
+	</jstl:if>
 
 </security:authorize>
 
@@ -89,38 +85,34 @@
 		<jstl:when test="${!procession.isDraft}">
 			<table class="displayStyle">
 				<tr>
-					<td><strong> <spring:message
-								code="procession.title" /> :
+					<td><strong> <spring:message code="procession.title" />
+							:
 					</strong></td>
-					<td><jstl:out value="${procession.title}">
-						</jstl:out></td>
+					<td><jstl:out value="${procession.title}" /></td>
 				</tr>
-		
+
 				<tr>
 					<td><strong> <spring:message code="procession.ticker" />
 							:
 					</strong></td>
-					<td><jstl:out value="${procession.ticker}">
-						</jstl:out></td>
+					<td><jstl:out value="${procession.ticker}" /></td>
 				</tr>
-				
+
 				<tr>
-					<td><strong> <spring:message code="procession.description" />
-							:
+					<td><strong> <spring:message
+								code="procession.description" /> :
 					</strong></td>
-					<td><jstl:out value="${procession.description}">
-						</jstl:out></td>
+					<td><jstl:out value="${procession.description}" /></td>
 				</tr>
-		
+
 				<tr>
 					<td><strong> <spring:message
 								code="procession.organisedMoment" /> :
 					</strong></td>
-					<td><jstl:out value="${procession.organisedMoment}">
-						</jstl:out></td>
-		
+					<td><jstl:out value="${procession.organisedMoment}" /></td>
+
 				</tr>
-				
+
 			</table>
 		</jstl:when>
 		<jstl:otherwise>
@@ -130,8 +122,8 @@
 		</jstl:otherwise>
 	</jstl:choose>
 	<div></div>
-	
-		<input type="button" name="back"
+
+	<input type="button" name="back"
 		value="<spring:message code="procession.back" />"
 		onclick="window.history.back()" />
 

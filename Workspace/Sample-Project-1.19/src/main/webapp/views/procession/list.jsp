@@ -46,7 +46,7 @@
 	
 	<security:authorize access="hasRole('MEMBER')">
 			
-		<jstl:if test="${row.isDraft == true}">
+		<jstl:if test="${row.isDraft == false}">
 					
 			<!-- Attributes-->
 			
