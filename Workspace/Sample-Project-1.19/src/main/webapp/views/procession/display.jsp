@@ -66,6 +66,16 @@
 		<strong> <spring:message code="procession.platform" />
 		</strong>
 	</p>
+	
+	<display:table pagesize="5" class="displaytag" name="${procesion.platforms }" id="row">
+		
+		<display:column property="title" titleKey="platform.title" sortable="true" />
+		
+		<display:column property="description" titleKey="platform.description"/>
+		
+	</display:table>
+	
+	<div></div>
 
 	<input type="button" name="back"
 		value="<spring:message code="procession.back" />"

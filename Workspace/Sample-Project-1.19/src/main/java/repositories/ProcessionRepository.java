@@ -20,7 +20,7 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 	Collection<Procession> findAcceptedProcessionsByMemberId(int memberId);	
 	
 	@Query("select p from March m join m.procession p where m.member.id = ?1")
-	Collection<Procession> findProcessionsNotToApply(int memberId);	
+	Collection<Procession> findProcessionsAlreadyApplied(int memberId);	
 	
 	@Query("select p from Procession p where p.isDraft = 'false'")
 	Collection<Procession> findFinalProcessions();	

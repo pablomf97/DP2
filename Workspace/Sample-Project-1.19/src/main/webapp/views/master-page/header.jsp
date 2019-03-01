@@ -144,6 +144,10 @@
 					<li><a href="procession/create.do"><spring:message
 								code="master.page.member.procession.new" /></a></li>
 				</ul></li>
+				
+			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+						code="master.page.member.march" /></a></li>
+						
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">

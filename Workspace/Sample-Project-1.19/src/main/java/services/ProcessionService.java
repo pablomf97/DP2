@@ -18,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.ProcessionRepository;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Enrolment;
 import domain.Platform;
 import domain.Procession;
 
@@ -37,6 +38,9 @@ public class ProcessionService {
 	
 	@Autowired
 	private UtilityService utilityService;
+	
+	@Autowired
+	private EnrolmentService enrolmentService;
 	
 	@Autowired
 	private Validator validator;
@@ -156,23 +160,40 @@ public class ProcessionService {
 		return result;
 	}
 	
-	private Collection<Procession> findProcessionsNotToApply(int memberId) {
+	private Collection<Procession> findProcessionsAlreadyApplied(int memberId) {
 		Collection<Procession> result;
 		
-		result = this.processionRepository.findProcessionsNotToApply(memberId);
+		result = this.processionRepository.findProcessionsAlreadyApplied(memberId);
 		
 		return result;
 	}
 	
 	public Collection<Procession> processionsToApply(int memberId) {
 		Collection<Procession> toApply;
+		Collection<Enrolment> memberEnrolments;
+		Collection<Integer> brotherhoodIds = new ArrayList<>();
 		
-		Collection<Procession> notToApply = this.findProcessionsNotToApply(memberId);
+		Collection<Procession> notToApply = this.findProcessionsAlreadyApplied(memberId);
 
 		toApply = this.findFinalProcessions();
 		toApply.removeAll(notToApply);
 		
-		return toApply;
+		Collection<Procession> result = new ArrayList<Procession>(toApply);
+		
+		memberEnrolments = this.enrolmentService.findActiveEnrolmentsByMember(memberId);
+		for(Enrolment enrolment : memberEnrolments) {
+			brotherhoodIds.add(enrolment.getBrotherhood().getId());
+		}
+		
+		for(Procession procesion: toApply) {
+			for(Integer brotherhoodId : brotherhoodIds) {
+				if(procesion.getBrotherhood().getId() != brotherhoodId){
+					result.remove(procesion);
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	private Collection<Procession> findFinalProcessions() {
