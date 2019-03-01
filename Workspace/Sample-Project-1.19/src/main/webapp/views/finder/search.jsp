@@ -26,7 +26,7 @@
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />
-		<form:hidden path="searchMoment" value="01/01/2001 00:00" />
+		
 
 		<form:label path="keyWord">
 			<spring:message code="finder.keyWord" />:

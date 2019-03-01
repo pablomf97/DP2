@@ -1,8 +1,10 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 import javax.transaction.Transactional;
@@ -21,6 +23,9 @@ import domain.Member;
 import domain.Procession;
 
 import repositories.FinderRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 
 @Service
 @Transactional
@@ -75,9 +80,11 @@ public class FinderService {
 
 	public Finder save(final Finder finder){
 		Finder result;
-		
+		Date currentMoment;
 		Actor principal;
 
+		currentMoment=new Date(System.currentTimeMillis()-1);
+		
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "MEMBER"),
@@ -91,6 +98,7 @@ public class FinderService {
 			Assert.isTrue(finder.getMinimumMoment().before(finder.getMaximumMoment()),"not.date");
 			
 		}
+		finder.setSearchMoment(currentMoment);
 		result=this.finderRepository.save(finder);
 		Assert.notNull(result,"not.null");
 
@@ -125,7 +133,7 @@ public class FinderService {
 		finder.setKeyWord(null);
 		finder.setMaximumMoment(null);
 		finder.setMinimumMoment(null);
-		//finder.setSearchMoment(null);
+		
 		this.finderRepository.save(finder);
 
 	}
@@ -154,61 +162,58 @@ public class FinderService {
 	}
 
 
-	public Collection<Procession> search(final Finder finder){
-		Member principal;
-		Date currentMoment;
-		
-		currentMoment=new Date(System.currentTimeMillis()-1);
+	public Collection<Procession> search(Finder finder) {
+		  UserAccount userAccount;
+		  String keyWord;
+		  String area;
+		  Date maximumDate;
+		  Date minimumDate;
+		  Collection<Procession> results= new ArrayList<Procession>();
+		  
 
-		Collection<Procession> results=new ArrayList<Procession>();
-		int nResults;
+		  int nResults;
 
-		Collection<Procession> resultsPagebles=new ArrayList<Procession>();
+		  Collection<Procession> resultsPagebles=new ArrayList<Procession>();
 
-		nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
+		  nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
+		  
+		  userAccount = LoginService.getPrincipal();
 
-		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal,"not.null");
+		  final Authority au = new Authority();
+		  au.setAuthority(Authority.MEMBER);
 
-		if(finder.getMinimumMoment()!=null&& finder.getMaximumMoment()!=null){
+		  Assert.isTrue(userAccount.getAuthorities().contains(au),"not.allowed");
 
-			results=this.finderRepository.searchProcessionsDate(finder.getMinimumMoment(), finder.getMaximumMoment());
-		}else if(finder.getMinimumMoment()!=null && finder.getMaximumMoment()==null){
-			Date max=new Date(19249488600000L);
-			results=this.finderRepository.searchProcessionsDate(finder.getMinimumMoment(), max);
-		}
+		  keyWord = (finder.getKeyWord() == null || finder.getKeyWord().isEmpty()) ? "" : finder.getKeyWord();
+		  area = (finder.getArea() == null || finder.getArea().isEmpty()) ? "" : finder.getArea();
+		  
 
-		else if(finder.getMinimumMoment()==null && finder.getMaximumMoment()!=null){
-			Date min=new Date(126204000000L);
-			results=this.finderRepository.searchProcessionsDate(min, finder.getMaximumMoment());
-		}
+		  final Date d1 = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
+		  final Date d2 = new GregorianCalendar(2200, Calendar.JANUARY, 1).getTime();
+		  minimumDate = finder.getMinimumMoment() == null ? d1 : finder.getMinimumMoment();
+		  maximumDate = finder.getMaximumMoment() == null ? d2 : finder.getMaximumMoment();
+		  
+			if (finder.getMinimumMoment()==null&& finder.getMaximumMoment()==null&&finder.getKeyWord().isEmpty()&&finder.getArea().isEmpty()){
+				results=this.finderRepository.searchAllProcession();
+			}
+			else {
+				results = this.finderRepository.findByFilter(keyWord,area,minimumDate,maximumDate);
+			}
+		  for(Procession p:results){
+				if(nResults>=results.size()){
 
-		else if (!finder.getKeyWord().isEmpty()){
-			results=this.finderRepository.searchProcessionsKeyword("%"+finder.getKeyWord()+"%");
+					resultsPagebles.add(p);
 
-		}else if (!finder.getArea().isEmpty()){
-			results=this.finderRepository.searchProcessionsArea("%"+finder.getArea()+"%");
-
-		}else if (finder.getMinimumMoment()==null&& finder.getMaximumMoment()==null&&finder.getKeyWord().isEmpty()&&finder.getArea().isEmpty()){
-			results=this.finderRepository.searchAllProcession();
-		}
-		
-		Assert.notNull(results,"not.null");
-		for(Procession p:results){
-			if(nResults>=results.size()){
-
-				resultsPagebles.add(p);
+				}
 
 			}
+			finder.setSearchResults(new ArrayList<Procession> (resultsPagebles));
+			
+			this.save(finder);
 
-		}
-		finder.setSearchResults(new ArrayList<Procession> (resultsPagebles));
-		finder.setSearchMoment(currentMoment);
-		this.save(finder);
-
-		return results;
-
-	}
+			return resultsPagebles;
+		  
+		 }
 
 	Double[] statsFinder(){
 		Double [] res;
