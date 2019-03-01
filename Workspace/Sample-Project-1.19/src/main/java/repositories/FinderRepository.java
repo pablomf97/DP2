@@ -36,4 +36,7 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	
 	
 	
+	
+	
+	
 }

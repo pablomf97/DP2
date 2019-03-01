@@ -72,9 +72,7 @@ public class FinderController extends AbstractController{
 
 		principal = this.memberService.findByPrincipal();
 		
-			finder = principal.getFinder();
-		
-		
+		finder = principal.getFinder();
 		
 		result=new ModelAndView("finder/search");
 		result.addObject("finder",finder);
@@ -82,7 +80,7 @@ public class FinderController extends AbstractController{
 		return result;
 	}
 	//DELETE
-	@RequestMapping(value="/edit",method=RequestMethod.POST,params="delete")
+	@RequestMapping(value="/search",method=RequestMethod.POST,params="delete")
 	public ModelAndView delete(final Finder finder,final BindingResult binding) {
 		ModelAndView result;
 
@@ -146,6 +144,7 @@ public class FinderController extends AbstractController{
 		ModelAndView result;
 		final Collection<Procession> processions;
 		processions = finder.getSearchResults();
+		
 		
 
 		result = new ModelAndView("finder/search");

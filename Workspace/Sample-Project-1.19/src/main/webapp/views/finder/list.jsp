@@ -25,14 +25,19 @@
 
 					<!-- Attributes-->
 
-			<display:column property="title" titleKey="procession.title" sortable="true" />
-
-			<display:column property="ticker" titleKey="procession.ticker" sortable="true" />
-
-			<display:column property="description" titleKey="procession.description"/>
-
-			<display:column property="organisedMoment" titleKey="procession.organisedMoment" sortable="true" />
-
+			<display:column titleKey="procession.title" sortable="true" >
+			<jstl:out value="${row.title}"></jstl:out>
+			</display:column>
+			<display:column  titleKey="procession.ticker" sortable="true" >
+			<jstl:out value="${row.ticker}"></jstl:out>
+			</display:column>
+			<display:column property="description" titleKey="procession.description">
+			<jstl:out value="${row.description}"></jstl:out>
+			</display:column>
+			<display:column titleKey="procession.organisedMoment" sortable="true" >
+			<jstl:out value="${row.organisedMoment}"></jstl:out>
+			</display:column>
+			
 			<!-- Action links -->
 
 			<display:column>
@@ -41,6 +46,10 @@
 				</a>		
 			</display:column>
 
-
+		
 	</display:table>
+	
+		<input type="button" name="cancel"
+		value="<spring:message code="finder.back" />"
+		onclick="javascript: relativeRedir('finder/member/search.do');" />
 </security:authorize>

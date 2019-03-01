@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 
+import domain.Actor;
 import domain.Finder;
 import domain.Member;
 import domain.Procession;
@@ -32,7 +33,9 @@ public class FinderService {
 	// Supporting services -----------------------
 	@Autowired
 	private MemberService memberService;
-
+	
+	@Autowired
+	private ActorService actorService;
 
 
 	@Autowired
@@ -48,7 +51,7 @@ public class FinderService {
 		Member principal;
 
 		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal);
+		Assert.notNull(principal,"not.null");
 
 		result=new Finder();
 		result.setSearchResults(new ArrayList<Procession>());
@@ -61,10 +64,10 @@ public class FinderService {
 		Member principal;
 
 		principal = this.memberService.findByPrincipal();
-		Assert.notNull(principal);
+		Assert.notNull(principal,"not.null");
 
 		result = this.finderRepository.findOne(finderId);
-		Assert.notNull(result);
+		Assert.notNull(result,"not.null");
 
 		return result;
 	}
@@ -72,26 +75,24 @@ public class FinderService {
 
 	public Finder save(final Finder finder){
 		Finder result;
-		Member principal;
-		Date currentMoment;
+		
+		Actor principal;
+
+		principal = this.actorService.findByPrincipal();
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "MEMBER"),
+				"not.allowed");
 
 
-		Assert.notNull(finder);
-
-		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal);
-
-		currentMoment=new Date(System.currentTimeMillis()-1);
-
-		finder.setSearchMoment(currentMoment);
-
+		Assert.notNull(finder,"not.allowed");
+		
 		if (finder.getMinimumMoment()!=null && finder.getMaximumMoment()!=null){
 
-			Assert.isTrue(finder.getMinimumMoment().before(finder.getMaximumMoment()));
-
+			Assert.isTrue(finder.getMinimumMoment().before(finder.getMaximumMoment()),"not.date");
+			
 		}
 		result=this.finderRepository.save(finder);
-		Assert.notNull(result);
+		Assert.notNull(result,"not.null");
 
 		return result;
 
@@ -100,7 +101,7 @@ public class FinderService {
 	public Collection<Finder> findAll() {
 		Collection<Finder> result;
 		result = this.finderRepository.findAll();
-		Assert.notNull(result);
+		Assert.notNull(result,"not.null");
 
 		return result;
 
@@ -110,18 +111,22 @@ public class FinderService {
 	public void delete(final Finder finder) {
 		Member principal;
 
-		Assert.notNull(finder);
+		Assert.notNull(finder,"not.allowed");
 		Assert.isTrue(finder.getId() != 0);
 
 		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal);
+		Assert.notNull(principal,"not.null");
 
 
-		Assert.isTrue(principal.getFinder().equals(finder));
+		Assert.isTrue(principal.getFinder().equals(finder),"not.allowed");
 
-		this.finderRepository.delete(finder);
-
-		principal.setFinder(null);
+		finder.setSearchResults(null);
+		finder.setArea(null);
+		finder.setKeyWord(null);
+		finder.setMaximumMoment(null);
+		finder.setMinimumMoment(null);
+		//finder.setSearchMoment(null);
+		this.finderRepository.save(finder);
 
 	}
 
@@ -129,11 +134,11 @@ public class FinderService {
 	// Other business methods
 
 	//expiración de la busqueda cuando termina tiempo caché
-	public Boolean deleteExpiredFinders() {
+	public void deleteExpiredFinders() {
 		Collection<Finder> finders;
 		Date maxLivedMoment = new Date();
 		int timeChachedFind;
-		Boolean res=false;
+		
 		//comprobar q solo puede borrar el admin
 		timeChachedFind = this.systemConfigurationService
 				.findMySystemConfiguration().getTimeResultsCached();
@@ -143,15 +148,18 @@ public class FinderService {
 
 		for (final Finder finder : finders)
 			if (finder.getSearchMoment().before(maxLivedMoment)) {
-				finder.setSearchResults(new ArrayList<Procession>());
-				res=true;
+				this.finderRepository.delete(finder);
 			}
-		return res;
+		
 	}
 
 
 	public Collection<Procession> search(final Finder finder){
 		Member principal;
+		Date currentMoment;
+		
+		currentMoment=new Date(System.currentTimeMillis()-1);
+
 		Collection<Procession> results=new ArrayList<Procession>();
 		int nResults;
 
@@ -160,7 +168,7 @@ public class FinderService {
 		nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
 
 		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal);
+		Assert.notNull(principal,"not.null");
 
 		if(finder.getMinimumMoment()!=null&& finder.getMaximumMoment()!=null){
 
@@ -184,17 +192,18 @@ public class FinderService {
 		}else if (finder.getMinimumMoment()==null&& finder.getMaximumMoment()==null&&finder.getKeyWord().isEmpty()&&finder.getArea().isEmpty()){
 			results=this.finderRepository.searchAllProcession();
 		}
-		Assert.notNull(results);
-	for(Procession p:results){
+		
+		Assert.notNull(results,"not.null");
+		for(Procession p:results){
 			if(nResults>=results.size()){
-				
-					resultsPagebles.add(p);
-				
+
+				resultsPagebles.add(p);
+
 			}
-			
+
 		}
 		finder.setSearchResults(new ArrayList<Procession> (resultsPagebles));
-
+		finder.setSearchMoment(currentMoment);
 		this.save(finder);
 
 		return results;
