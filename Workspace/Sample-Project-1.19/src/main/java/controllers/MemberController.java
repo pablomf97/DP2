@@ -2,7 +2,6 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -40,6 +39,7 @@ public class MemberController extends AbstractController {
 			Assert.isTrue(m.equals(this.actorService.findByPrincipal()));
 			result.addObject("member", m);
 		} catch (final Throwable opps) {
+			opps.printStackTrace();
 			//TODO: ver la posibilidada de una pantalla de error
 			result = new ModelAndView("redirect:/welcome/index.do");
 		}
@@ -100,9 +100,6 @@ public class MemberController extends AbstractController {
 		} else
 			try {
 				member.setPhoneNumber(this.actorService.checkSetPhoneCC(member.getPhoneNumber()));
-				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				final String hash = encoder.encodePassword(member.getUserAccount().getPassword(), null);
-				member.getUserAccount().setPassword(hash);
 				this.memberService.save(member);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final Throwable opps) {

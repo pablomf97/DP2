@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -5,6 +6,7 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -15,17 +17,21 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import forms.AdministratorForm;
 
 @Service
 @Transactional
 public class AdministratorService {
 
 	@Autowired
-	private UserAccountService userAccountService;
+	private ActorService			actorService;
 	@Autowired
-	private AdministratorRepository administratorRepository;
+	private UserAccountService		userAccountService;
 	@Autowired
-	private Validator validator;
+	private AdministratorRepository	administratorRepository;
+	@Autowired
+	private Validator				validator;
+
 
 	/**
 	 * Create a new empty admin
@@ -41,12 +47,15 @@ public class AdministratorService {
 		auth.setAuthority(Authority.ADMINISTRATOR);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
-		/*
-		 * res.setBan(false); res.setSpammer(false); res.setScore(0.0);
-		 */
+
 		return res;
 	}
 
+	public AdministratorForm createForm() {
+		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
+		final AdministratorForm res = new AdministratorForm();
+		return res;
+	}
 	/**
 	 * Find one admin by id
 	 * 
@@ -81,10 +90,13 @@ public class AdministratorService {
 		if (admin.getId() == 0) {
 			final UserAccount account = admin.getUserAccount();
 			final Authority au = new Authority();
-			au.setAuthority(Authority.ADMININISTRATOR);
+			au.setAuthority(Authority.ADMINISTRATOR);
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			admin.setUserAccount(savedAccount);
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
+			admin.getUserAccount().setPassword(hash);
 			result = this.administratorRepository.save(admin);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
@@ -96,18 +108,15 @@ public class AdministratorService {
 		}
 		return result;
 	}
-
 	/**
 	 * Remove the admin
 	 * 
 	 * @param id
 	 */
 	public void delete(final int id) {
-		final Administrator brotherhood = this.administratorRepository
-				.findOne(id);
+		final Administrator brotherhood = this.administratorRepository.findOne(id);
 		final UserAccount userAccount = LoginService.getPrincipal();
-		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount),
-				"This account does not belong to you");
+		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount), "This account does not belong to you");
 		this.administratorRepository.delete(id);
 	}
 
@@ -118,7 +127,7 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+	public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
 		Administrator result = this.create();
 		if (administratorForm.getId() == 0) {
 			result.getUserAccount().setUsername(administratorForm.getUsername());
@@ -170,4 +179,3 @@ public Administrator reconstruct(final AdministratorForm administratorForm, fina
 		return check;
 	}
 }
-

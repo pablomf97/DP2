@@ -1,10 +1,10 @@
 
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.BrotherhoodService;
+import services.ZoneService;
 import domain.Brotherhood;
+import domain.Zone;
 import forms.BrotherhoodForm;
 
 @Controller
@@ -26,6 +28,8 @@ public class BrotherhoodController extends AbstractController {
 	private BrotherhoodService	brotherhoodService;
 	@Autowired
 	private ActorService		actorService;
+	@Autowired
+	private ZoneService			zoneService;
 
 
 	public BrotherhoodController() {
@@ -56,6 +60,7 @@ public class BrotherhoodController extends AbstractController {
 		Brotherhood b;
 		BrotherhoodForm bf;
 		bf = this.brotherhoodService.createForm();
+		final Collection<Zone> zones = this.zoneService.findAll();
 		if (id == 0) {
 			result = new ModelAndView("brotherhood/edit");
 			result.addObject("brotherhoodForm", bf);
@@ -70,33 +75,42 @@ public class BrotherhoodController extends AbstractController {
 				result.addObject("uri", "brotherhood/edit.do");
 				final Collection<String> pictures = this.brotherhoodService.getSplitPictures(b.getPictures());
 				result.addObject("pictures", pictures);
-
 			} catch (final Throwable opps) {
 				//TODO: ver la posibilidada de una pantalla de error
 				result = new ModelAndView("redirect:/welcome/index.do");
 			}
+		result.addObject("areas", zones);
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
+		System.out.println(brotherhoodForm.getPictures());
 		ModelAndView result;
 		String emailError = "";
 		String check = "";
 		String passW = "";
 		String uniqueUsername = "";
+		String pictureError = "";
+		Collection<String> pictures = new ArrayList<>();
 		Brotherhood brotherhood;
 		brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
+		try {
+			brotherhood.setPictures(this.brotherhoodService.convetCollectionToString(brotherhoodForm.getPictures()));
+		} catch (final Throwable opps) {
+			pictureError = "brotherhood.pictures.url.error";
+		}
 		if (brotherhood.getId() == 0) {
 			passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
 			uniqueUsername = this.actorService.checkUniqueUser(brotherhoodForm.getUsername());
 			check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
 		}
-		final Collection<String> pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
-
+		if (pictureError.isEmpty())
+			pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
+		final Collection<Zone> zones = this.zoneService.findAll();
 		brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
 		emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
+		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
 			result = new ModelAndView("brotherhood/edit");
 			result.addObject("uri", "brotherhood/edit.do");
 			brotherhood.getUserAccount().setPassword("");
@@ -105,12 +119,13 @@ public class BrotherhoodController extends AbstractController {
 			result.addObject("checkLaw", check);
 			result.addObject("checkPass", passW);
 			result.addObject("uniqueUsername", uniqueUsername);
+			result.addObject("pictures", pictures);
+			result.addObject("areas", zones);
+			result.addObject("pictureError", pictureError);
+
 		} else
 			try {
 				brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
-				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				final String hash = encoder.encodePassword(brotherhood.getUserAccount().getPassword(), null);
-				brotherhood.getUserAccount().setPassword(hash);
 				this.brotherhoodService.save(brotherhood);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final Throwable opps) {
@@ -120,8 +135,10 @@ public class BrotherhoodController extends AbstractController {
 				result.addObject("emailError", emailError);
 				brotherhood.getUserAccount().setPassword("");
 				result.addObject("brotherhood", brotherhood);
+				result.addObject("pictures", pictures);
+				result.addObject("areas", zones);
+
 			}
-		result.addObject("pictures", pictures);
 		return result;
 	}
 }

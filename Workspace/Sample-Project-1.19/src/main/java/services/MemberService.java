@@ -1,8 +1,7 @@
+
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -17,11 +16,11 @@ import repositories.MemberRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Actor;
 import domain.Brotherhood;
 import domain.Finder;
 import domain.March;
 import domain.Member;
+import forms.MemberForm;
 
 @Service
 @Transactional
@@ -30,24 +29,29 @@ public class MemberService {
 	// Managed Repository
 
 	@Autowired
-	private MemberRepository memberRepository;
+	private MemberRepository		memberRepository;
 
 	// Supporting Services
 
 	@Autowired
+	private Validator				validator;
 
-	private Validator validator;
-
-	private BrotherhoodService brotherhoodService;
-
-	@Autowired
-	private EnrolmentService enrolmentService;
+	private BrotherhoodService		brotherhoodService;
 
 	@Autowired
-	private AdministratorService AdministratorService;
-	
+	private EnrolmentService		enrolmentService;
+
 	@Autowired
-	private MarchService marchService;
+	private AdministratorService	AdministratorService;
+
+	@Autowired
+	private MarchService			marchService;
+
+	@Autowired
+	private UserAccountService		userAccountService;
+
+	@Autowired
+	private FinderService			finderService;
 
 
 	// Simple CRUD methods
@@ -57,6 +61,8 @@ public class MemberService {
 		final UserAccount a = this.userAccountService.create();
 		final Authority auth = new Authority();
 		auth.setAuthority(Authority.MEMBER);
+		final Finder finder = new Finder();
+		res.setFinder(finder);
 		a.addAuthority(auth);
 		a.setIsBanned(false);
 		res.setUserAccount(a);
@@ -90,31 +96,9 @@ public class MemberService {
 		return res;
 	}
 
-	/* Create a member */
-	public Member create() {
-		Member res;
-		res = new Member();
-
-		Authority authority = new Authority();
-		authority.setAuthority(Authority.MEMBER);
-
-		List<Authority> authorities = new ArrayList<Authority>();
-		authorities.add(authority);
-
-		Finder finder = new Finder();
-		res.setFinder(finder);
-
-		UserAccount userAccount = new UserAccount();
-		userAccount.setAuthorities(authorities);
-		userAccount.setIsBanned(false);
-		res.setUserAccount(userAccount);
-
-		return res;
-	}
-
 	/* Save a member */
 	public Member save(final Member member) {
-	Member result;
+		Member result;
 		Assert.notNull(member);
 		if (member.getId() == 0) {
 			final UserAccount account = member.getUserAccount();
@@ -123,12 +107,14 @@ public class MemberService {
 			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			member.setUserAccount(savedAccount);
-			//TODO: crear el finder y ponerle el member nuevo
-			//this.finderService.initializeDefaultFinder(result);
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final String hash = encoder.encodePassword(member.getUserAccount().getPassword(), null);
+			member.getUserAccount().setPassword(hash);
 			result = this.memberRepository.save(member);
+			final Finder f = this.finderService.save(member.getFinder());
+			result.setFinder(f);
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
-
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
 			final Member memberBD = this.memberRepository.findOne(member.getId());
@@ -165,9 +151,8 @@ public class MemberService {
 		return res;
 	}
 
-
 	// Reconstruct
-	public Member reconstruct(Member member, BindingResult binding) {
+	public Member reconstruct(final Member member, final BindingResult binding) {
 		Member res;
 
 		if (member.getId() == 0)
@@ -188,8 +173,7 @@ public class MemberService {
 		return res;
 	}
 
-
-	public Collection<Member> findAllMembersByBrotherhood(int brotherhoodId){
+	public Collection<Member> findAllMembersByBrotherhood(final int brotherhoodId) {
 		Collection<Member> result;
 
 		result = this.memberRepository.findAllMembersByBrotherhood(brotherhoodId);
@@ -199,10 +183,9 @@ public class MemberService {
 
 	}
 
-
 	//Dashboard --------------------------------------------------------------------
 
-	public Double averageMemberPerBrotherhood(){
+	public Double averageMemberPerBrotherhood() {
 
 		Collection<Brotherhood> brotherhoods;
 		Collection<Member> members;
@@ -212,7 +195,7 @@ public class MemberService {
 		brotherhoods = this.brotherhoodService.findAll();
 		Assert.notEmpty(brotherhoods);
 
-		for(Brotherhood b: brotherhoods){
+		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
 			total = total + members.size();
 		}
@@ -222,7 +205,7 @@ public class MemberService {
 		return result;
 	}
 
-	public Double minMemberPerBrotherhood(){
+	public Double minMemberPerBrotherhood() {
 		Collection<Brotherhood> brotherhoods;
 		Collection<Member> members;
 		int count = 0;
@@ -231,23 +214,20 @@ public class MemberService {
 		brotherhoods = this.brotherhoodService.findAll();
 		Assert.notEmpty(brotherhoods);
 
-		for(Brotherhood b: brotherhoods){
+		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
 
-			if(count == 0){
-				result = (double) members.size();
-			}
-
-			if(members.size()< result){
+			if (count == 0)
 				result = (double) members.size();
 
-			}
+			if (members.size() < result)
+				result = (double) members.size();
 			count++;
 		}
 		return result;
 	}
-	
-	public Double maxMemberPerBrotherhood(){
+
+	public Double maxMemberPerBrotherhood() {
 		Collection<Brotherhood> brotherhoods;
 		Collection<Member> members;
 		int count = 0;
@@ -256,55 +236,45 @@ public class MemberService {
 		brotherhoods = this.brotherhoodService.findAll();
 		Assert.notEmpty(brotherhoods);
 
-		for(Brotherhood b: brotherhoods){
+		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
 
-			if(count == 0){
-				result = (double) members.size();
-			}
-
-			if(members.size()> result){
+			if (count == 0)
 				result = (double) members.size();
 
-			}
+			if (members.size() > result)
+				result = (double) members.size();
 			count++;
 		}
 		return result;
 	}
-	
-	public Collection<Member> acceptedMembers(){
+
+	public Collection<Member> acceptedMembers() {
 		Collection<Member> members;
-		Collection<March> marchsByMember,marchs;
+		Collection<March> marchsByMember, marchs;
 		int totalAccepted = 0;
 		Double percent;
-		
+
 		marchs = this.marchService.findAll();
 		Assert.notNull(marchs);
-		
+
 		members = this.findAll();
 		Assert.notNull(members);
-		
-		
-		
-		percent = totalAccepted*0.1;
-		
-		for(Member m: members){
+
+		percent = totalAccepted * 0.1;
+
+		for (final Member m : members) {
 			marchsByMember = this.marchService.findByMember(m.getId());
-			
-			for(March ma: marchsByMember){
-				if(ma.getStatus().equals("APPROVED")){
+
+			for (final March ma : marchsByMember)
+				if (ma.getStatus().equals("APPROVED"))
 					totalAccepted++;
-				}
-			}
-			
-			
-			
-			
+
 		}
 		return members;
-		
+
 	}
-		/**
+	/**
 	 * Change the incomplete member to an domain object
 	 * 
 	 * @param member
@@ -359,6 +329,5 @@ public class MemberService {
 			check = false;
 		return check;
 	}
-
 
 }
