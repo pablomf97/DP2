@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +56,8 @@ public class FinderController extends AbstractController{
 		
 		
 		Collection<Procession> processions = finder.getSearchResults();
-	
+		
+		
 		
 		result = new ModelAndView("finder/list");
 		result.addObject("processions", processions);
@@ -75,7 +76,9 @@ public class FinderController extends AbstractController{
 		principal = this.memberService.findByPrincipal();
 		
 		finder = principal.getFinder();
-		
+		if(finder.getSearchMoment()!=null){
+		this.finderService.deleteExpiredFinder(finder);
+		}
 		result=new ModelAndView("finder/search");
 		result.addObject("finder",finder);
 		result.addObject("requestUri", "finder/member/search.do");
@@ -124,7 +127,8 @@ public class FinderController extends AbstractController{
 				System.out.println(oops.getMessage());
 				System.out.println(oops.getClass());
 				System.out.println(oops.getCause());
-				result = new ModelAndView("misc/403");;
+				
+				result = this.createEditModelAndView(finder, oops.getMessage());
 				
 			}
 

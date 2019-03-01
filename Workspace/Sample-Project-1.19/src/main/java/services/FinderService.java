@@ -89,8 +89,10 @@ public class FinderService {
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "MEMBER"),
 				"not.allowed");
-
-
+		
+		//Assert.isTrue(principal.getId()==(LoginService.getPrincipal().getId()),"not.allowed");
+		
+		
 		Assert.notNull(finder,"not.allowed");
 		
 		if (finder.getMinimumMoment()!=null && finder.getMaximumMoment()!=null){
@@ -142,21 +144,26 @@ public class FinderService {
 	// Other business methods
 
 	//expiración de la busqueda cuando termina tiempo caché
-	public void deleteExpiredFinders() {
-		Collection<Finder> finders;
+	public void deleteExpiredFinder(Finder finder) {
+		
 		Date maxLivedMoment = new Date();
 		int timeChachedFind;
+		Date currentMoment;
+		currentMoment=new Date(System.currentTimeMillis()-1);
 		
-		//comprobar q solo puede borrar el admin
 		timeChachedFind = this.systemConfigurationService
 				.findMySystemConfiguration().getTimeResultsCached();
-		maxLivedMoment = DateUtils.addHours(maxLivedMoment, -timeChachedFind);
+		maxLivedMoment = DateUtils.addHours(currentMoment, -timeChachedFind);
 
-		finders = this.findAll();
-
-		for (final Finder finder : finders)
+		
 			if (finder.getSearchMoment().before(maxLivedMoment)) {
-				this.finderRepository.delete(finder);
+				finder.setSearchResults(null);
+				finder.setArea(null);
+				finder.setKeyWord(null);
+				finder.setMaximumMoment(null);
+				finder.setMinimumMoment(null);
+				finder.setSearchMoment(null);
+				this.finderRepository.save(finder);
 			}
 		
 	}
@@ -173,7 +180,7 @@ public class FinderService {
 
 		  int nResults;
 
-		  Collection<Procession> resultsPagebles=new ArrayList<Procession>();
+		  Collection<Procession> resultsPageables=new ArrayList<Procession>();
 
 		  nResults=this.systemConfigurationService.findMySystemConfiguration().getMaxResults();
 		  
@@ -202,16 +209,16 @@ public class FinderService {
 		  for(Procession p:results){
 				if(nResults>=results.size()){
 
-					resultsPagebles.add(p);
+					resultsPageables.add(p);
 
 				}
 
 			}
-			finder.setSearchResults(new ArrayList<Procession> (resultsPagebles));
+			finder.setSearchResults(new ArrayList<Procession> (resultsPageables));
 			
 			this.save(finder);
 
-			return resultsPagebles;
+			return resultsPageables;
 		  
 		 }
 
@@ -221,16 +228,21 @@ public class FinderService {
 		return res;
 	} 
 
-	Double ratioFinder(Finder finder){
-
-		Double res=0.0;
-		if(!finder.getArea().isEmpty()||!finder.getKeyWord().isEmpty()||finder.getMaximumMoment()!=null||finder.getMinimumMoment()!=null){
-			res=1.0;
-		}
+	Double ratioFinders(){
+		int emptys=this.FindersEmpty();
+		int all=this.findAll().size();
+		Double res;
+		
+		res=(double) (emptys/all);
+		
+		
 		return res;
 
-
-
+	}
+	public int FindersEmpty(){
+		int res;
+		res=this.finderRepository.FindersEmpty();
+		return res;
 	}
 
 }

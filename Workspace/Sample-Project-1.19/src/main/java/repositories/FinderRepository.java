@@ -27,6 +27,9 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	@Query("select p from Procession p where p.isDraft='0' and (p.ticker like %?1% or p.description like %?1% or p.title like %?1%) and (p.brotherhood.zone.name like %?2%)  and p.organisedMoment between ?3 and ?4 ")
 	Collection<Procession> findByFilter(String keyWord,String area, Date minimumMoment,Date maximumMoment);
 	
+	@Query("select f from Finder f where f.searchMoment='null'")
+	int FindersEmpty();
+	
 	
 	
 	
