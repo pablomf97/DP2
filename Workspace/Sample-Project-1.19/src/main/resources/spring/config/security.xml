@@ -53,13 +53,15 @@
 			access="hasRole('ADMINISTRATOR')" />
 
 		<!-- Brotherhood -->
-		<security:intercept-url pattern="/brotherhood/edit.do"
-			access="permitAll" />
 
 		<security:intercept-url pattern="/brotherhood/display.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/brotherhood/action-2.do"
 			access="hasRole('BROTHERHOOD')" />
+
+		<security:intercept-url pattern="/brotherhood/edit.do"
+			access="hasRole('BROTHERHOOD')" />
+
 		<!-- Member -->
 		<!-- TODO Mirar que sea anonimo o brotherhood en el edit-->
 		<security:intercept-url pattern="/member/edit.do"
@@ -73,7 +75,25 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/profile/action-3.do"
 			access="isAuthenticated()" />
-
+			
+		<security:intercept-url pattern="procession/member,brotherhood/list.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+		<security:intercept-url pattern="procession/display.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+			
+		<security:intercept-url pattern="platform/list.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+		<security:intercept-url pattern="platform/display.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+			
+		<security:intercept-url pattern="march/list.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+		<security:intercept-url pattern="march/edit.do"
+			access="hasAnyRole('MEMBER','BROTHERHOOD')" />
+		<security:intercept-url pattern="march/accept.do"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="march/reject.do"
+			access="hasRole('BROTHERHOOD')" />
 
 		<security:form-login login-page="/security/login.do"
 			password-parameter="password" username-parameter="username"

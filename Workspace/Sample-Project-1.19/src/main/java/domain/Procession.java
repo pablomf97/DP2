@@ -7,7 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -92,7 +92,7 @@ public class Procession extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Brotherhood getBrotherhood() {
 		return brotherhood;
 	}
@@ -100,5 +100,69 @@ public class Procession extends DomainEntity {
 	public void setBrotherhood(Brotherhood brotherhood) {
 		this.brotherhood = brotherhood;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((brotherhood == null) ? 0 : brotherhood.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + (isDraft ? 1231 : 1237);
+		result = prime * result
+				+ ((organisedMoment == null) ? 0 : organisedMoment.hashCode());
+		result = prime * result
+				+ ((platforms == null) ? 0 : platforms.hashCode());
+		result = prime * result + ((ticker == null) ? 0 : ticker.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Procession other = (Procession) obj;
+		if (brotherhood == null) {
+			if (other.brotherhood != null)
+				return false;
+		} else if (!brotherhood.equals(other.brotherhood))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (isDraft != other.isDraft)
+			return false;
+		if (organisedMoment == null) {
+			if (other.organisedMoment != null)
+				return false;
+		} else if (!organisedMoment.equals(other.organisedMoment))
+			return false;
+		if (platforms == null) {
+			if (other.platforms != null)
+				return false;
+		} else if (!platforms.equals(other.platforms))
+			return false;
+		if (ticker == null) {
+			if (other.ticker != null)
+				return false;
+		} else if (!ticker.equals(other.ticker))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+	
+	
 
 }

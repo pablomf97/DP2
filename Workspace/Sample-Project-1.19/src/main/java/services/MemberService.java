@@ -264,7 +264,7 @@ public class MemberService {
 		percent = totalAccepted * 0.1;
 
 		for (final Member m : members) {
-			marchsByMember = this.marchService.findByMember(m.getId());
+			marchsByMember = this.marchService.findMarchsByMemberId(m.getId());
 
 			for (final March ma : marchsByMember)
 				if (ma.getStatus().equals("APPROVED"))
