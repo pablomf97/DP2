@@ -37,6 +37,12 @@
 		
 		<bean class="converters.ProcessionToStringConverter" /> 
 		<bean class="converters.StringToProcessionConverter" />
+		
+		<bean class="converters.FinderToStringConverter" /> 
+		<bean class="converters.StringToFinderConverter" />
+		
+		<bean class="converters.SocialProfileToStringConverter" /> 
+		<bean class="converters.StringToSocialProfileConverter" />
 
 	</util:list>
 

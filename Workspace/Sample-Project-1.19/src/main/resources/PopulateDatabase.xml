@@ -935,7 +935,7 @@ your processions." />
 	</bean>
 
 	<bean id="socialbrotherhood2" class="domain.SocialProfile">
-		<property name="nick" value="socialmember2" />
+		<property name="nick" value="socialbrotherhood2" />
 		<property name="name" value="Imgur" />
 		<property name="linkProfile" value="https://www.Imgur.com/socialbrotherhood2" />
 		<property name="actor">
