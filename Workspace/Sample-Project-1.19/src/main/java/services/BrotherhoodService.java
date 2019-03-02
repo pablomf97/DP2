@@ -1,6 +1,7 @@
 
 package services;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -99,7 +100,6 @@ public class BrotherhoodService {
 	 */
 	public Brotherhood save(final Brotherhood brotherhood) {
 		Brotherhood result;
-		System.out.println(brotherhood.getPictures());
 		//TODO comprobar que la zona exista
 		if (brotherhood.getId() == 0) {
 			final UserAccount account = brotherhood.getUserAccount();
@@ -147,8 +147,6 @@ public class BrotherhoodService {
 		if (brotherhoodForm.getId() == 0) {
 			result.getUserAccount().setUsername(brotherhoodForm.getUsername());
 			result.getUserAccount().setPassword(brotherhoodForm.getPassword());
-			final Date establishmentDate = new Date();
-			result.setEstablishmentDate(establishmentDate);
 			result.setAddress(brotherhoodForm.getAddress());
 			result.setEmail(brotherhoodForm.getEmail());
 			result.setMiddleName(brotherhoodForm.getMiddleName());
@@ -157,22 +155,24 @@ public class BrotherhoodService {
 			result.setPhoto(brotherhoodForm.getPhoto());
 			result.setSurname(brotherhoodForm.getSurname());
 			result.setTitle(brotherhoodForm.getTitle());
-			result.setZone(brotherhoodForm.getZone());
+			if (brotherhoodForm.getZone() != null)
+				result.setZone(brotherhoodForm.getZone());
 			this.validator.validate(brotherhoodForm, binding);
 
 		} else {
-			result = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
-			if (this.checkValidation(brotherhoodForm, binding, result)) {
-				result.setAddress(brotherhoodForm.getAddress());
-				result.setEmail(brotherhoodForm.getEmail());
-				result.setMiddleName(brotherhoodForm.getMiddleName());
-				result.setName(brotherhoodForm.getName());
-				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
-				result.setPhoto(brotherhoodForm.getPhoto());
-				result.setSurname(brotherhoodForm.getSurname());
-				result.setTitle(brotherhoodForm.getTitle());
-				if ((result.getZone().getId()) == 0)
-					result.setZone(brotherhoodForm.getZone());
+			final Brotherhood bd = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
+			if (this.checkValidation(brotherhoodForm, binding, bd)) {
+				bd.setAddress(brotherhoodForm.getAddress());
+				bd.setEmail(brotherhoodForm.getEmail());
+				bd.setMiddleName(brotherhoodForm.getMiddleName());
+				bd.setName(brotherhoodForm.getName());
+				bd.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				bd.setPhoto(brotherhoodForm.getPhoto());
+				bd.setSurname(brotherhoodForm.getSurname());
+				bd.setTitle(brotherhoodForm.getTitle());
+				if (bd.getZone() == null && brotherhoodForm.getZone() != null)
+					bd.setZone(brotherhoodForm.getZone());
+				result = bd;
 			} else {
 				result = this.create();
 				result.setAddress(brotherhoodForm.getAddress());
@@ -183,8 +183,11 @@ public class BrotherhoodService {
 				result.setPhoto(brotherhoodForm.getPhoto());
 				result.setSurname(brotherhoodForm.getSurname());
 				result.setTitle(brotherhoodForm.getTitle());
-				if ((result.getZone().getId()) == 0)
-					result.setZone(brotherhoodForm.getZone());
+				if (bd.getZone() != null)
+					result.setZone(bd.getZone());
+				else if (bd.getZone() == null && brotherhoodForm.getZone() != null)
+					result.setZone(bd.getZone());
+
 			}
 		}
 		return result;
@@ -209,14 +212,21 @@ public class BrotherhoodService {
 		return res;
 	}
 
-	public String convetCollectionToString(final Collection<String> pictures) {
+	public String convetCollectionToString(final Collection<String> pictures) throws MalformedURLException {
 		String result = "";
-		for (final String p : pictures)
-			try {
-				new URL(p);
+		if (!pictures.isEmpty())
+			for (final String p : pictures) {
+				new URL(p.trim());
 				result = result + p.trim() + "< >";
-			} catch (final Throwable opps) {
 			}
+		return result;
+	}
+
+	public String checkURLPictures(final Collection<String> pictures) {
+		String result = "";
+		if (!pictures.isEmpty())
+			for (final String p : pictures)
+				result = result + p.trim() + "< >";
 		return result;
 	}
 

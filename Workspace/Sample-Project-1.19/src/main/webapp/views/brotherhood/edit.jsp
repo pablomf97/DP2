@@ -53,6 +53,7 @@ function myFunction() {
 		input.name = "pictures";
 		container.appendChild(input);
 	}
+	window.onload = unCheck;
 </script>
 
 <p>
@@ -178,6 +179,9 @@ TODO falta implementar el sistema de incluir múltiples imágenes--%>
 		<input name=pictures value="${pic}" />
 	</jstl:forEach>
 	<form:errors path="pictures" cssClass="error" />
+	<jstl:if test="${not empty picturesError}">
+		<a class="error"><spring:message code="${picturesError}" /></a>
+	</jstl:if>
 
 	<security:authorize access="isAnonymous()">
 		<form:label path="checkBox">

@@ -85,7 +85,6 @@ public class BrotherhoodController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView editPOST(final BrotherhoodForm brotherhoodForm, final BindingResult binding) {
-		System.out.println(brotherhoodForm.getPictures());
 		ModelAndView result;
 		String emailError = "";
 		String check = "";
@@ -98,7 +97,7 @@ public class BrotherhoodController extends AbstractController {
 		try {
 			brotherhood.setPictures(this.brotherhoodService.convetCollectionToString(brotherhoodForm.getPictures()));
 		} catch (final Throwable opps) {
-			pictureError = "brotherhood.pictures.url.error";
+			pictureError = "brotherhood.pictures.error.url";
 		}
 		if (brotherhood.getId() == 0) {
 			passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
@@ -107,6 +106,8 @@ public class BrotherhoodController extends AbstractController {
 		}
 		if (pictureError.isEmpty())
 			pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
+		else
+			pictures = brotherhoodForm.getPictures();
 		final Collection<Zone> zones = this.zoneService.findAll();
 		brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
 		emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
@@ -121,7 +122,7 @@ public class BrotherhoodController extends AbstractController {
 			result.addObject("uniqueUsername", uniqueUsername);
 			result.addObject("pictures", pictures);
 			result.addObject("areas", zones);
-			result.addObject("pictureError", pictureError);
+			result.addObject("picturesError", pictureError);
 
 		} else
 			try {
