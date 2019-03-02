@@ -66,46 +66,80 @@ public class ProcessionController extends AbstractController {
 		Collection<Procession> processions;
 		Actor principal;
 		
-		principal = this.actorService.findByPrincipal();
-
-		if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
-
-			processions = this.processionService.findProcessionsByBrotherhoodId(principal.getId());
+		Boolean permission;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(!this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
 			
-			String requestURI = "procession/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
-			result = new ModelAndView("procession/list");
-			result.addObject("requestURI", requestURI);
-			result.addObject("processions", processions);
-
-			return result;
-
-		} else {
+			permission = true;
 			
-			Collection<Procession> toApply;
+			principal = this.actorService.findByPrincipal();
 
-			processions = this.processionService.findAcceptedProcessionsByMemberId(principal.getId());
-			toApply = this.processionService.processionsToApply(principal.getId());
+			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
+	
+				processions = this.processionService.findProcessionsByBrotherhoodId(principal.getId());
+				
+				String requestURI = "procession/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
+				result = new ModelAndView("procession/list");
+				result.addObject("requestURI", requestURI);
+				result.addObject("processions", processions);
+		
+			} else {
+				
+				Collection<Procession> toApply;
+	
+				processions = this.processionService.findAcceptedProcessionsByMemberId(principal.getId());
+				toApply = this.processionService.processionsToApply(principal.getId());
+				
+				String requestURI = "procession/member,brotherhood/list.do?memberId=" + principal.getId();
+				result = new ModelAndView("procession/list");
+				result.addObject("requestURI", requestURI);
+				result.addObject("processions", processions);
+				result.addObject("toApply", toApply);
+	
+			}
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
 			
-			String requestURI = "procession/member,brotherhood/list.do?memberId=" + principal.getId();
-			result = new ModelAndView("procession/list");
-			result.addObject("requestURI", requestURI);
-			result.addObject("processions", processions);
-			result.addObject("toApply", toApply);
-
-			return result;
-		}
+			result = new ModelAndView("march/member,brotherhood/list");
+			permission = false;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("permission", permission);
+		}	
+		
+		return result;
 	}
 	
 	// Creation 
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
-		final ModelAndView result;
+		ModelAndView result;
 		Procession procession;
 
-		procession = this.processionService.create();
+		Actor principal;
+		Boolean error;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+						
+			procession = this.processionService.create();
 
-		result = this.createEditModelAndView(procession);
+			result = this.createEditModelAndView(procession);
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("procession/member,brotherhood/list");
+			error = true;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("error", error);
+		}
 
 		return result;
 

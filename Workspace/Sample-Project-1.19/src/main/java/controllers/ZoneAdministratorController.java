@@ -36,13 +36,31 @@ public class ZoneAdministratorController extends AbstractController{
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public ModelAndView create(){
 
-		final ModelAndView result;
+		ModelAndView result;
 		final Zone zone;
+		
+		Actor principal;
+		Boolean error;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
+						
+			zone = this.zoneService.create();
+			Assert.notNull(zone);
 
-		zone = this.zoneService.create();
-		Assert.notNull(zone);
+			result = this.createEditModelAndView(zone);
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("zone/list");
+			error = true;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("error", error);
+		}
 
-		result = this.createEditModelAndView(zone);
 
 		return result;
 
@@ -53,17 +71,37 @@ public class ZoneAdministratorController extends AbstractController{
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public ModelAndView list(){
-		final ModelAndView result;
+		ModelAndView result;
 		Collection<Zone> zones;
+		Actor principal;
+		Boolean permission;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
+			
+			permission = true;
+			
+			zones = this.zoneService.findAll();
+			Assert.notEmpty(zones);
 
-		zones = this.zoneService.findAll();
-		Assert.notEmpty(zones);
-
-		result = new ModelAndView("zone/list");
-		result.addObject("zones", zones);
-
-		return result;
+			result = new ModelAndView("zone/list");
+			result.addObject("zones", zones);
+			result.addObject("permission", permission);
+			
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("platform/list");
+			permission = false;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("permission", permission);
+		}
+		return result;	
 	}
+
 
 	//Edit
 

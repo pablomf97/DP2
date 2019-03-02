@@ -13,8 +13,8 @@
 	<display:table pagesize="5" class="displaytag" name="processions"
 		requestURI="procession/member,brotherhood/list.do" id="row">
 
-	<security:authorize access="hasRole('BROTHERHOOD')">
-			
+<security:authorize access="hasRole('BROTHERHOOD')">
+	
 		<!-- Attributes-->
 		
 		<display:column property="title" titleKey="procession.title" sortable="true" />

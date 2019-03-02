@@ -104,15 +104,6 @@
 			
 			<li><a class="fNiv" href="finder/member/finder.do"><spring:message code="master.page.member.finder" /></a></li>
 			
-			<li><a class="fNiv"><spring:message
-					code="master.page.brotherhood.platform" /></a>
-			<ul>
-				<li class="arrow"></li>
-				<li><a href="platform/list.do"><spring:message
-							code="master.page.brotherhood.platform.show" /></a></li>
-				<li><a href="platform/create.do"><spring:message
-							code="master.page.brotherhood.platform.new" /></a></li>
-			</ul></li>
 		
 		</security:authorize>
 

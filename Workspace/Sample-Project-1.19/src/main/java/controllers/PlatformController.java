@@ -58,33 +58,62 @@ public class PlatformController extends AbstractController {
 		ModelAndView result;
 		Actor principal;
 		Collection<Platform> platforms;
+		Boolean permission;
 		
-		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
-		platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			
+			permission = true;
+			
+			platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
 
-		String requestURI = "platform/list.do?memberId=" + principal.getId();
-		result = new ModelAndView("platform/list");
-		result.addObject("requestURI", requestURI);
-		result.addObject("platforms", platforms);
-
-		return result;
+			String requestURI = "platform/list.do?memberId=" + principal.getId();
+			result = new ModelAndView("platform/list");
+			result.addObject("requestURI", requestURI);
+			result.addObject("platforms", platforms);
+			result.addObject("permission", permission);
+			
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("platform/list");
+			permission = false;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("permission", permission);
+		}
+		return result;	
 	}
 
 	// Creation 
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
-		final ModelAndView result;
+		ModelAndView result;
 		Platform platform;
+		Actor principal;
+		Boolean error;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+						
+			platform = this.platformService.create();
 
-		platform = this.platformService.create();
-
-		result = this.createEditModelAndView(platform);
-
-		return result;
-
+			result = this.createEditModelAndView(platform);
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("platform/list");
+			error = true;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("error", error);
+		}
+		return result;	
 	}
 
 	// Edition
@@ -116,6 +145,7 @@ public class PlatformController extends AbstractController {
 			}
 
 		return result;
+		
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")

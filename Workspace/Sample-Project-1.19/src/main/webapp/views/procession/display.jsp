@@ -62,18 +62,43 @@
 
 	</table>
 	<div></div>
-	<p>
-		<strong> <spring:message code="procession.platform" />
-		</strong>
-	</p>
-	
-	<display:table pagesize="5" class="displaytag" name="${procesion.platforms }" id="row">
-		
-		<display:column property="title" titleKey="platform.title" sortable="true" />
-		
-		<display:column property="description" titleKey="platform.description"/>
-		
-	</display:table>
+	<jstl:choose>
+		<jstl:when test="${not empty procession.platforms}">
+			<h3>
+				<strong> <spring:message code="procession.platform" />
+				</strong>
+			</h3>
+			<jstl:forEach var="platform" items="${procession.platforms}">
+				<table>
+					<tr>
+						<td><strong> <spring:message code="procession.platform.title" />
+								:
+						</strong></td>
+						<td><jstl:out value="${platform.title}">
+							</jstl:out></td>
+					</tr>		
+					
+					<tr>
+						<td><strong> <spring:message code="procession.platform.description" />
+								:
+						</strong></td>
+						<td><jstl:out value="${platform.description}">
+							</jstl:out></td>
+					</tr>
+					<tr><td>
+					<a href="platform/display.do?platformId=${platform.id}"> <spring:message
+							code="procession.platform.display" />	</a></td>
+					</tr>
+				</table>
+			</jstl:forEach>
+		</jstl:when>
+		<jstl:otherwise>
+			<p>
+				<strong> <spring:message code="procession.no.platforms" />
+				</strong>
+			</p>
+		</jstl:otherwise>
+	</jstl:choose>
 	
 	<div></div>
 

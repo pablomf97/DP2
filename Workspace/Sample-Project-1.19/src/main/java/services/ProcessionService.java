@@ -127,7 +127,6 @@ public class ProcessionService {
 			result = procession;
 			result.setTicker(this.utilityService.generateTicker());
 			result.setPlatforms(new ArrayList<Platform>());
-			result.setIsDraft(true);
 			result.setBrotherhood((Brotherhood) principal);
 
 		} else {

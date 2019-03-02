@@ -9,12 +9,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 	<!-- Listing grid -->
-
-	<display:table pagesize="5" class="displaytag" name="platforms"
-		requestURI="platform/list.do" id="row">
+<jstl:choose>
+	<jstl:when test="${permission }">
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-			
+			<display:table pagesize="5" class="displaytag" name="platforms"
+		requestURI="platform/list.do" id="row">
 		<!-- Attributes-->
 		
 		<display:column property="title" titleKey="platform.title" sortable="true" />
@@ -34,29 +34,17 @@
 					code="platform.edit" />
 			</a>
 		</display:column>
-					
-	</security:authorize>
 	
-	<security:authorize access="hasRole('MEMBER')">
-			
-		<!-- Attributes-->
-		
-		<display:column property="title" titleKey="platform.title" sortable="true" />
-		
-		<display:column property="description" titleKey="platform.description"/>
-	
-		<!-- Action links -->
-	
-		<display:column>
-			<a href="platform/display.do?platformId=${row.id}"> <spring:message
-						code="platform.display" />
-			</a>		
-		</display:column>		
-	</security:authorize>	
 	</display:table>
-	<security:authorize access="hasRole('BROTHERHOOD')">
 	<p>
 		<a href="platform/create.do"><spring:message
 				code="platform.create" /></a>
 	</p>
-</security:authorize>
+	</security:authorize>
+	</jstl:when>
+	<jstl:otherwise>
+		<p>
+			<spring:message code="platform.notAllowed" />
+		</p>
+	</jstl:otherwise>
+</jstl:choose>

@@ -66,45 +66,77 @@ public class MarchController extends AbstractController {
 		ModelAndView result;
 		Collection<March> marchs;
 		Actor principal;
+		Boolean permission;
 		
-		principal = this.actorService.findByPrincipal();
-
-		if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
-
-			marchs = this.marchService.findMarchsByBrotherhoodId(principal.getId());
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(!this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
 			
-			String requestURI = "march/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
-			result = new ModelAndView("march/list");
-			result.addObject("requestURI", requestURI);
-			result.addObject("marchs", marchs);
-
-			return result;
-
-		} else {
-
-			marchs = this.marchService.findMarchsByMemberId(principal.getId());
+			permission = true;
 			
-			String requestURI = "march/member,brotherhood/list.do?memberId=" + principal.getId();
-			result = new ModelAndView("march/list");
-			result.addObject("requestURI", requestURI);
-			result.addObject("marchs", marchs);
+			principal = this.actorService.findByPrincipal();
 
-			return result;
-		}
+			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
+
+				marchs = this.marchService.findMarchsByBrotherhoodId(principal.getId());
+				
+				String requestURI = "march/member,brotherhood/list.do?brotherhoodId=" + principal.getId();
+				result = new ModelAndView("march/list");
+				result.addObject("requestURI", requestURI);
+				result.addObject("marchs", marchs);
+
+			} else {
+
+				marchs = this.marchService.findMarchsByMemberId(principal.getId());
+				
+				String requestURI = "march/member,brotherhood/list.do?memberId=" + principal.getId();
+				result = new ModelAndView("march/list");
+				result.addObject("requestURI", requestURI);
+				result.addObject("marchs", marchs);
+
+			}
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("march/member,brotherhood/list");
+			permission = false;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("permission", permission);
+		}	
+		
+		return result;
 	}
 		
 	// Creation 
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
-		final ModelAndView result;
+		ModelAndView result;
 		March march;
+		
+		Actor principal;
+		Boolean error;
+		
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "MEMBER"));
+						
+			march= this.marchService.create();
 
-		march= this.marchService.create();
-
-		result = this.createEditModelAndView(march);
-
-		return result;
+			result = this.createEditModelAndView(march);
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			
+			result = new ModelAndView("march/member,brotherhood/list");
+			error = true;
+			
+			result.addObject("oopsie", oopsie);
+			result.addObject("error", error);
+		}
+		return result;	
 
 	}
 

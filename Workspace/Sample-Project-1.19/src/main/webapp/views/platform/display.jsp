@@ -50,15 +50,17 @@
 	</table>
 	<div></div>
 	
-		<input type="button" name="back"
-		value="<spring:message code="platform.back" />"
-		onclick="window.history.back()" />
-		
 		<jstl:if test="${isPrincipal}">
 			<input type="button" name="edit"
 			value="<spring:message code="platform.edit" />"
 			onclick="redirect: location.href = 'platform/edit.do?platformId=${platform.id}';" />
 		</jstl:if>
+	
+		<input type="button" name="back"
+		value="<spring:message code="platform.back" />"
+		onclick="window.history.back()" />
+		
+
 
 </security:authorize>
 
