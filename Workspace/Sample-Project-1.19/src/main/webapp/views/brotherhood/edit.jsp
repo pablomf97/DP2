@@ -19,13 +19,20 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <!-- 	<p id="demo"></p>
-			document.getElementById("demo").innerHTML = pat; -->
-	
+			document.getElementById("demo").innerHTML = pat; 
+			<script>
+
+function myFunction() {
+  alert("Page is loaded");
+}
+	window.onload = myFunction;
+	</script>
+			-->
+
 <script>
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber").value;
-		var phonePattern =  new RegExp(
-			/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/);
+		var phonePattern = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/);
 		var pat = phonePattern.test(phone);
 		if (pat) {
 			return true;
@@ -55,10 +62,10 @@
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
 <form:form action="brotherhood/edit.do" modelAttribute="brotherhoodForm"
-	methodParam="post" onsubmit="javascript: return checkPhone('${confirmTelephone}');">
+	methodParam="post"
+	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
-
 	<security:authorize access="isAnonymous()">
 
 		<form:label path="username">
@@ -149,15 +156,19 @@
 	<form:errors cssClass="error" path="title" />
 	<br>
 
+
+	<jstl:if test="${empty brotherhood.zone}">
+		<form:label path="zone">
+			<spring:message code="brotherhood.zone" />:</form:label>
+		<form:select path="zone">
+			<form:option label="----" value="" />
+			<form:options items="${areas}" itemLabel="name" itemValue="id" />
+		</form:select>
+		<form:errors path="zone" cssClass="error" />
+		<br />
+	</jstl:if>
 	<%-- 
-TODO falta implementar el sistema de incluir múltiples imágenes
-	<form:label path="pictures">
-		<spring:message code="brotherhood.pictures" />:
-		</form:label>
-	<form:input path="pictures" value="${brotherhood.pictures}" />
-	<form:errors cssClass="error" path="pictures" />
-	<br> --%>
-	
+TODO falta implementar el sistema de incluir múltiples imágenes--%>
 	<spring:message code="brotherhood.pictures" />
  		:
 		<button type="button" onClick="addFields()">
@@ -168,7 +179,10 @@ TODO falta implementar el sistema de incluir múltiples imágenes
 		<input name=pictures value="${pic}" />
 	</jstl:forEach>
 	<form:errors path="pictures" cssClass="error" />
-	
+	<jstl:if test="${not empty picturesError}">
+		<a class="error"><spring:message code="${picturesError}" /></a>
+	</jstl:if>
+
 	<security:authorize access="isAnonymous()">
 		<form:label path="checkBox">
 			<spring:message code="actor.check.law" />:
