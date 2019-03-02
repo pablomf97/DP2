@@ -22,18 +22,19 @@
 		<value>/views/member/tiles.xml</value>
 		<value>/views/profile/tiles.xml</value>
 
+		<value>/views/procession/tiles.xml</value>
+		<value>/views/platform/tiles.xml</value>
+		<value>/views/march/tiles.xml</value>
 
 		<value>/views/position/tiles.xml</value>
 		<value>/views/enrolment/tiles.xml</value>
 		<value>/views/system-configuration/tiles.xml</value>
 
-
 		<value>/views/zone/tiles.xml</value>
-		
-
 
 		<value>/views/terms/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>
+
 
 	</util:list>
 

@@ -12,7 +12,7 @@
 	">
 
 	<util:list id="converters">
-	
+
 		<!-- Add your own converters using entries of the following form: -->
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StringToAdministratorConverter" />
@@ -28,7 +28,8 @@
 		
 		<bean class="converters.ZoneToStringConverter" />
 		<bean class="converters.StringToZoneConverter" />
-				<bean class="converters.MarchToStringConverter" /> 
+		<bean class="converters.MarchToStringConverter" /> 
+
 		<bean class="converters.StringToMarchConverter" /> 
 		
 		<bean class="converters.PlatformToStringConverter" /> 
@@ -36,7 +37,7 @@
 		
 		<bean class="converters.ProcessionToStringConverter" /> 
 		<bean class="converters.StringToProcessionConverter" />
-		
+
 	</util:list>
 
 </beans>

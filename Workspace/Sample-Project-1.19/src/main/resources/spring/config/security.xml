@@ -67,11 +67,11 @@
 		<security:intercept-url pattern="/brotherhood/edit.do"
 			access="permitAll" />	
 
+
 		<security:intercept-url pattern="/brotherhood/display.do"
 			access="permitAll" />
 					<security:intercept-url pattern="/brotherhood/action-2.do"
 			access="hasRole('BROTHERHOOD')" />
-			
 
 		<!-- Member -->
 		<!-- TODO Mirar que sea anonimo o brotherhood en el edit-->

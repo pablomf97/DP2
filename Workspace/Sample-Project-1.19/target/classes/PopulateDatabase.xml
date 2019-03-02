@@ -1086,7 +1086,6 @@ your processions." />
 
 	<bean id="platform1" class="domain.Platform">
 		<property name="title" value="Nuestro Señor Atado a la Columna" />
-		<property name="establismentDate" value="18/05/2017" />
 		<property name="pictures" value="" />
 		<property name="description"
 			value="Paso importante el jueves santo en Sevilla por la hermandad Cigarrera." />
@@ -1099,7 +1098,6 @@ your processions." />
 
 	<bean id="platform2" class="domain.Platform">
 		<property name="title" value="Maria Santisima de la Victoria Coronada" />
-		<property name="establismentDate" value="18/05/2017" />
 		<property name="pictures" value="" />
 		<property name="description"
 			value="Paso importante el jueves santo en Sevilla por la hermandad Cigarrera." />
@@ -1110,7 +1108,6 @@ your processions." />
 
 	<bean id="platform3" class="domain.Platform">
 		<property name="title" value="Jesús Nazareno Santa Cruz en Jerusalén" />
-		<property name="establismentDate" value="19/05/2017" />
 		<property name="pictures" value="" />
 		<property name="description"
 			value="Paso importante durante la madruga del viernes santo en Sevilla por la hermandad Silencio." />
@@ -1121,7 +1118,6 @@ your processions." />
 
 	<bean id="platform4" class="domain.Platform">
 		<property name="title" value="Virgen de la Concepción" />
-		<property name="establismentDate" value="19/05/2017" />
 		<property name="pictures" value="" />
 		<property name="description"
 			value="Paso importante durante la madruga del viernes santo en Sevilla por la hermandad Silencio." />
@@ -1184,6 +1180,19 @@ your processions." />
 		</property>
 		<property name="procession">
 			<ref bean="procession1" />
+		</property>
+	</bean>
+	
+	<bean id="march3" class="domain.March">
+		<property name="status" value="PENDING" />
+		<property name="row" value="1" />
+		<property name="col" value="3" />
+		<property name="reason" value="" />
+		<property name="member">
+			<ref bean="member1" />
+		</property>
+		<property name="procession">
+			<ref bean="procession2" />
 		</property>
 	</bean>
 
