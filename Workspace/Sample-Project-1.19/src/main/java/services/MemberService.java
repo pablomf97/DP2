@@ -42,7 +42,7 @@ public class MemberService {
 	private EnrolmentService		enrolmentService;
 
 	@Autowired
-	private AdministratorService	AdministratorService;
+	private AdministratorService	administratorService;
 
 	@Autowired
 	private MarchService			marchService;
@@ -110,9 +110,10 @@ public class MemberService {
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			final String hash = encoder.encodePassword(member.getUserAccount().getPassword(), null);
 			member.getUserAccount().setPassword(hash);
-			result = this.memberRepository.save(member);
 			final Finder f = this.finderService.save(member.getFinder());
-			result.setFinder(f);
+			member.setFinder(f);
+			result = this.memberRepository.save(member);
+
 			//TODO: cuando este el sistema de box, crear los iniciales
 			//this.boxService.initializeDefaultBoxes(result);
 		} else {
