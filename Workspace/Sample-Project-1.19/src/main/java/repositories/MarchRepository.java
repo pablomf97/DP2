@@ -23,5 +23,8 @@ public interface MarchRepository extends JpaRepository<March, Integer> {
 	@Query("select m from March m where m.member.id = ?1")
 	Collection<March> findByMember(int memberId);
 	
-
+	@Query("select m from March m where m.procession.id = ?1")
+	Collection<March> findMarchByProcession(int processionId);
+	
+	
 }

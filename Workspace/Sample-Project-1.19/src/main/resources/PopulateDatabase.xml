@@ -1045,7 +1045,7 @@ your processions." />
 		<property name="title" value="Jueves santo" />
 		<property name="description"
 			value="Procesion asignada para el jueves santo por la hermandad Cigarrera" />
-		<property name="organisedMoment" value="18/05/19 18:00" />
+		<property name="organisedMoment" value="14/03/19 18:00" />
 		<property name="isDraft" value="true" />
 		<property name="platforms">
 			<list>

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,8 @@ public class MemberService {
 
 	@Autowired
 	private Validator				validator;
-
+	
+	@Autowired
 	private BrotherhoodService		brotherhoodService;
 
 	@Autowired
@@ -193,7 +195,7 @@ public class MemberService {
 		Double result;
 
 		brotherhoods = this.brotherhoodService.findAll();
-		Assert.notEmpty(brotherhoods);
+		Assert.notNull(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
@@ -201,7 +203,9 @@ public class MemberService {
 		}
 
 		result = (double) (total / brotherhoods.size());
-
+		
+		
+		
 		return result;
 	}
 
@@ -251,8 +255,9 @@ public class MemberService {
 
 	public Collection<Member> acceptedMembers() {
 		Collection<Member> members;
+		Collection<Member> acceptedMembers = new ArrayList<Member>();
 		Collection<March> marchsByMember, marchs;
-		int totalAccepted = 0;
+		
 		Double percent;
 
 		marchs = this.marchService.findAll();
@@ -261,17 +266,26 @@ public class MemberService {
 		members = this.findAll();
 		Assert.notNull(members);
 
-		percent = totalAccepted * 0.1;
+		
 
 		for (final Member m : members) {
 			marchsByMember = this.marchService.findByMember(m.getId());
-
-			for (final March ma : marchsByMember)
+			
+			int totalAccepted = 0;
+			
+			for (final March ma : marchsByMember){
 				if (ma.getStatus().equals("APPROVED"))
 					totalAccepted++;
-
+			}
+			
+			percent = (double) ((totalAccepted*100)/marchsByMember.size());
+			
+			if(percent >= 10.0){
+				
+				acceptedMembers.add(m);
+			}
 		}
-		return members;
+		return acceptedMembers;
 
 	}
 	/**
