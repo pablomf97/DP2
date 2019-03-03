@@ -121,6 +121,16 @@ public class EnrolmentService {
 		
 	}
 	
+	public Collection<Enrolment> findActiveEnrolmentsByMember(int memberId){
+		Collection<Enrolment> result;
+		
+		result = this.enrolmentRepository.findActiveEnrolmentsByMember(memberId);
+		Assert.notNull(result);
+		
+		return result;
+		
+	}
+	
 	public Collection<Enrolment> findActiveEnrolments(){
 		Collection<Enrolment> result;
 		

@@ -55,9 +55,9 @@ public class UtilityService {
 
 	public String randomString() {
 
-		final String possibleChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final String possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		final SecureRandom rnd = new SecureRandom();
-		final int length = 6;
+		final int length = 5;
 
 		final StringBuilder stringBuilder = new StringBuilder(length);
 

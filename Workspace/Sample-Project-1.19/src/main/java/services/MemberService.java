@@ -36,7 +36,7 @@ public class MemberService {
 
 	@Autowired
 	private Validator				validator;
-	
+
 	@Autowired
 	private BrotherhoodService		brotherhoodService;
 
@@ -44,7 +44,7 @@ public class MemberService {
 	private EnrolmentService		enrolmentService;
 
 	@Autowired
-	private AdministratorService	AdministratorService;
+	private AdministratorService	administratorService;
 
 	@Autowired
 	private MarchService			marchService;
@@ -54,6 +54,8 @@ public class MemberService {
 
 	@Autowired
 	private FinderService			finderService;
+	@Autowired
+	private MessageBoxService		messageBoxService;
 
 
 	// Simple CRUD methods
@@ -112,11 +114,10 @@ public class MemberService {
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			final String hash = encoder.encodePassword(member.getUserAccount().getPassword(), null);
 			member.getUserAccount().setPassword(hash);
-			result = this.memberRepository.save(member);
 			final Finder f = this.finderService.save(member.getFinder());
-			result.setFinder(f);
-			//TODO: cuando este el sistema de box, crear los iniciales
-			//this.boxService.initializeDefaultBoxes(result);
+			member.setFinder(f);
+			result = this.memberRepository.save(member);
+			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
 			final Member memberBD = this.memberRepository.findOne(member.getId());
@@ -203,9 +204,9 @@ public class MemberService {
 		}
 
 		result = (double) (total / brotherhoods.size());
-		
-		
-		
+
+
+
 		return result;
 	}
 
@@ -257,7 +258,7 @@ public class MemberService {
 		Collection<Member> members;
 		Collection<Member> acceptedMembers = new ArrayList<Member>();
 		Collection<March> marchsByMember, marchs;
-		
+
 		Double percent;
 
 		marchs = this.marchService.findAll();
@@ -266,28 +267,34 @@ public class MemberService {
 		members = this.findAll();
 		Assert.notNull(members);
 
-		
+
 
 		for (final Member m : members) {
+
 			marchsByMember = this.marchService.findByMember(m.getId());
-			
+
 			int totalAccepted = 0;
-			
-			for (final March ma : marchsByMember){
+
+
+			for (final March ma : marchsByMember)
+
 				if (ma.getStatus().equals("APPROVED"))
 					totalAccepted++;
-			}
-			
+
 			percent = (double) ((totalAccepted*100)/marchsByMember.size());
-			
+
 			if(percent >= 10.0){
-				
+
 				acceptedMembers.add(m);
 			}
 		}
 		return acceptedMembers;
 
+
 	}
+
+
+
 	/**
 	 * Change the incomplete member to an domain object
 	 * 

@@ -33,9 +33,8 @@
 	<jstl:out value="${brotherhood.middleName }" />
 </p>
 <p>
-<b><spring:message code="profile.email" /></b>
-:
-<jstl:out value="${brotherhood.email }" />
+	<b><spring:message code="profile.email" /></b> :
+	<jstl:out value="${brotherhood.email }" />
 </p>
 <p>
 	<b><spring:message code="profile.phone" /></b>:
@@ -65,16 +64,17 @@
 	<b><spring:message code="brotherhood.establishmentDate" /></b>:
 	<jstl:out value="${brotherhood.establishmentDate }" />
 </p>
+
+<p>
+	<b><spring:message code="brotherhood.zone" /></b>:
+	<jstl:out value="${brotherhood.zone.name }" />
+</p>
+
 <p>
 	<b><spring:message code="brotherhood.pictures" /></b>:
-	<jstl:if test="${empty pictures}">
 		<display:table name="pictures" id="row">
 			<display:column>
 				<img class="picture" src="${row}" />
 			</display:column>
 		</display:table>
-	</jstl:if>
-	<jstl:if test="${not empty pictures}">
-		<b><spring:message code="brotherhood.picture.empty" /></b>
-	</jstl:if>
 </p>
