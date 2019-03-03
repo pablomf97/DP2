@@ -86,6 +86,7 @@ public class SocialProfileService {
 		Assert.notNull(socialProfile.getName(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getNick(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getLinkProfile(), "socialProfile.NotEmpty");
+		socialProfile.setActor(principal);
 		result=this.socialProfileRepository.save(socialProfile);
 		Assert.notNull(result);
 
