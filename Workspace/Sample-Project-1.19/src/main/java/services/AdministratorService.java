@@ -31,6 +31,8 @@ public class AdministratorService {
 	private AdministratorRepository	administratorRepository;
 	@Autowired
 	private Validator				validator;
+	@Autowired
+	private MessageBoxService		messageBoxService;
 
 
 	/**
@@ -98,8 +100,7 @@ public class AdministratorService {
 			final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
 			admin.getUserAccount().setPassword(hash);
 			result = this.administratorRepository.save(admin);
-			//TODO: cuando este el sistema de box, crear los iniciales
-			//this.boxService.initializeDefaultBoxes(result);
+			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
 			final Administrator adminBD = this.administratorRepository.findOne(admin.getId());
