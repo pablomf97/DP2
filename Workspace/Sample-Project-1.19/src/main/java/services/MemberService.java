@@ -52,6 +52,8 @@ public class MemberService {
 
 	@Autowired
 	private FinderService			finderService;
+	@Autowired
+	private MessageBoxService		messageBoxService;
 
 
 	// Simple CRUD methods
@@ -113,9 +115,7 @@ public class MemberService {
 			final Finder f = this.finderService.save(member.getFinder());
 			member.setFinder(f);
 			result = this.memberRepository.save(member);
-
-			//TODO: cuando este el sistema de box, crear los iniciales
-			//this.boxService.initializeDefaultBoxes(result);
+			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
 			final Member memberBD = this.memberRepository.findOne(member.getId());
