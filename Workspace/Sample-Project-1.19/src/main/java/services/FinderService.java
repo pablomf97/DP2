@@ -85,12 +85,20 @@ public class FinderService {
 
 		currentMoment=new Date(System.currentTimeMillis()-1);
 		
-		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(
-				this.actorService.checkAuthority(principal, "MEMBER"),
-				"not.allowed");
-		
-		//Assert.isTrue(principal.getId()==(LoginService.getPrincipal().getId()),"not.allowed");
+		if (finder.getId() != 0) {
+			try {
+				principal = this.actorService.findByPrincipal();
+				Assert.isTrue(
+						this.actorService.checkAuthority(principal, "MEMBER"),
+						"not.allowed");
+			} catch (Throwable oops) {
+				principal = this.actorService.findByPrincipal();
+				Assert.isTrue(
+						this.actorService.checkAuthority(principal, "MEMBER"),
+						"not.allowed");
+			}
+
+		}
 		
 		
 		Assert.notNull(finder,"not.allowed");
