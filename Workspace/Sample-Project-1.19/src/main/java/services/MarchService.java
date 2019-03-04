@@ -1,6 +1,8 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -14,7 +16,11 @@ import repositories.MarchRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.March;
+
+import domain.Procession;
+
 import domain.Member;
+
 
 @Service
 @Transactional
@@ -33,6 +39,9 @@ public class MarchService {
 	@Autowired
 	private Validator validator;
 
+	@Autowired
+	private ProcessionService processionService;
+
 	// Simple CRUD methods -----------------------------------
 
 	public March create() {
@@ -50,7 +59,7 @@ public class MarchService {
 	public Collection<March> findAll() {
 		Collection<March> result;
 		result = this.marchRepository.findAll();
-		
+
 		return result;
 	}
 
@@ -60,6 +69,7 @@ public class MarchService {
 
 		return result;
 	}
+
 
 	public March save(final March march) {
 		Member member;
@@ -115,6 +125,7 @@ public class MarchService {
 
 	}
 
+
 	// Other business methods -------------------------------
 	
 	public March reconstruct(March march, BindingResult binding) {
@@ -159,29 +170,86 @@ public class MarchService {
 
 	public Double ratioApprovedRequests(){
 		Double result;
-		
+
 		result = this.marchRepository.ratioApprovedRequests();
 		Assert.notNull(result);
-		
+
 		return result;
 	}
-	
+
 	public Double ratioPendingRequests(){
 		Double result;
-		
+
 		result = this.marchRepository.ratioPendingRequests();
 		Assert.notNull(result);
-		
+
 		return result;
 	}
-	
+
 	public Double ratioRejectedRequests(){
 		Double result;
-		
+
 		result = this.marchRepository.ratioRejectedRequests();
 		Assert.notNull(result);
-		
+
 		return result;
 	}
+
+
+	public List<Double> ratioApprovedInAProcession(){
+		List<Double> result = new ArrayList<Double>();
+		Collection<Procession> processions;
+		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsApprovedInAProcession = new ArrayList<March>();
+
+
+
+		processions = this.processionService.findAll();
+		Assert.notNull(processions);
+
+		for(Procession p : processions){
+
+			Double ratio = 0.0;
+
+			marchsInAProcession = this.findMarchByProcession(p.getId());
+			Assert.notNull(marchsInAProcession);
+
+			for(March m : marchsInAProcession){
+
+				if(m.getStatus().equals("APPROVED")){
+					marchsApprovedInAProcession.add(m);
+				}
+
+			}
+
+			ratio = (double) (marchsApprovedInAProcession.size()/marchsInAProcession.size());
+
+			result.add(ratio);
+
+		}
+
+
+
+		return result;
+
+	}
+	public Collection<March> findByMember(int memberId){
+		Collection<March> result;
+
+		result = this.marchRepository.findByMember(memberId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<March> findMarchByProcession(int processionId){
+		Collection<March> result;
+
+		result = this.marchRepository.findMarchByProcession(processionId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	
+
 }

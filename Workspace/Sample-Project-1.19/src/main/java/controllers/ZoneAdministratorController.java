@@ -173,21 +173,36 @@ public class ZoneAdministratorController extends AbstractController{
 		final String name;
 		final String pictures;
 		final ModelAndView result;
-		//boolean permission = false;
+		final Collection<Zone> selectedZones;
+		boolean isSelected = false;
+		boolean permission = false;
 
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
 
 		name = zone.getName();
 		pictures = zone.getPictures();
-
+		selectedZones = this.zoneService.findSelectedZones();
+		Assert.notNull(selectedZones);
+		
+		if(selectedZones.contains(zone)){
+			isSelected = true;
+		}
+		
+		if(this.actorService.checkAuthority(principal, "ADMINISTRATOR")){
+			
+			permission = true;
+		}
+		
 		result = new ModelAndView("zone/edit");
 		result.addObject("principal", principal);
 		result.addObject("name", name);
 		result.addObject("pictures", pictures);
 		result.addObject("zone", zone);
-
+		result.addObject("isSelected", isSelected);
+		result.addObject("permission", permission);
 		return result;
 
 	}
+	
 }

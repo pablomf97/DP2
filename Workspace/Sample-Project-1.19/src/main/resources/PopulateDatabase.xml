@@ -347,6 +347,10 @@ your processions." />
 				<ref bean="message6" />
 			</list>
 		</property>
+		<property name="owner">
+
+			<ref bean="administrator1" />
+		</property>
 
 
 	</bean>
@@ -359,6 +363,10 @@ your processions." />
 		</property>
 		<property name="messages">
 			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="administrator1" />
 		</property>
 
 	</bean>
@@ -376,6 +384,10 @@ your processions." />
 				<ref bean="message9" />
 			</list>
 		</property>
+		<property name="owner">
+
+			<ref bean="administrator1" />
+		</property>
 
 
 	</bean>
@@ -388,6 +400,10 @@ your processions." />
 		</property>
 		<property name="messages">
 			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="administrator1" />
 		</property>
 
 	</bean>
@@ -402,6 +418,10 @@ your processions." />
 			<list>
 				<ref bean="message9" />
 			</list>
+		</property>
+		<property name="owner">
+
+			<ref bean="administrator1" />
 		</property>
 
 	</bean>
@@ -419,6 +439,10 @@ your processions." />
 				<ref bean="message8" />
 			</list>
 		</property>
+		<property name="owner">
+
+			<ref bean="administrator2" />
+		</property>
 
 	</bean>
 
@@ -433,6 +457,10 @@ your processions." />
 		</property>
 		<property name="messages">
 			<null />
+		</property>
+		<property name="owner">
+
+			<ref bean="administrator2" />
 		</property>
 
 	</bean>
@@ -449,6 +477,10 @@ your processions." />
 				<ref bean="message4" />
 			</list>
 		</property>
+		<property name="owner">
+
+			<ref bean="administrator2" />
+		</property>
 
 	</bean>
 
@@ -461,7 +493,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="administrator2" />
+		</property>
 	</bean>
 
 	<bean id="notificationBoxAdmin2" class="domain.MessageBox">
@@ -473,7 +508,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="administrator2" />
+		</property>
 
 	</bean>
 
@@ -490,7 +528,10 @@ your processions." />
 				<ref bean="message1" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member1" />
+		</property>
 
 
 	</bean>
@@ -505,7 +546,10 @@ your processions." />
 			<null />
 		</property>
 
+		<property name="owner">
 
+			<ref bean="member1" />
+		</property>
 	</bean>
 
 	<bean id="outBoxMember1" class="domain.MessageBox">
@@ -519,7 +563,10 @@ your processions." />
 				<ref bean="message5" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member1" />
+		</property>
 	</bean>
 
 	<bean id="trashBoxMember1" class="domain.MessageBox">
@@ -531,7 +578,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="member1" />
+		</property>
 	</bean>
 
 	<bean id="notificationBoxMember1" class="domain.MessageBox">
@@ -545,7 +595,10 @@ your processions." />
 				<ref bean="message9" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member1" />
+		</property>
 	</bean>
 
 	<!-- MEMBER 2 -->
@@ -561,7 +614,10 @@ your processions." />
 				<ref bean="message3" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member2" />
+		</property>
 
 	</bean>
 
@@ -574,7 +630,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="member2" />
+		</property>
 	</bean>
 
 	<bean id="outBoxMember2" class="domain.MessageBox">
@@ -588,7 +647,10 @@ your processions." />
 				<ref bean="message7" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member2" />
+		</property>
 
 	</bean>
 
@@ -601,7 +663,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="member2" />
+		</property>
 
 	</bean>
 
@@ -616,7 +681,10 @@ your processions." />
 				<ref bean="message9" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="member2" />
+		</property>
 	</bean>
 
 	<!-- BRTOTHERHOOD 1 -->
@@ -633,7 +701,10 @@ your processions." />
 			</list>
 		</property>
 
+		<property name="owner">
 
+			<ref bean="brotherhood1" />
+		</property>
 	</bean>
 
 	<bean id="spamBoxBrotherhood1" class="domain.MessageBox">
@@ -645,7 +716,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood1" />
+		</property>
 	</bean>
 
 	<bean id="outBoxBrotherhood1" class="domain.MessageBox">
@@ -659,7 +733,10 @@ your processions." />
 				<ref bean="message6" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood1" />
+		</property>
 	</bean>
 
 	<bean id="trashBoxBrotherhood1" class="domain.MessageBox">
@@ -671,7 +748,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood1" />
+		</property>
 	</bean>
 
 	<bean id="notificationBoxBrotherhood1" class="domain.MessageBox">
@@ -685,7 +765,10 @@ your processions." />
 				<ref bean="message9" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood1" />
+		</property>
 	</bean>
 
 	<!-- BROTHERHOOD2 -->
@@ -701,7 +784,10 @@ your processions." />
 				<ref bean="message4" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood2" />
+		</property>
 	</bean>
 
 	<bean id="spamBoxBrotherhood2" class="domain.MessageBox">
@@ -713,7 +799,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood2" />
+		</property>
 	</bean>
 
 	<bean id="outBoxBrotherhood2" class="domain.MessageBox">
@@ -727,7 +816,10 @@ your processions." />
 				<ref bean="message8" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood2" />
+		</property>
 	</bean>
 
 	<bean id="trashBoxBrotherhood2" class="domain.MessageBox">
@@ -739,7 +831,10 @@ your processions." />
 		<property name="messages">
 			<null />
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood2" />
+		</property>
 	</bean>
 
 	<bean id="notificationBoxBrotherhood2" class="domain.MessageBox">
@@ -753,7 +848,10 @@ your processions." />
 				<ref bean="message9" />
 			</list>
 		</property>
+		<property name="owner">
 
+			<ref bean="brotherhood2" />
+		</property>
 	</bean>
 
 	<!-- FINDER -->
@@ -935,7 +1033,7 @@ your processions." />
 	</bean>
 
 	<bean id="socialbrotherhood2" class="domain.SocialProfile">
-		<property name="nick" value="socialbrotherhood2" />
+		<property name="nick" value="socialmember2" />
 		<property name="name" value="Imgur" />
 		<property name="linkProfile" value="https://www.Imgur.com/socialbrotherhood2" />
 		<property name="actor">
@@ -1045,7 +1143,7 @@ your processions." />
 		<property name="title" value="Jueves santo" />
 		<property name="description"
 			value="Procesion asignada para el jueves santo por la hermandad Cigarrera" />
-		<property name="organisedMoment" value="18/05/19 18:00" />
+		<property name="organisedMoment" value="14/03/19 18:00" />
 		<property name="isDraft" value="true" />
 		<property name="platforms">
 			<list>
@@ -1182,7 +1280,7 @@ your processions." />
 			<ref bean="procession1" />
 		</property>
 	</bean>
-	
+
 	<bean id="march3" class="domain.March">
 		<property name="status" value="PENDING" />
 		<property name="row" value="1" />
