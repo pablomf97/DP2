@@ -157,5 +157,19 @@ public class ActorService {
 			result = "actor.check.unique.user";
 		return result;
 	}
+	
+	public Collection<Actor> findAllExceptPrincipal(){
+		Collection<Actor> result;
+		Actor principal;
+		
+		result = this.actorRepository.findAll();
+		Assert.notNull(result);
+		
+		principal = this.findByPrincipal();
+		Assert.notNull(principal);
+		
+		result.remove(principal);
+		return result;
+	}
 
 }
