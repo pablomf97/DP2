@@ -17,9 +17,13 @@
 		requestURI="platform/list.do" id="row">
 		<!-- Attributes-->
 		
-		<display:column property="title" titleKey="platform.title" sortable="true" />
+		<display:column titleKey="platform.title" sortable="true" >
+			<jstl:out value="${row.title }"></jstl:out>
+		</display:column>
 		
-		<display:column property="description" titleKey="platform.description"/>
+		<display:column titleKey="platform.description" sortable="true" >
+			<jstl:out value="${row.description }"></jstl:out>
+		</display:column>
 	
 		<!-- Action links -->
 	
