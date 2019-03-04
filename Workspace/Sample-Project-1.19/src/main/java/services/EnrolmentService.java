@@ -110,33 +110,35 @@ public class EnrolmentService {
 				.getEnrollmentsByBrotherhood(brotherhoodID);
 	}
 
-	
-	public Collection<Enrolment> findActiveEnrolmentByBrotherhood(int brotherhoodId){
+	public Collection<Enrolment> findActiveEnrolmentByBrotherhood(
+			int brotherhoodId) {
 		Collection<Enrolment> result;
-		
-		result = this.enrolmentRepository.findActiveEnrolmentsByBrotherhood(brotherhoodId);
+
+		result = this.enrolmentRepository
+				.findActiveEnrolmentsByBrotherhood(brotherhoodId);
 		Assert.notNull(result);
-		
+
 		return result;
-		
+
 	}
-	
-	public Collection<Enrolment> findActiveEnrolmentsByMember(int memberId){
+
+	public Collection<Enrolment> findActiveEnrolmentsByMember(int memberId) {
 		Collection<Enrolment> result;
-		
-		result = this.enrolmentRepository.findActiveEnrolmentsByMember(memberId);
+
+		result = this.enrolmentRepository
+				.findActiveEnrolmentsByMember(memberId);
 		Assert.notNull(result);
-		
+
 		return result;
-		
+
 	}
-	
-	public Collection<Enrolment> findActiveEnrolments(){
+
+	public Collection<Enrolment> findActiveEnrolments() {
 		Collection<Enrolment> result;
-		
+
 		result = this.enrolmentRepository.findActiveEnrolments();
 		Assert.notNull(result);
-		
+
 		return result;
 	}
 
@@ -151,14 +153,20 @@ public class EnrolmentService {
 		fullPosition = this.positionService.findByName(position[0]);
 
 		res.setPosition(fullPosition);
+		res.setIsOut(false);
 
 		this.validator.validate(res, binding);
 
 		return res;
 	}
 
+	public boolean isAssigned(Position position) {
+		Collection<Enrolment> enrolments;
+
+		enrolments = this.enrolmentRepository
+				.getEnrolmentsUsingPosition(position.getId());
+
+		return !(enrolments.isEmpty());
+	}
 
 }
-
-
-
