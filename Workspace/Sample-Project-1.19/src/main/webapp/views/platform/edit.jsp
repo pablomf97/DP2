@@ -6,6 +6,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 
 <jstl:choose>
 	<jstl:when test="${isPrincipal || platform.id ==0}">
@@ -14,40 +16,23 @@
 			<fieldset>
 				<br>
 				<form:hidden path="id" />
-				<form:label path="title">
-					<spring:message code="platform.title" />:
-				</form:label>
-				<form:input path="title"  />
-				<form:errors cssClass="error" path="title" />
+				
+				<acme:textbox code="platform.title" path="title"/>
 				<br/><br/>		
-				
-				<form:label path="pictures">
-					<spring:message code="platform.pictures" />:
-				</form:label>
-				<form:input path="pictures"  />
-				<form:errors cssClass="error" path="pictures" />
+				<acme:textbox code="platform.pictures" path="pictures"/>
 				<br/><br />
-				
-				<form:label path="description">
-					<spring:message code="platform.description" />:
-				</form:label>
-				<form:textarea path="description"  />
-				<form:errors cssClass="error" path="description" />
-				<br />
-				<br />
+				<acme:textarea code="platform.description" path="description"/>
+				<br /><br />
+			</fieldset><br>
 			
-			</fieldset>
-			<br>
-			<input type="submit" name="save" id="save" value="<spring:message code="platform.save" />" />&nbsp; 
-				<jstl:if test="${platform.id != 0}">
-					<input type="submit" name="delete" value="<spring:message code="platform.delete" />"
-						onclick="return confirm('<spring:message code="platform.confirm.delete" />')" />&nbsp;
-				</jstl:if>
-				
-				<input type="button" name="cancel" value="<spring:message code="platform.cancel" />"
-					onclick="redirect: location.href = 'platform/list.do';" />
-				<br />
-				
+			<acme:submit code="platform.save" name="save"/>&nbsp; 
+			
+			<jstl:if test="${platform.id != 0}">
+				<acme:delete code="platform.delete" name="delete" confirmation="platform.confirm.delete"/>&nbsp; 
+			</jstl:if>
+			
+			<acme:cancel code="platform.cancel" url="platform/list.do"/><br />
+		
 		</form:form>
 	</jstl:when>
 	<jstl:otherwise>

@@ -121,10 +121,21 @@ public class PlatformController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int platformId) {
 		ModelAndView result;
 		final Platform platform;
+		Actor principal;
 
-		platform = this.platformService.findOne(platformId);
-		Assert.notNull(platform);
-		result = this.createEditModelAndView(platform);
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			
+			platform = this.platformService.findOne(platformId);
+			Assert.notNull(platform);
+			result = this.createEditModelAndView(platform);
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			result = new ModelAndView("redirect:/enrolment/member/list.do");
+		}
+		
 
 		return result;
 	}
