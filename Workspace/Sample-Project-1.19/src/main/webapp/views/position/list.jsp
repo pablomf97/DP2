@@ -1,3 +1,4 @@
+
 <%--
  * action-1.jsp
  *
@@ -32,12 +33,16 @@
 
 				<jstl:choose>
 					<jstl:when test="${pageContext.response.locale.language == 'es'}">
-						<display:column value="${position.name.get('Español')}"
-							titleKey="position.name" sortable="true" />
+						<jstl:set var="espanyol" value="${position.name.get('Español')}" />
+						<display:column titleKey="position.name" sortable="true">
+							<jstl:out value="${espanyol}" />
+						</display:column>
 					</jstl:when>
 					<jstl:otherwise>
-						<display:column value="${position.name.get('English')}"
-							titleKey="position.name" sortable="true" />
+						<jstl:set var="english" value="${position.name.get('English')}" />
+						<display:column titleKey="position.name" sortable="true">
+							<jstl:out value="${english}" />
+						</display:column>
 					</jstl:otherwise>
 				</jstl:choose>
 				<display:column style="width: 15%">
