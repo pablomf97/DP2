@@ -219,7 +219,7 @@ public class FinderService {
 				}
 
 			}
-			finder.setSearchResults(new ArrayList<Procession> (resultsPageables));
+			finder.setSearchResults(resultsPageables);
 			
 			this.save(finder);
 
