@@ -31,7 +31,8 @@ public class Message extends DomainEntity {
 	private Collection<MessageBox> messageBoxes;
 	private Actor sender;
 	private Actor recipient;
-
+	private boolean isSpam;
+	
 	/* Getters&Setters */
 
 	@Past
@@ -113,5 +114,15 @@ public class Message extends DomainEntity {
 	public void setRecipient(Actor recipient) {
 		this.recipient = recipient;
 	}
+
+	public boolean getIsSpam() {
+		return isSpam;
+	}
+
+	public void setIsSpam(boolean isSpam) {
+		this.isSpam = isSpam;
+	}
+	
+	
 
 }

@@ -19,44 +19,50 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
-	
-		
+	<jstl:if test="${permission == true}">
+
 		<form:form action="zone/administrator/edit.do" modelAttribute="zone"
-		id="zoneForm">
+			id="zoneForm">
 
-		<form:hidden path="id" />
-		<form:hidden path="version" />
+			<form:hidden path="id" />
+			<form:hidden path="version" />
 
-		<form:label path="name">
-			<spring:message code="zone.name" />
-		</form:label>
-		<form:input path="name" />
-		<form:errors cssClass="error" path="name" />
-		<br />
-		<br />
-		
-		<form:label path="pictures">
-			<spring:message code="zone.pictures" />
-		</form:label>
-		<form:input path="pictures" />
-		<form:errors cssClass="error" path="pictures" />
-		<br />
-		<br />
-		
-		<input type="submit" name="save"
+			<form:label path="name">
+				<spring:message code="zone.name" />
+			</form:label>
+			<form:input path="name" />
+			<form:errors cssClass="error" path="name" />
+			<br />
+			<br />
+
+			<form:label path="pictures">
+				<spring:message code="zone.pictures" />
+			</form:label>
+			<form:input path="pictures" />
+			<form:errors cssClass="error" path="pictures" />
+			<br />
+			<br />
+
+			<input type="submit" name="save"
 				value="<spring:message code="zone.save"/>" />&nbsp;
 		
-		<jstl:if test="${zone.id != 0}">
-			<input type="submit" name="delete"
-			value="<spring:message code="zone.delete"/>"/>&nbsp;
+		<jstl:if test="${zone.id != 0 and isSelected == false}">
+				<input type="submit" name="delete"
+					value="<spring:message code="zone.delete"/>" />&nbsp;
 		
 		</jstl:if>
-		
-		<input type="button" name="cancel"
-			value="<spring:message code="zone.cancel"/>"
-			onclick="javascript: relativeRedir('/zone/administrator/list.do');" />
-		<br />
-	</form:form>
-	
 
+			<input type="button" name="cancel"
+				value="<spring:message code="zone.cancel"/>"
+				onclick="javascript: relativeRedir('/zone/administrator/list.do');" />
+			<br />
+		</form:form>
+	</jstl:if>
+	
+	<jstl:if test="${permission == false }">
+		<spring:message code="zone.noPermission"/>
+	</jstl:if>
 </security:authorize>
+
+
+

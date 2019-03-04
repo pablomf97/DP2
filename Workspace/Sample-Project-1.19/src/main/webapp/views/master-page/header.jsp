@@ -34,7 +34,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="administrator/edit.do?id=0"><spring:message
-						code="master.page.administrator.register" /></a></li>
+								code="master.page.administrator.register" /></a></li>
 
 				</ul></li>
 
@@ -50,9 +50,9 @@
 
 			<li><a class="fNiv" href="statistics/administrator/display.do"><spring:message
 						code="master.page.administrator.dashboard" /></a></li>
-				
-				<li><a class="fNiv"><spring:message
-							code="master.page.administrator.zone" /></a>
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.administrator.zone" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="zone/administrator/list.do"><spring:message
@@ -60,7 +60,7 @@
 					<li><a href="zone/administrator/create.do"><spring:message
 								code="master.page.administrator.zone.new" /></a></li>
 				</ul></li>
-			
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.brotherhood.system" /></a>
 				<ul>
@@ -89,11 +89,11 @@
 					<li><a href="procession/member,brotherhood/list.do"><spring:message
 								code="master.page.member.procession.show" /></a></li>
 
-				</ul></li>	
-				
-				
-				<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
-					code="master.page.member.march" /></a>
+				</ul></li>
+
+
+			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
+						code="master.page.member.march" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="march/member,brotherhood/list.do"><spring:message
@@ -101,10 +101,11 @@
 					<li><a href="march/create.do"><spring:message
 								code="master.page.member.march.new" /></a></li>
 				</ul></li>
-			
-			<li><a class="fNiv" href="finder/member/search.do"><spring:message code="master.page.member.finder" /></a></li>
-			
-		
+
+			<li><a class="fNiv" href="finder/member/search.do"><spring:message
+						code="master.page.member.finder" /></a></li>
+
+
 		</security:authorize>
 
 		<security:authorize access="hasRole('BROTHERHOOD')">
@@ -131,14 +132,14 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="procession/member,brotherhood/list.do"><spring:message
-								code="master.page.member.procession.show" /></a></li>					
+								code="master.page.member.procession.show" /></a></li>
 					<li><a href="procession/create.do"><spring:message
 								code="master.page.member.procession.new" /></a></li>
 				</ul></li>
-				
+
 			<li><a class="fNiv" href="march/member,brotherhood/list.do"><spring:message
 						code="master.page.member.march" /></a></li>
-						
+
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
@@ -150,10 +151,10 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="member/edit.do?id=0"><spring:message
-						code="master.page.register.member" /></a></li>
-			<li><a href="brotherhood/edit.do?id=0"><spring:message
-						code="master.page.register.brotherhood" /></a></li>
-		</ul></li>
+								code="master.page.register.member" /></a></li>
+					<li><a href="brotherhood/edit.do?id=0"><spring:message
+								code="master.page.register.brotherhood" /></a></li>
+				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
@@ -161,6 +162,18 @@
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
+
+			<li><a class="fNiv"> <spring:message
+						code="master.page.profile" /> (<security:authentication
+						property="principal.username" />)
+			</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="messagebox/list.do"><spring:message
+								code="master.page.box.list" /></a></li>
+					<li><a href="messagebox/create.do"><spring:message
+								code="master.page.box.new" /></a></li>
+				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
@@ -177,8 +190,6 @@
 								code="master.page.profile.edit" /></a></li>
 					<li><a href="box/actor/list.do"><spring:message
 								code="master.page.profile.message.boxes" /></a></li>
-					<li><a href="socialProfile/actor/list.do"><spring:message
-								code="master.page.profile.socialProfile" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
