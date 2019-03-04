@@ -37,6 +37,8 @@ public class BrotherhoodService {
 
 	@Autowired
 	private EnrolmentService		enrolmentService;
+	@Autowired
+	private MessageBoxService		messageBoxService;
 
 
 	/**
@@ -112,8 +114,7 @@ public class BrotherhoodService {
 			final UserAccount savedAccount = this.userAccountService.save(account);
 			brotherhood.setUserAccount(savedAccount);
 			result = this.brotherhoodRepository.save(brotherhood);
-			//TODO: cuando este el sistema de box, crear los iniciales
-			//this.boxService.initializeDefaultBoxes(result);
+			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
 			final Brotherhood brotherhoodBD = this.brotherhoodRepository.findOne(brotherhood.getId());

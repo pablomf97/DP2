@@ -34,8 +34,8 @@
 
 		<value>/views/terms/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>
-		<value>/views/socialProfile/tiles.xml</value>
-
+		
+		<value>/views/messagebox/tiles.xml</value>
 
 	</util:list>
 

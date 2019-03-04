@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.util.Collection;
@@ -7,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,50 +19,58 @@ public class MessageBox extends DomainEntity {
 
 	/* Attributes */
 
-	private String name;
-	private boolean isPredefined;
-	private Collection<MessageBox> parentMessageBoxes;
-	private Collection<Message> messages;
-	
+	private String					name;
+	private boolean					isPredefined;
+	private Collection<MessageBox>	parentMessageBoxes;
+	private Collection<Message>		messages;
+	private Actor					owner;
+
 
 	/* Getters&Setters */
 
 	@NotBlank
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public boolean getIsPredefined() {
-		return isPredefined;
+		return this.isPredefined;
 	}
 
-	public void setIsPredefined(boolean isPredefined) {
+	public void setIsPredefined(final boolean isPredefined) {
 		this.isPredefined = isPredefined;
+	}
+
+	@ManyToOne
+	public Actor getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(final Actor owner) {
+		this.owner = owner;
 	}
 
 	@ElementCollection
 	@OneToMany
-	// OneToOne?
 	public Collection<MessageBox> getParentMessageBoxes() {
-		return parentMessageBoxes;
+		return this.parentMessageBoxes;
 	}
 
-	public void setParentMessageBoxes(Collection<MessageBox> parentMessageBoxes) {
+	public void setParentMessageBoxes(final Collection<MessageBox> parentMessageBoxes) {
 		this.parentMessageBoxes = parentMessageBoxes;
 	}
 
 	@ManyToMany
 	public Collection<Message> getMessages() {
-		return messages;
+		return this.messages;
 	}
 
-	public void setMessages(Collection<Message> messages) {
+	public void setMessages(final Collection<Message> messages) {
 		this.messages = messages;
 	}
 
-	
 }
