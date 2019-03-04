@@ -53,10 +53,6 @@ public class FinderService {
 	///CREATE
 	public Finder create(){
 		Finder result;
-		Member principal;
-
-		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal,"not.null");
 
 		result=new Finder();
 		result.setSearchResults(new ArrayList<Procession>());
@@ -85,12 +81,21 @@ public class FinderService {
 
 		currentMoment=new Date(System.currentTimeMillis()-1);
 		
-		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(
-				this.actorService.checkAuthority(principal, "MEMBER"),
-				"not.allowed");
-		
-		//Assert.isTrue(principal.getId()==(LoginService.getPrincipal().getId()),"not.allowed");
+		if (finder.getId() != 0) {
+			try {
+				principal = this.actorService.findByPrincipal();
+				Assert.isTrue(
+						this.actorService.checkAuthority(principal, "MEMBER"),
+						"not.allowed");
+				finder.setSearchMoment(currentMoment);
+			} catch (Throwable oops) {
+				principal = this.actorService.findByPrincipal();
+				Assert.isTrue(
+						this.actorService.checkAuthority(principal, "MEMBER"),
+						"not.allowed");
+			}
+
+		}
 		
 		
 		Assert.notNull(finder,"not.allowed");
@@ -100,7 +105,7 @@ public class FinderService {
 			Assert.isTrue(finder.getMinimumMoment().before(finder.getMaximumMoment()),"not.date");
 			
 		}
-		finder.setSearchMoment(currentMoment);
+		
 		result=this.finderRepository.save(finder);
 		Assert.notNull(result,"not.null");
 

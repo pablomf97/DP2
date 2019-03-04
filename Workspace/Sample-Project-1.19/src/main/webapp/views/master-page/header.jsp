@@ -177,6 +177,8 @@
 								code="master.page.profile.edit" /></a></li>
 					<li><a href="box/actor/list.do"><spring:message
 								code="master.page.profile.message.boxes" /></a></li>
+					<li><a href="socialProfile/actor/list.do"><spring:message
+								code="master.page.profile.socialProfile" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
