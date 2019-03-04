@@ -43,6 +43,11 @@
 		</tr>
 
 		<tr>
+			<td><spring:message code="administrator.stdevMember" /></td>
+			<td style="text-align: right">${stdevMemberPerBrotherhood}</td>
+		</tr>
+
+		<tr>
 			<td><spring:message code="administrator.acceptedMembers" /></td>
 			<jstl:forEach var="member" items="${acceptedMembers}">
 				<td style="text-align: right"><jstl:out
@@ -92,7 +97,10 @@
 		<tr>
 			<td><spring:message
 					code="administrator.requests.approved.procession" /></td>
-			<td style="text-align: right">${ratioApprovedProcession[1]}</td>
+			<jstl:forEach var="i" begin="0" end="${processions}">
+				<td style="text-align: right">${ratioApprovedProcession[i]}</td>
+			</jstl:forEach>
+
 		</tr>
 	</table>
 
@@ -105,10 +113,25 @@
 		<tr>
 			<td><spring:message code="administrator.early.processions" /></td>
 			<jstl:forEach var="p" items="${earlyProcessions}">
-				<td style="text-align: right"><jstl:out
-						value="${p.title}" /></td>
+				<td style="text-align: right"><jstl:out value="${p.title}" /></td>
 				<br />
 			</jstl:forEach>
+
+		</tr>
+	</table>
+
+	<table class="displayStyle" style="width: 50%">
+		<tr>
+			<th colspan="2"><spring:message
+					code="administrator.positions.statistics" /></th>
+		</tr>
+
+		<tr>
+			<td><spring:message code="administrator.positions.histogram" /></td>
+			<jstl:forEach var="x" begin="0" end="${positions}">
+				<td style="text-align: right"><jstl:out value="${histogram[x]}" /></td>
+			</jstl:forEach>
+
 
 		</tr>
 	</table>
