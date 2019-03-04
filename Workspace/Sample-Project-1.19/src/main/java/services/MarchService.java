@@ -32,10 +32,10 @@ public class MarchService {
 	private MarchRepository marchRepository;
 
 	// Supporting services -----------------------------------
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private Validator validator;
 
@@ -82,26 +82,26 @@ public class MarchService {
 		Assert.notNull(march);
 
 		if(this.actorService.checkAuthority(principal, "MEMBER")){
-			
+
 			Assert.isTrue(march.getId()== 0, "wrong.id");
-			
+
 			member = (Member) principal;
 			march.setStatus("PENDING");
 			march.setRow(null);
 			march.setCol(null);
 			march.setMember(member);
-			
+
 		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD")){
-			
+
 			Assert.isTrue(march.getId() != 0);
-			
+
 			brotherhood = (Brotherhood) principal;
-			
+
 			Assert.isTrue(march.getProcession().getBrotherhood().equals(brotherhood), "not.allowed");
 			if(march.getStatus() == "REJECT") {
 				Assert.notNull(march.getReason());
 			}
-			
+
 		}
 
 		result = this.marchRepository.save(march);
@@ -118,7 +118,7 @@ public class MarchService {
 
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "MEMBER"), "not.allowed");
-		
+
 		Assert.isTrue(march.getMember().equals(principal), "not.allowed");
 
 		this.marchRepository.delete(march.getId());
@@ -127,11 +127,11 @@ public class MarchService {
 
 
 	// Other business methods -------------------------------
-	
+
 	public March reconstruct(March march, BindingResult binding) {
 		March result;
 		Actor principal = null;
-		
+
 		if(march.getId() == 0) {
 			principal = this.actorService.findByPrincipal();
 			result = march;
@@ -139,32 +139,32 @@ public class MarchService {
 			result.setMember((Member) principal);
 		} else {
 			result = this.findOne(march.getId());
-			
+
 			result.setStatus(march.getStatus());
 			result.setRow(march.getRow());
 			result.setCol(march.getCol());
 			result.setReason(march.getReason());
-			
+
 		}
-		
+
 		validator.validate(result, binding);
-		
+
 		return result;
 	}
-	
+
 	public Collection<March> findMarchsByMemberId(int memberId) {
 		Collection<March> result;
-		
+
 		result = this.marchRepository.findMarchsByMemberId(memberId);
-		
+
 		return result;
 	}
-	
+
 	public Collection<March> findMarchsByBrotherhoodId(int brotherhoodId) {
 		Collection<March> result;
-		
+
 		result = this.marchRepository.findMarchsByBrotherhoodId(brotherhoodId);
-		
+
 		return result;
 	}
 
@@ -196,16 +196,17 @@ public class MarchService {
 	}
 
 
-	public List<Double> ratioApprovedInAProcession(){
-		List<Double> result = new ArrayList<Double>();
+	public Double[] ratioApprovedInAProcession(){
+		
 		Collection<Procession> processions;
 		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsApprovedInAProcession = new ArrayList<March>();
 
-
+		int count = 0;
 
 		processions = this.processionService.findAll();
-		Assert.notNull(processions);
-
+		
+		Double[] result = new Double[processions.size()];
+		
 		for(Procession p : processions){
 
 			Double ratio = 0.0;
@@ -223,7 +224,13 @@ public class MarchService {
 
 			ratio = (double) (marchsApprovedInAProcession.size()/marchsInAProcession.size());
 
-			result.add(ratio);
+
+			result[count] = ratio;
+
+
+			count++;
+
+
 
 		}
 
@@ -250,6 +257,6 @@ public class MarchService {
 		return result;
 	}
 
-	
+
 
 }

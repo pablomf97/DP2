@@ -253,6 +253,32 @@ public class MemberService {
 		}
 		return result;
 	}
+	
+	public Double stdevMembersPerBrotherhood(){
+		Collection<Brotherhood> brotherhoods;
+		Collection<Member> members = new ArrayList<Member>();
+		
+		brotherhoods = this.brotherhoodService.findAll();
+		
+		for(Brotherhood br : brotherhoods){
+			members = this.findAllMembersByBrotherhood(br.getId());
+			
+		}
+		
+		double sum = 0.0;
+		double count = 0.0;
+		
+		sum = members.size()*members.size();
+		count = members.size();
+		
+		double average = 0.0;
+		
+		average = members.size()/brotherhoods.size();
+		
+		double stdev = Math.sqrt(sum)/count-average*average;
+		
+		return stdev;
+	}
 
 	public Collection<Member> acceptedMembers() {
 		Collection<Member> members;
