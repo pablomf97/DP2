@@ -20,12 +20,13 @@
 
 <security:authorize access="isAuthenticated()">
 
-	<form:form action="social-profile/actor/edit.do"
+	<form:form action="socialProfile/actor/edit.do"
 		modelAttribute="socialProfile" methodParam="post">
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />
-
+		<!--<form:hidden path="actor" value="${principal}"/>
+-->
 		<form:label path="nick">
 			<spring:message code="actor.socialprofile.nick" />:
 		</form:label>
@@ -53,11 +54,11 @@
 		<jstl:if test="${socialProfile.id != 0}">
 			<input type="submit" name="delete" id="delete"
 				value="<spring:message code="actor.delete.social" />"
-				onclick="redirect: location.href = 'socialProfile/actor/edit.do?socialprofileID=${socialProfile.id}';" />
+				onclick="redirect: location.href = 'socialProfile/actor/';" />
 		</jstl:if>
 		<input type="button" name="cancel"
 			value="<spring:message code="actor.cancel" />"
-			onclick="javascript: relativeRedir('/actor/display.do?actorID=${principal.id}');" />
+			onclick="javascript: relativeRedir('socialProfile/actor/list.do');" />
 
 	</form:form>
 

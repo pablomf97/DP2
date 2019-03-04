@@ -18,7 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<security:authorize access="isAuthenticated()" var="authenticated" />
+<security:authorize access="isAuthenticated()" var="authenticated" >
 
 <jstl:choose>
 	<jstl:when test="${not empty socialProfiles}">
@@ -35,19 +35,19 @@
 						<display:column titleKey="actor.socialprofile.network">
 						<jstl:out value="${socialProfiles.name}"></jstl:out>
 						</display:column>
-						<display:column titleKey="actor.socialprofile.nick ">
+						<display:column titleKey="actor.socialprofile.nick">
 						<jstl:out value="${socialProfiles.nick}"></jstl:out>
 						</display:column>
 						<display:column titleKey="actor.socialprofile.link">
 						<jstl:out value="${socialProfiles.linkProfile}"></jstl:out>
 						</display:column>	
-						<jstl:if test="${editable}">
+						
 							<display:column titleKey="actor.edit.social">
 								<input type="button" name="editSocial"
 									value="<spring:message code="actor.edit.social" />"
-									onclick="redirect: location.href = 'social-profile/actor/edit.do?socialprofileID=${socialProfiles.id}';" />
+									onclick="redirect: location.href = 'socialProfile/actor/edit.do?socialprofileID=${socialProfiles.id}';" />
 							</display:column>
-						</jstl:if>
+						
 					</display:table></td>
 			</tr>
 		</table>
@@ -63,3 +63,4 @@
 			onclick="redirect: location.href = 'socialProfile/actor/create.do';" />
 	</jstl:otherwise>
 </jstl:choose>
+</security:authorize>

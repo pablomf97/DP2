@@ -55,7 +55,7 @@ public class SocialProfileController extends AbstractController {
 		ModelAndView res;
 		Actor principal;
 
-		Collection<SocialProfile> socialProfiles = null;
+		Collection<SocialProfile> socialProfiles;
 		Boolean editable = true;
 
 		principal = this.actorService.findByPrincipal();
@@ -63,7 +63,7 @@ public class SocialProfileController extends AbstractController {
 
 
 		
-	//	socialProfiles = this.socialProfileService.socialProfilesByUser(principal.getUserAccount().getUsername());
+		socialProfiles = this.socialProfileService.findAll();//this.socialProfileService.socialProfilesByUser(principal.getUserAccount().getUsername());
 
 
 		res = new ModelAndView("socialProfile/list");
@@ -95,10 +95,9 @@ public class SocialProfileController extends AbstractController {
 			res = createEditModelAndView(socialProfile);
 		} else {
 			try {
-				Actor actor = this.actorService.findByPrincipal();
+				
 				this.socialProfileService.save(socialProfile);
-				res = new ModelAndView("redirect:list.do?actorID="
-						+ actor.getId());
+				res = new ModelAndView("redirect:list.do");
 			} catch (Throwable oops) {
 				res = createEditModelAndView(socialProfile,
 						"system.commit.error");
@@ -118,7 +117,7 @@ public class SocialProfileController extends AbstractController {
 			try {
 				Actor actor = this.actorService.findByPrincipal();
 				this.socialProfileService.delete(socialProfile);
-				res = new ModelAndView("redirect:list.do?actorID="
+				res = new ModelAndView("redirect:list.do"
 						+ actor.getId());
 			} catch (Throwable oops) {
 				res = createEditModelAndView(socialProfile,
@@ -143,11 +142,14 @@ public class SocialProfileController extends AbstractController {
 			String messageCode) {
 		ModelAndView res;
 		Boolean editable;
+		Actor principal;
+		principal=this.actorService.findByPrincipal();
 
 		editable = this.socialProfileService
 				.checkifPrincipalIsOwnerBySocialProfileId(socialProfile.getId());
 
 		res = new ModelAndView("socialProfile/edit");
+		res.addObject("principal",principal);
 		res.addObject("editable", editable);
 		res.addObject("socialProfile", socialProfile);
 		res.addObject("message", messageCode);
