@@ -6,6 +6,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 
 <jstl:choose>
 	<jstl:when test="${march.id ==0}">
@@ -17,25 +19,14 @@
 				<form:label path="procession">
 					<spring:message code="march.procession" />:
 				</form:label>
-				<form:select name="procession" path="procession" style="width:300px;">
-					<jstl:forEach var="p" items="${toApply}">
-						<form:option value="${p}" label="${p.title}" />
-					</jstl:forEach>
-				</form:select>
-				<br/><br/>					
+				<form:select multiple="true" path="procession" items="${toApply}" itemLabel="title"  style="width:200px;"/><br/><br/>					
 			</fieldset>
 			<br>
-			<input type="submit" name="save" id="save" value="<spring:message code="march.save" />" />&nbsp; 
+			<acme:submit code="march.save" name="save"/>&nbsp; 
 				<jstl:if test="${march.id != 0}">
-					<input type="submit" name="delete" value="<spring:message code="march.delete" />"
-						onclick="return confirm('<spring:message code="march.confirm.delete" />')" />&nbsp;
+					<acme:delete code="march.delete" name="delete" confirmation="march.confirm.delete"/>&nbsp;
 				</jstl:if>
-				<jstl:if test="${march.id!=0}">
-				<input type="button" name="cancel" value="<spring:message code="march.cancel" />"
-					onclick="redirect: location.href = 'march/list.do';" />
-				<br />
-				</jstl:if>
-				
+			<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do"/><br />			
 		</form:form>
 	</jstl:when>
 	<jstl:otherwise>

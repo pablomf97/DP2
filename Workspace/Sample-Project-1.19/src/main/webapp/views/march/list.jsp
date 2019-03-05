@@ -55,17 +55,27 @@
 			
 		<!-- Attributes-->
 		
-		<display:column property="member.name" titleKey="march.member" sortable="true" />
-		
-		<display:column property="procession.title" titleKey="march.procession" sortable="true" />
-		
-		<display:column property="status" titleKey="march.status" sortable="true" class="${bgcolor}"/>
+		<display:column titleKey="march.member" sortable="true" >
+			<jstl:out value="${row.member.name}"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.procession" sortable="true" >
+			<jstl:out value="${row.procession.title }"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.status" sortable="true" class="${bgcolor}">
+			<jstl:out value="${row.status }"></jstl:out>
+		</display:column>
 		
 		<jstl:if test="${status == 'ACCEPTED' }">
-		
-		<display:column property="row" titleKey="march.row"/>
-		
-		<display:column property="column" titleKey="march.column"/>
+				
+		<display:column titleKey="march.row" sortable="true" >
+			<jstl:out value="${row.row }"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.column" sortable="true" >
+			<jstl:out value="${row.column }"></jstl:out>
+		</display:column>
 		
 		</jstl:if>
 	
@@ -108,17 +118,27 @@
 			
 		<!-- Attributes-->
 		
-		<display:column property="member.name" titleKey="march.member" sortable="true" />
+		<display:column titleKey="march.member" sortable="true" >
+			<jstl:out value="${row.member.name}"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.procession" sortable="true" >
+			<jstl:out value="${row.procession.title }"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.status" sortable="true" class="${bgcolor}">
+			<jstl:out value="${row.status }"></jstl:out>
+		</display:column>
 		
-		<display:column property="procession.title" titleKey="march.procession" sortable="true" />
-		
-		<display:column property="status" titleKey="march.status" sortable="true" class="${bgcolor}"/>
-		
-		<jstl:if test="${status == 'APPROVED' }">
-		
-		<display:column property="row" titleKey="march.row"/>
-		
-		<display:column property="column" titleKey="march.column"/>
+		<jstl:if test="${status == 'ACCEPTED' }">
+				
+		<display:column titleKey="march.row" sortable="true" >
+			<jstl:out value="${row.row }"></jstl:out>
+		</display:column>
+				
+		<display:column titleKey="march.column" sortable="true" >
+			<jstl:out value="${row.column }"></jstl:out>
+		</display:column>
 		
 		</jstl:if>
 	

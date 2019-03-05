@@ -22,6 +22,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
 import domain.Enrolment;
+import domain.Zone;
 import forms.BrotherhoodForm;
 
 @Service
@@ -32,6 +33,10 @@ public class BrotherhoodService {
 	private UserAccountService		userAccountService;
 	@Autowired
 	private BrotherhoodRepository	brotherhoodRepository;
+
+	@Autowired
+	private ZoneService 			zoneService;
+
 	@Autowired
 	private Validator				validator;
 
@@ -238,7 +243,7 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notEmpty(brotherhoods);
+		Assert.notNull(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
@@ -246,7 +251,7 @@ public class BrotherhoodService {
 			if (count == 0)
 				result = b;
 
-			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size())
+			if (this.enrolmentService.findActiveEnrolmentByBrotherhood(result.getId()).size() < enrolments.size())
 				result = b;
 
 			count++;
@@ -277,6 +282,69 @@ public class BrotherhoodService {
 		}
 
 		return result;
+	}
+
+	public Double maxBrotherhoodPerArea(){
+		Double result = null;
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone;
+		int count = 0;
+
+		zones = this.zoneService.findAll();
+		Assert.notNull(zones);
+
+		for(Zone z: zones){
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+			if(count == 0){
+				result = (double) brotherhoodsInZone.size();
+			}
+			
+			if(brotherhoodsInZone.size() > result){
+				
+				result = (double) brotherhoodsInZone.size();
+			}
+			
+			count++;
+		}
+		return result;
+
+	}
+	
+	public Double minBrotherhoodPerArea(){
+		Double result = null;
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone;
+		int count = 0;
+
+		zones = this.zoneService.findAll();
+		Assert.notNull(zones);
+
+		for(Zone z: zones){
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+			if(count == 0){
+				result = (double) brotherhoodsInZone.size();
+			}
+			
+			if(brotherhoodsInZone.size() < result){
+				
+				result = (double) brotherhoodsInZone.size();
+			}
+			
+			count++;
+		}
+		return result;
+
+	}
+	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId){
+		Collection<Brotherhood> result;
+
+		result = this.brotherhoodRepository.brotherhoodsByZone(zoneId);
+		Assert.notNull(result);
+
+		return result;
+
 	}
 
 }

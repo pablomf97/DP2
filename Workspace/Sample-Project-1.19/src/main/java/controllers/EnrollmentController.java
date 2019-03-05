@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,9 +33,6 @@ public class EnrollmentController extends AbstractController {
 	@Autowired
 	private ActorService actorService;
 
-	// @Autowired
-	// private MemberService memberService;
-
 	@Autowired
 	private BrotherhoodService brotherhoodService;
 
@@ -53,7 +49,7 @@ public class EnrollmentController extends AbstractController {
 
 	/* List of enrollments of a member */
 	@RequestMapping(value = "/member/list", method = RequestMethod.GET)
-	public ModelAndView listMember(Locale locale) {
+	public ModelAndView listMember() {
 		ModelAndView res;
 		Actor principal;
 		Collection<Enrolment> enrolments;
@@ -71,7 +67,6 @@ public class EnrollmentController extends AbstractController {
 			res = new ModelAndView("enrolment/listMember");
 			res.addObject("enrolments", enrolments);
 			res.addObject("permission", permission);
-			res.addObject("language", locale.getLanguage());
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
@@ -86,7 +81,7 @@ public class EnrollmentController extends AbstractController {
 
 	/* List of enrollments of a brotherhood */
 	@RequestMapping(value = "/brotherhood/list", method = RequestMethod.GET)
-	public ModelAndView listBrotherhood(Locale locale) {
+	public ModelAndView listBrotherhood() {
 		ModelAndView res;
 		Actor principal;
 		Collection<Enrolment> enrolments;
@@ -105,7 +100,6 @@ public class EnrollmentController extends AbstractController {
 			res = new ModelAndView("enrolment/listBrotherhood");
 			res.addObject("enrolments", enrolments);
 			res.addObject("permission", permission);
-			res.addObject("language", locale.getLanguage());
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
@@ -154,7 +148,7 @@ public class EnrollmentController extends AbstractController {
 	/* Accept or reject an enrollment */
 	@RequestMapping(value = "/brotherhood/action", method = RequestMethod.GET)
 	public ModelAndView actionsEnrolments(@RequestParam String action,
-			@RequestParam int enrolmentID, Locale locale) {
+			@RequestParam int enrolmentID) {
 		ModelAndView res;
 		Actor principal;
 		Enrolment enrolment;
@@ -171,7 +165,7 @@ public class EnrollmentController extends AbstractController {
 
 			if (action.equals("accept")) {
 
-				res = this.createEditModelAndView(enrolment, locale);
+				res = this.createEditModelAndView(enrolment);
 
 			} else if (action.equals("reject")) {
 
@@ -205,8 +199,7 @@ public class EnrollmentController extends AbstractController {
 	/* Saving an enrollment */
 	@RequestMapping(value = "/brotherhood/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Enrolment enrolment,
-			@RequestParam("positionT") String[] position,
-			BindingResult binding, Locale locale) {
+			@RequestParam("positionT") String[] position, BindingResult binding) {
 
 		ModelAndView res;
 		Actor principal;
@@ -215,8 +208,7 @@ public class EnrollmentController extends AbstractController {
 				binding);
 
 		if (binding.hasErrors()) {
-			res = this.createEditModelAndView(enrolment, binding.toString(),
-					locale);
+			res = this.createEditModelAndView(enrolment, binding.toString());
 		} else {
 			try {
 				principal = this.actorService.findByPrincipal();
@@ -232,8 +224,8 @@ public class EnrollmentController extends AbstractController {
 			} catch (IllegalArgumentException oops) {
 				res = new ModelAndView("misc/403");
 			} catch (Throwable oopsie) {
-				res = this.createEditModelAndView(enrolment,
-						binding.toString(), locale);
+				res = this
+						.createEditModelAndView(enrolment, binding.toString());
 			}
 		}
 
@@ -241,24 +233,22 @@ public class EnrollmentController extends AbstractController {
 	}
 
 	// Manage methods
-	protected ModelAndView createEditModelAndView(Enrolment enrolment,
-			Locale locale) {
+	protected ModelAndView createEditModelAndView(Enrolment enrolment) {
 		ModelAndView res;
 
-		res = createEditModelAndView(enrolment, null, locale);
+		res = createEditModelAndView(enrolment, null);
 
 		return res;
 	}
 
 	protected ModelAndView createEditModelAndView(Enrolment enrolment,
-			String messageCode, Locale locale) {
+			String messageCode) {
 		ModelAndView res;
 
 		res = new ModelAndView("enrolment/edit");
 		res.addObject("enrolment", enrolment);
 		res.addObject("message", messageCode);
 		res.addObject("positions", this.positionService.findAll());
-		res.addObject("language", locale.getLanguage());
 		return res;
 	}
 }

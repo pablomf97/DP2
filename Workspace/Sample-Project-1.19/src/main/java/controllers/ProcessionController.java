@@ -150,10 +150,22 @@ public class ProcessionController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int processionId) {
 		ModelAndView result;
 		Procession procession;
+		Actor principal;
 
-		procession = this.processionService.findOne(processionId);
-		Assert.notNull(procession);
-		result = this.createEditModelAndView(procession);
+		try {
+			principal = this.actorService.findByPrincipal();
+			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+			
+			procession = this.processionService.findOne(processionId);
+			Assert.notNull(procession);
+			result = this.createEditModelAndView(procession);
+			
+		} catch (IllegalArgumentException oops) {
+			result = new ModelAndView("misc/403");
+		} catch (Throwable oopsie) {
+			result = new ModelAndView("redirect:/enrolment/member/list.do");
+		}
+		
 
 		return result;
 	}
@@ -170,10 +182,12 @@ public class ProcessionController extends AbstractController {
 			try {
 				this.processionService.save(procession);
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
+			} catch (IllegalArgumentException oops) {
+				result = new ModelAndView("misc/403");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(procession,
-						"procession.commit.error");
-			}
+						"procession.commit.error"); }
+				
 		return result;
 	}
 
