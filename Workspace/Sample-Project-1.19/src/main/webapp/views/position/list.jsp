@@ -33,15 +33,13 @@
 
 				<jstl:choose>
 					<jstl:when test="${pageContext.response.locale.language == 'es'}">
-						<jstl:set var="espanyol" value="${position.name.get('Español')}" />
 						<display:column titleKey="position.name" sortable="true">
-							<jstl:out value="${espanyol}" />
+							<jstl:out value="${position.name.get('Español')}" />
 						</display:column>
 					</jstl:when>
 					<jstl:otherwise>
-						<jstl:set var="english" value="${position.name.get('English')}" />
 						<display:column titleKey="position.name" sortable="true">
-							<jstl:out value="${english}" />
+							<jstl:out value="${position.name.get('English')}" />
 						</display:column>
 					</jstl:otherwise>
 				</jstl:choose>
@@ -50,8 +48,9 @@
 							code="position.edit" /></a>
 				</display:column>
 			</display:table>
-			<a href="position/administrator/create.do"><spring:message
-					code="position.create" /></a>
+			<input type="button"
+				onclick="redirect: location.href = 'position/administrator/create.do';"
+				value="<spring:message code='position.create' />" />
 		</jstl:otherwise>
 	</jstl:choose>
 

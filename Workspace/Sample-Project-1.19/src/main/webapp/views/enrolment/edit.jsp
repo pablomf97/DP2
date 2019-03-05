@@ -30,7 +30,7 @@
 		</p>
 
 		<jstl:choose>
-			<jstl:when test="${language == 'es'}">
+			<jstl:when test="${pageContext.response.locale.language == 'es'}">
 				<select name="positionT">
 					<jstl:forEach items="${positions}" var="x">
 						<option value="${x.name.get('Español')}">

@@ -37,10 +37,14 @@
 
 		<!-- Attributes -->
 		<spring:message code="zone.name" var="nameHeader" />
-		<display:column property="name" title="${nameHeader}" />
+		<display:column title="${nameHeader}">
+			<jstl:out value="${row.name}" />
+		</display:column>
 
 		<spring:message code="zone.pictures" var="pictureHeader" />
-		<display:column property="pictures" title="${pictureHeader}" />
+		<display:column property="pictures" title="${pictureHeader}">
+			<jstl:out value="${row.pictures}" />
+		</display:column>
 
 		<div>
 			<a href="zone/administrator/create.do"> <spring:message

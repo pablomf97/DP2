@@ -26,20 +26,24 @@
 				name="enrolments" requestURI="enrolment/member/list.do"
 				id="enrolment">
 
-				<display:column value="${enrolment.moment}"
-					titleKey="enrolment.moment" sortable="true" />
+				<display:column titleKey="enrolment.moment" sortable="true">
+					<jstl:out value="${enrolment.moment}" />
+				</display:column>
 
-				<display:column value="${enrolment.brotherhood.title}"
-					titleKey="enrolment.brotherhood" sortable="true" />
+				<display:column titleKey="enrolment.brotherhood" sortable="true">
+					<jstl:out value="${enrolment.brotherhood.title}" />
+				</display:column>
 
 				<jstl:choose>
 					<jstl:when test="${pageContext.response.locale.language == 'es'}">
-						<display:column value="${enrolment.position.name.get('Español')}"
-							titleKey="enrolment.position" sortable="true" />
+						<display:column titleKey="enrolment.position" sortable="true">
+							<jstl:out value="${enrolment.position.name.get('Español')}" />
+						</display:column>
 					</jstl:when>
 					<jstl:otherwise>
-						<display:column value="${enrolment.position.name.get('English')}"
-							titleKey="enrolment.position" sortable="true" />
+						<display:column titleKey="enrolment.position" sortable="true">
+							<jstl:out value="${enrolment.position.name.get('English')}" />
+						</display:column>
 					</jstl:otherwise>
 				</jstl:choose>
 

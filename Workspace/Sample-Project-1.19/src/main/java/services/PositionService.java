@@ -146,10 +146,10 @@ public class PositionService {
 
 		return res;
 	}
-	
-	public Integer[] histogram(){
-		
-		Collection<Position>positions;
+
+	public Integer[] histogram() {
+
+		Collection<Position> positions;
 		Collection<Position> positiosnByEnrolments;
 		Integer president = 0;
 		Integer vicepresident = 0;
@@ -158,40 +158,40 @@ public class PositionService {
 		Integer historian = 0;
 		Integer fundraiser = 0;
 		Integer officer = 0;
-		
+
 		positions = this.positionRepository.findAll();
-		
-		Integer[]result = new Integer[positions.size()];
-		
+
+		Integer[] result = new Integer[positions.size()];
+
 		positiosnByEnrolments = this.findPositionByEnrolmennts();
-		
-		for(Position p : positiosnByEnrolments){
-			if(p.getName().containsValue("President")){
+
+		for (Position p : positiosnByEnrolments) {
+			if (p.getName().containsValue("President")) {
 				president++;
 			}
-			
-			if(p.getName().containsValue("Vicepresident")){
+
+			if (p.getName().containsValue("Vicepresident")) {
 				vicepresident++;
 			}
-			if(p.getName().containsValue("Secreatry")){
+			if (p.getName().containsValue("Secreatry")) {
 				secretary++;
 			}
-			if(p.getName().containsValue("Treasurer")){
+			if (p.getName().containsValue("Treasurer")) {
 				treasurer++;
 			}
-			if(p.getName().containsValue("Historian")){
+			if (p.getName().containsValue("Historian")) {
 				historian++;
 			}
-			if(p.getName().containsValue("Fundraiser")){
+			if (p.getName().containsValue("Fundraiser")) {
 				fundraiser++;
 			}
-			
-			if(p.getName().containsValue("Officer")){
+
+			if (p.getName().containsValue("Officer")) {
 				officer++;
 			}
-			
+
 		}
-		
+
 		result[0] = president;
 		result[1] = vicepresident;
 		result[2] = secretary;
@@ -199,19 +199,17 @@ public class PositionService {
 		result[4] = historian;
 		result[5] = fundraiser;
 		result[6] = officer;
-		
+
 		return result;
-	}
-	
-	public Collection<Position> findPositionByEnrolmennts(){
-		Collection<Position>result;
-		
-		result = this.positionRepository.findPositionByEnrolments();
-		
-		return result;
-		
 	}
 
+	public Collection<Position> findPositionByEnrolmennts() {
+		Collection<Position> result;
+
+		result = this.positionRepository.findPositionByEnrolments();
+
+		return result;
+
+	}
 
 }
-

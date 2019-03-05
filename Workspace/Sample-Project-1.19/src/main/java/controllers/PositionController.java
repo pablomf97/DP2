@@ -125,13 +125,12 @@ public class PositionController extends AbstractController {
 		ModelAndView res;
 		Actor principal;
 
-		position = this.positionService.reconstruct(position, nameES, nameEN,
-				binding);
-
 		if (binding.hasErrors()) {
 			res = this.createEditModelAndView(position, binding.toString());
 		} else {
 			try {
+				position = this.positionService.reconstruct(position, nameES,
+						nameEN, binding);
 				principal = this.actorService.findByPrincipal();
 				Assert.isTrue(this.actorService.checkAuthority(principal,
 						"ADMINISTRATOR"));
@@ -142,7 +141,8 @@ public class PositionController extends AbstractController {
 			} catch (IllegalArgumentException oops) {
 				res = new ModelAndView("misc/403");
 			} catch (Throwable oopsie) {
-				res = this.createEditModelAndView(position, binding.toString());
+				res = this.createEditModelAndView(position,
+						"position.commit.error");
 			}
 		}
 		return res;

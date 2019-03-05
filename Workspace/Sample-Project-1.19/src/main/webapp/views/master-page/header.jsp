@@ -22,7 +22,7 @@
 </div>
 <div>
 	<a href="#"><img style="height: 255px; padding-bottom: 12px"
-		src="${banner}" alt="Acme Madrug� Co., Inc." /></a>
+		src="${banner}" alt="Acme Madruga Co., Inc." /></a>
 </div>
 
 <div>

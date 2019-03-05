@@ -65,7 +65,9 @@
 								id="messagePriority">
 
 								<display:column titleKey="system.message.priority"
-									value="${messagePriority}" sortable="true" />
+									sortable="true">
+									<jstl:out value="${messagePriority}" />
+								</display:column>
 
 							</display:table></td>
 				</table>
@@ -78,8 +80,9 @@
 								name="spamWords" requestURI="sysconfig/administrator/display.do"
 								id="spamWords">
 
-								<display:column titleKey="system.spamwords" value="${spamWords}"
-									sortable="true" />
+								<display:column titleKey="system.spamwords" sortable="true">
+									<jstl:out value="${spamWords}" />
+								</display:column>
 
 							</display:table></td>
 					</tr>
@@ -94,8 +97,9 @@
 								requestURI="sysconfig/administrator/display.do"
 								id="negativeWords">
 
-								<display:column titleKey="system.negativewords"
-									value="${negativeWords}" sortable="true" />
+								<display:column titleKey="system.negativewords" sortable="true">
+									<jstl:out value="${negativeWords}" />
+								</display:column>
 
 							</display:table></td>
 					</tr>
@@ -110,8 +114,9 @@
 								requestURI="sysconfig/administrator/display.do"
 								id="positiveWords">
 
-								<display:column titleKey="system.positivewords"
-									value="${positiveWords}" sortable="true" />
+								<display:column titleKey="system.positivewords" sortable="true">
+									<jstl:out value="${positiveWords}" />
+								</display:column>
 
 							</display:table></td>
 				</table>
@@ -125,8 +130,9 @@
 								requestURI="sysconfig/administrator/display.do"
 								id="welcomeMessage">
 
-								<display:column titleKey="system.welcomemessage"
-									value="${welcomeMessage}" sortable="true" />
+								<display:column titleKey="system.welcomemessage" sortable="true">
+									<jstl:out value="${welcomeMessage}" />
+								</display:column>
 
 							</display:table></td>
 				</table>
