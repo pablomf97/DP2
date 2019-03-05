@@ -166,6 +166,7 @@ public class PositionService {
 		positiosnByEnrolments = this.findPositionByEnrolmennts();
 		
 		for(Position p : positiosnByEnrolments){
+			
 			if(p.getName().containsValue("President")){
 				president++;
 			}

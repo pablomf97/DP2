@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.BrotherhoodService;
+import services.FinderService;
 import services.MarchService;
 import services.MemberService;
 import services.PositionService;
@@ -40,6 +41,9 @@ public class DashboardAdministratorController extends AbstractController{
 	@Autowired
 	private PositionService positionService;
 	
+	@Autowired
+	private FinderService finderService;
+	
 	
 	//Display
 	
@@ -68,13 +72,31 @@ public class DashboardAdministratorController extends AbstractController{
 		Double ratioRejectedRequests;
 		Double ratioPendingRequests;
 		Double[] ratioApprovedRequestsInAProcession;
+		Double[] ratioRejectedInAProcession;
+		Double[] ratioPendingInAProcession;
 		
 		Integer[] histogram;
 		
 		Collection<Procession> earlyProcessions;
 		
+		Double[] statsFinder;
+		Double ratioFinders;
+		
+		Double maxBrotherhoodPerArea;
+		Double minBrotherhoodPerArea;
+		Double ratioBrotherhoodsPerArea;
+		Double countBrotherhoodsPerArea;
+		
 		String language;
 		language = locale.getLanguage();
+		
+		statsFinder=this.finderService.statsFinder();
+		ratioFinders=this.finderService.ratioFinders();
+		
+		maxBrotherhoodPerArea=this.brotherhoodService.maxBrotherhoodPerArea();
+		minBrotherhoodPerArea=this.brotherhoodService.minBrotherhoodPerArea();
+		ratioBrotherhoodsPerArea=this.brotherhoodService.ratioBrotherhoodsPerArea();
+		countBrotherhoodsPerArea=this.brotherhoodService.countBrotherhoodsPerArea();
 		
 		averageMemberPerBrotherhood = this.memberService.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
@@ -89,6 +111,8 @@ public class DashboardAdministratorController extends AbstractController{
 		ratioRejectedRequests = this.marchService.ratioRejectedRequests();
 		ratioPendingRequests = this.marchService.ratioPendingRequests();
 		ratioApprovedRequestsInAProcession = this.marchService.ratioApprovedInAProcession();
+		ratioRejectedInAProcession=this.marchService.ratioRejectedInAProcession();
+		ratioPendingInAProcession=this.marchService.ratioPendingInAProcession();
 		
 		earlyProcessions = this.processionService.findEarlyProcessions();
 		
@@ -105,6 +129,8 @@ public class DashboardAdministratorController extends AbstractController{
 		result.addObject("ratioRejectedRequests", ratioRejectedRequests);
 		result.addObject("ratioPendingRequests", ratioPendingRequests);
 		result.addObject("ratioApprovedProcession", ratioApprovedRequestsInAProcession);
+		result.addObject("ratioRejectedInAProcession",ratioRejectedInAProcession);
+		result.addObject("ratioPendingInAProcession",ratioPendingInAProcession);
 		
 		result.addObject("largestBrotherhood", largestBrotherhood);
 		result.addObject("smallestBrotherhood", smallestBrotherhood);
@@ -114,6 +140,14 @@ public class DashboardAdministratorController extends AbstractController{
 		result.addObject("minMemberPerBrotherhood", minMemberPerBrotherhood);
 		result.addObject("averageMemberPerBrotherhood", averageMemberPerBrotherhood);
 		result.addObject("stdevMemberPerBrotherhood", stdevMemberPerBrotherhood);
+		
+		result.addObject("statsFinder",statsFinder);
+		result.addObject("ratioFinders",ratioFinders);
+		
+		result.addObject("maxBrotherhoodPerArea",maxBrotherhoodPerArea);
+		result.addObject("minBrotherhoodPerArea",minBrotherhoodPerArea);
+		result.addObject("ratioBrotherhoodsPerArea", ratioBrotherhoodsPerArea);
+		result.addObject("countBrotherhoodsPerArea",countBrotherhoodsPerArea);
 		
 		result.addObject("processions", processions.size());
 		result.addObject("language", language);
