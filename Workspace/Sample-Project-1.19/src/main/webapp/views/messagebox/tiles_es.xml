@@ -10,30 +10,19 @@
 
 <tiles-definitions>
 
-	
-	<definition name="message/edit" extends="master.page">
-		<put-attribute name="title" value="Nuevo mensaje" />
-		<put-attribute name="body" value="/views/message/edit.jsp" />
+	<definition name="messagebox/list" extends="master.page">
+		<put-attribute name="title" value="Mis buzones" />
+		<put-attribute name="body" value="/views/messagebox/list.jsp" />
 	</definition>
 	
-	<definition name="message/move" extends="master.page">
-		<put-attribute name="title" value="Mover mensaje" />
-		<put-attribute name="body" value="/views/register/edit.jsp" />
+			<definition name="messagebox/content" extends="master.page">
+		<put-attribute name="title" value="Contenido del buzón" />
+		<put-attribute name="body" value="/views/messagebox/content.jsp" />
 	</definition>
-	
-	<definition name="message/copy" extends="master.page">
-		<put-attribute name="title" value="Copiar mensaje" />
-		<put-attribute name="body" value="/views/register/edit.jsp" />
-	</definition>
-	
-	<definition name="message/show" extends="master.page">
-		<put-attribute name="title" value="Mostrar mensaje" />
-		<put-attribute name="body" value="/views/register/edit.jsp" />
-	</definition>
-	
-	<definition name="message/broadcast" extends="master.page">
-		<put-attribute name="title" value="Mensaje de broadcast" />
-		<put-attribute name="body" value="/views/message/broadcast.jsp" />
+
+	<definition name="messagebox/edit" extends="master.page">
+		<put-attribute name="title" value="Nuevo buzón" />
+		<put-attribute name="body" value="/views/messagebox/edit.jsp" />
 	</definition>
 
 </tiles-definitions>

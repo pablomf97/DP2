@@ -27,7 +27,6 @@
 
 		<display:column titleKey="messagebox.edit">
 			<jstl:if test="${messagebox.isPredefined == false}">
-
 				<button
 					onClick="window.location.href='messagebox/edit.do?Id=${messagebox.id}'">
 					<spring:message code="messagebox.edit" />
