@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,37 +87,34 @@ public class SystemConfigurationController extends AbstractController {
 	// Editing sysConfig
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET, params = "systemconfigurationID")
-	public ModelAndView edit(@RequestParam int systemconfigurationID,
-			Locale locale) {
+	public ModelAndView edit(@RequestParam int systemconfigurationID) {
 		ModelAndView res;
 		SystemConfiguration systemConfiguration;
 
 		systemConfiguration = this.systemConfigurationService
 				.findOne(systemconfigurationID);
 		Assert.notNull(systemConfiguration);
-		res = createEditModelAndView(systemConfiguration, locale);
+		res = createEditModelAndView(systemConfiguration);
 
 		return res;
 	}
 
 	protected ModelAndView createEditModelAndView(
-			SystemConfiguration systemConfiguration, Locale locale) {
+			SystemConfiguration systemConfiguration) {
 		ModelAndView res;
 
-		res = createEditModelAndView(systemConfiguration, null, locale);
+		res = createEditModelAndView(systemConfiguration, null);
 
 		return res;
 	}
 
 	protected ModelAndView createEditModelAndView(
-			SystemConfiguration systemConfiguration, String messageCode,
-			Locale locale) {
+			SystemConfiguration systemConfiguration, String messageCode) {
 		ModelAndView res;
 
 		res = new ModelAndView("sysConfig/edit");
 		res.addObject("sysConfig", systemConfiguration);
 		res.addObject("message", messageCode);
-		res.addObject("locale", locale);
 
 		return res;
 	}
@@ -128,22 +124,31 @@ public class SystemConfigurationController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(SystemConfiguration systemConfiguration,
 			@RequestParam("nameES") String nameES,
-			@RequestParam("nameEN") String nameEN, BindingResult binding,
-			Locale locale) {
+			@RequestParam("nameEN") String nameEN, BindingResult binding) {
 		ModelAndView res;
+		String message = null;
 
-		systemConfiguration = this.systemConfigurationService.reconstruct(
-				systemConfiguration, nameES, nameEN, binding);
 		if (binding.hasErrors()) {
 			res = createEditModelAndView(systemConfiguration,
-					binding.toString(), locale);
+					binding.toString());
 		} else {
 			try {
+				systemConfiguration = this.systemConfigurationService
+						.reconstruct(systemConfiguration, nameES, nameEN,
+								binding);
+
 				this.systemConfigurationService.save(systemConfiguration);
 				res = new ModelAndView("redirect:display.do");
 			} catch (Throwable oops) {
-				res = createEditModelAndView(systemConfiguration,
-						oops.getMessage(), locale);
+				if (systemConfiguration.getMaxResults() <= 0
+						|| systemConfiguration.getMaxResults() > 100) {
+					message = "sysconfig.max.results.err";
+				}
+				if (systemConfiguration.getTimeResultsCached() < 0
+						|| systemConfiguration.getTimeResultsCached() >= 24) {
+					message = "sysconfig.time.err";
+				}
+				res = this.createEditModelAndView(systemConfiguration, message);
 			}
 		}
 		return res;

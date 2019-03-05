@@ -15,39 +15,42 @@
 		</h4>
 	</jstl:if>
 
-	<display:table name="messageBoxes" id="box" requestURI="${requestURI}"
+	<display:table name="messageBoxes" id="messagebox" requestURI="${requestURI}"
 		pagesize="10">
 		<display:column property="name" titleKey="messagebox.name" />
+
 		<display:column>
 			<button
-				onClick="window.location.href='messagebox/content.do?Id=${box.id}'">
+				onClick="window.location.href='messagebox/content.do?Id=${messagebox.id}'">
 				<spring:message code="messagebox.seeM" />
 			</button>
 		</display:column>
+
 		<display:column titleKey="messagebox.edit">
-			<jstl:if test="${box.deleteable == true}">
+			<jstl:if test="${messagebox.isPredefined == false}">
 				<button
-					onClick="window.location.href='messagebox/edit.do?Id=${box.id}'">
+					onClick="window.location.href='messagebox/edit.do?Id=${messagebox.id}'">
 					<spring:message code="messagebox.edit" />
 				</button>
 			</jstl:if>
 		</display:column>
 		<display:column titleKey="messagebox.delete">
-			<jstl:if test="${box.deleteable == true}">
+			<jstl:if test="${messagebox.isPredefined == false}">
 				<button
-					onClick="window.location.href='messagebox/delete.do?Id=${box.id}'">
+					onClick="window.location.href='messagebox/delete.do?Id=${messagebox.id}'">
 					<spring:message code="messagebox.delete" />
 				</button>
 			</jstl:if>
 		</display:column>
+
 	</display:table>
 	<br />
 	<display:table name="messages" id="row" pagesize="5"
 		requestURI="${requestURI}">
 		<display:column property="subject" titleKey="message.subject" />
-		<display:column property="sender.account.username"
+		<display:column property="sender.userAccount.username"
 			titleKey="message.actor.sender" />
-		<display:column property="sendTime" titleKey="message.sendTime" />
+		<display:column property="sentMoment" titleKey="message.sendTime" />
 		<display:column property="priority" titleKey="message.priority" />
 		<display:column property="tags" titleKey="message.tags" />
 		<display:column>
@@ -68,6 +71,6 @@
 				<spring:message code="message.delete" />
 			</button>
 		</display:column>
-	</display:table>
+	</display:table> 
 
 </div>

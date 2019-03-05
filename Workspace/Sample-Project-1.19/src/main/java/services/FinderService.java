@@ -53,10 +53,6 @@ public class FinderService {
 	///CREATE
 	public Finder create(){
 		Finder result;
-		Member principal;
-
-		principal=this.memberService.findByPrincipal();
-		Assert.notNull(principal,"not.null");
 
 		result=new Finder();
 		result.setSearchResults(new ArrayList<Procession>());
@@ -91,6 +87,7 @@ public class FinderService {
 				Assert.isTrue(
 						this.actorService.checkAuthority(principal, "MEMBER"),
 						"not.allowed");
+				finder.setSearchMoment(currentMoment);
 			} catch (Throwable oops) {
 				principal = this.actorService.findByPrincipal();
 				Assert.isTrue(
@@ -108,7 +105,7 @@ public class FinderService {
 			Assert.isTrue(finder.getMinimumMoment().before(finder.getMaximumMoment()),"not.date");
 			
 		}
-		finder.setSearchMoment(currentMoment);
+		
 		result=this.finderRepository.save(finder);
 		Assert.notNull(result,"not.null");
 
@@ -222,7 +219,7 @@ public class FinderService {
 				}
 
 			}
-			finder.setSearchResults(new ArrayList<Procession> (resultsPageables));
+			finder.setSearchResults(resultsPageables);
 			
 			this.save(finder);
 

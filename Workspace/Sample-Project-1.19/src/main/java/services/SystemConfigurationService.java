@@ -174,8 +174,20 @@ public class SystemConfigurationService {
 			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
 			res.setSystemName(systemConfiguration.getSystemName());
 			res.setBanner(systemConfiguration.getBanner());
+
+			// TODO
+			// Assert.isTrue(systemConfiguration.getCountryCode() >= 0
+			// && systemConfiguration.getCountryCode() <= 999);
 			res.setCountryCode(systemConfiguration.getCountryCode());
+
+//			Assert.isTrue(systemConfiguration.getTimeResultsCached() >= 0
+//					&& systemConfiguration.getTimeResultsCached() < 24,
+//					"sysconfig.time.cache");
 			res.setTimeResultsCached(systemConfiguration.getTimeResultsCached());
+
+			// Assert.isTrue(systemConfiguration.getMaxResults() >= 0
+			// && systemConfiguration.getMaxResults() <= 100,
+			// "sysconfig.max.results");
 			res.setMaxResults(systemConfiguration.getMaxResults());
 			res.setMessagePriority(systemConfiguration.getMessagePriority());
 			res.setSpamWords(systemConfiguration.getSpamWords());

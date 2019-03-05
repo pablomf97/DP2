@@ -10,19 +10,20 @@
 
 <tiles-definitions>
 
-	<definition name="enrolment/list" extends="master.page">
-		<put-attribute name="title" value="Lista de enrollments" />
-		<put-attribute name="body" value="/views/enrolment/list.jsp" />
+	<definition name="enrolment/listMember" extends="master.page">
+		<put-attribute name="title" value="Lista de inscripciones" />
+		<put-attribute name="body" value="/views/enrolment/listMember.jsp" />
 	</definition>
 
 	<definition name="enrolment/listBrotherhood" extends="master.page">
-		<put-attribute name="title" value="Lista of enrollments" />
+		<put-attribute name="title"
+			value="Lista de solicitudes de inscripción" />
 		<put-attribute name="body"
 			value="/views/enrolment/listBrotherhood.jsp" />
 	</definition>
 
 	<definition name="enrolment/edit" extends="master.page">
-		<put-attribute name="title" value="Editar enrolamiento" />
+		<put-attribute name="title" value="Gestionar inscripción" />
 		<put-attribute name="body" value="/views/enrolment/edit.jsp" />
 	</definition>
 

@@ -1,3 +1,4 @@
+
 package converters;
 
 import javax.transaction.Transactional;
@@ -21,4 +22,6 @@ public class ActorToStringConverter implements Converter<Actor, String> {
 			result = String.valueOf(actor.getId());
 		return result;
 	}
+
 }
+

@@ -1,7 +1,6 @@
 package services;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.SocialProfileRepository;
-
 import domain.Actor;
-
 import domain.SocialProfile;
 
 @Service
@@ -86,6 +83,7 @@ public class SocialProfileService {
 		Assert.notNull(socialProfile.getName(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getNick(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getLinkProfile(), "socialProfile.NotEmpty");
+		socialProfile.setActor(principal);
 		result=this.socialProfileRepository.save(socialProfile);
 		Assert.notNull(result);
 

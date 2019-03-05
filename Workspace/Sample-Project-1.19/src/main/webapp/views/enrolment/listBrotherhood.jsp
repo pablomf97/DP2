@@ -33,7 +33,7 @@
 					titleKey="enrolment.brotherhood" sortable="true" />
 
 				<jstl:choose>
-					<jstl:when test="${language == 'es'}">
+					<jstl:when test="${pageContext.response.locale.language == 'es'}">
 						<display:column value="${enrolment.position.name.get('Español')}"
 							titleKey="enrolment.position" sortable="true" />
 					</jstl:when>
@@ -47,28 +47,37 @@
 				<spring:message code="enrolment.accepted" var="message2" />
 				<spring:message code="enrolment.pending" var="message3" />
 
-				<jstl:choose>
-					<jstl:when test="${enrolment.isOut == true}">
-						<display:column value="${message1}" titleKey="enrolment.status" />
-					</jstl:when>
-					<jstl:when test="${enrolment.isOut == false}">
-						<display:column value="${message2}" titleKey="enrolment.status" />
-					</jstl:when>
-					<jstl:otherwise>
-						<display:column value="${message3}" titleKey="enrolment.status" />
-					</jstl:otherwise>
-				</jstl:choose>
+				<display:column titleKey="enrolment.status" sortable="true">
+					<jstl:choose>
+						<jstl:when test="${enrolment.isOut == true}">
+							<jstl:out value="${message1}" />
+						</jstl:when>
+						<jstl:when test="${enrolment.isOut == false}">
+							<jstl:out value="${message2}" />
+						</jstl:when>
+						<jstl:otherwise>
+							<jstl:out value="${message3}" />
+						</jstl:otherwise>
+					</jstl:choose>
+				</display:column>
 
 				<spring:message code="enrollment.enroll" var="enroll" />
 				<spring:message code="enrollment.unenroll" var="unenroll" />
 
 				<display:column titleKey="enrolments.actions">
-					<a
-						href="enrolment/brotherhood/action.do?action=accept&enrolmentID=${enrolment.id}"><jstl:out
-							value="${enroll}" /></a>
-					<a
-						href="enrolment/brotherhood/action.do?action=reject&enrolmentID=${enrolment.id}"><jstl:out
-							value="${unenroll}" /></a>
+
+					<jstl:choose>
+						<jstl:when test="${enrolment.isOut == true}">
+							<a
+								href="enrolment/brotherhood/action.do?action=accept&enrolmentID=${enrolment.id}"><jstl:out
+									value="${enroll}" /></a>
+						</jstl:when>
+						<jstl:otherwise>
+							<a
+								href="enrolment/brotherhood/action.do?action=reject&enrolmentID=${enrolment.id}"><jstl:out
+									value="${unenroll}" /></a>
+						</jstl:otherwise>
+					</jstl:choose>
 				</display:column>
 			</display:table>
 		</jstl:when>

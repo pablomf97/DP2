@@ -56,16 +56,17 @@
 		</form:label>
 		<form:input path="timeResultsCached"
 			value="${sysConfig.timeResultsCached}" size="5%" />
-		<form:errors cssClass="error" path="timeResultsCached" />
+		<form:errors cssClass="error" path="timeResultsCached"
+			code="${timeErr}" />
 		<br>
 		<br>
 
 		<form:label path="maxResults">
 			<spring:message code="system.resultspersearch" />:
 		</form:label>
-		<form:input path="maxResults" value="${sysConfig.maxResults}"
-			size="5%" />
-		<form:errors cssClass="error" path="maxResults" />
+		<form:input required="true" path="maxResults"
+			value="${sysConfig.maxResults}" size="5%" />
+		<form:errors cssClass="error" path="maxResults" code="${maxErr}" />
 		<br>
 		<br>
 

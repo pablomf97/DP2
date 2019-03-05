@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,7 @@ public class DashboardAdministratorController extends AbstractController{
 	
 	
 	@RequestMapping(value="/display", method = RequestMethod.GET)
-	public ModelAndView display(){
+	public ModelAndView display(Locale locale){
 		
 		final ModelAndView result;
 		
@@ -71,6 +72,9 @@ public class DashboardAdministratorController extends AbstractController{
 		Integer[] histogram;
 		
 		Collection<Procession> earlyProcessions;
+		
+		String language;
+		language = locale.getLanguage();
 		
 		averageMemberPerBrotherhood = this.memberService.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
@@ -112,7 +116,7 @@ public class DashboardAdministratorController extends AbstractController{
 		result.addObject("stdevMemberPerBrotherhood", stdevMemberPerBrotherhood);
 		
 		result.addObject("processions", processions.size());
-		
+		result.addObject("language", language);
 		result.addObject("requestURI", "statistics/administrator/display.do");
 		return result;
 		

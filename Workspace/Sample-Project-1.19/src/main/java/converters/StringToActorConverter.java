@@ -1,3 +1,4 @@
+
 package converters;
 
 import javax.transaction.Transactional;
@@ -15,13 +16,15 @@ import domain.Actor;
 public class StringToActorConverter implements Converter<String, Actor> {
 
 	@Autowired
-	ActorRepository	actorRepository;
 
+	ActorRepository	actorRepository;
 
 	@Override
 	public Actor convert(final String text) {
 		Actor result;
+
 		int id;
+
 		try {
 			if (StringUtils.isEmpty(text))
 				result = null;
@@ -34,4 +37,8 @@ public class StringToActorConverter implements Converter<String, Actor> {
 		}
 		return result;
 	}
+
 }
+
+
+

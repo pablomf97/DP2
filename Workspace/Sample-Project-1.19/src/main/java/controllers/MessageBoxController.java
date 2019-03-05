@@ -57,7 +57,8 @@ public class MessageBoxController extends AbstractController {
 			final MessageBox box = this.messageBoxService.findOne(Id);
 			Assert.isTrue(box.getOwner().equals(actor));
 			result.addObject("requestURI", "/messagebox/content.do");
-			result.addObject("messageBoxes", box.getParentMessageBoxes());
+			final Collection<MessageBox> childBoxes = this.messageBoxService.findByParent(box.getId());
+			result.addObject("messageBoxes", childBoxes);
 			result.addObject("messages", box.getMessages());
 		} catch (final Throwable opps) {
 			result = new ModelAndView("redirect:../welcome/index.do");
@@ -84,29 +85,39 @@ public class MessageBoxController extends AbstractController {
 	public ModelAndView saveBox(MessageBox box, final BindingResult binding) {
 		ModelAndView result;
 		String messageBoxName = "";
-		box = this.messageBoxService.reconstruct(box, binding);
-		if (!this.messageBoxService.checkUniqueBox(box.getName()))
-			messageBoxName = "messagebox.name.unique";
-		if (binding.hasErrors() || !messageBoxName.isEmpty()) {
-			result = new ModelAndView("messagebox/edit");
-			result.addObject("messageBox", box);
-			result.addObject("uniqueBox", messageBoxName);
-
-		} else
-			try {
-				if (box.getId() != 0) {
-					final MessageBox b = this.messageBoxService.findOne(box.getId());
-					final Actor actorLogged = this.actorService.findByPrincipal();
-					Assert.isTrue(b.getOwner().equals(actorLogged));
-				}
-				this.messageBoxService.save(box);
-				result = new ModelAndView("redirect:list.do");
-			} catch (final Throwable opps) {
-				opps.printStackTrace();
+		try {
+			box = this.messageBoxService.reconstruct(box, binding);
+			final Collection<MessageBox> boxes = this.messageBoxService.findByOwner(this.actorService.findByPrincipal().getId());
+			boxes.remove(box);
+			final Collection<MessageBox> childBoxes = this.messageBoxService.findByParent(box.getId());
+			boxes.removeAll(childBoxes);
+			if (!this.messageBoxService.checkUniqueBox(box))
+				messageBoxName = "messagebox.name.unique";
+			if (binding.hasErrors() || !messageBoxName.isEmpty()) {
 				result = new ModelAndView("messagebox/edit");
 				result.addObject("messageBox", box);
-				result.addObject("messageCode", "messagebox.commit.error");
-			}
+				result.addObject("messageBoxes", boxes);
+				result.addObject("uniqueBox", messageBoxName);
+			} else
+				try {
+					if (box.getId() != 0) {
+						final MessageBox b = this.messageBoxService.findOne(box.getId());
+						final Actor actorLogged = this.actorService.findByPrincipal();
+						Assert.isTrue(b.getOwner().equals(actorLogged));
+					}
+					this.messageBoxService.save(box);
+					result = new ModelAndView("redirect:list.do");
+				} catch (final Throwable opps) {
+					opps.printStackTrace();
+					result = new ModelAndView("messagebox/edit");
+					result.addObject("messageBoxes", boxes);
+					result.addObject("messageBox", box);
+					result.addObject("messageCode", "messagebox.commit.error");
+				}
+		} catch (final Throwable opps) {
+			//TODO: pantalla de error
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 	}
 
@@ -120,7 +131,10 @@ public class MessageBoxController extends AbstractController {
 			Assert.isTrue(box.getOwner().equals(actorLogged));
 			result = new ModelAndView("messagebox/edit");
 			final Collection<MessageBox> boxes = this.messageBoxService.findByOwner(actorLogged.getId());
+			final Collection<MessageBox> childBoxes = this.messageBoxService.findByParent(box.getId());
 			Assert.notNull(box);
+			boxes.remove(box);
+			boxes.removeAll(childBoxes);
 			result.addObject("messageBox", box);
 			result.addObject("messageBoxes", boxes);
 		} catch (final Throwable opps) {
@@ -133,11 +147,13 @@ public class MessageBoxController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
+		final Collection<MessageBox> boxes = this.messageBoxService.findByOwner(this.actorService.findByPrincipal().getId());
 		try {
 			final Actor actor = this.actorService.findByPrincipal();
 			result = new ModelAndView("messagebox/edit");
 			final MessageBox box = this.messageBoxService.create(actor);
 			result.addObject("messageBox", box);
+			result.addObject("messageBoxes", boxes);
 		} catch (final Throwable opps) {
 			result = new ModelAndView("redirect:list.do");
 			result.addObject("messageCode", "messagebox.commit.error");
