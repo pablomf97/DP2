@@ -30,15 +30,6 @@
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMINISTRATOR')">
 			<li><a class="fNiv"><spring:message
-						code="master.page.administrator.creations" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="administrator/edit.do?id=0"><spring:message
-								code="master.page.administrator.register" /></a></li>
-
-				</ul></li>
-
-			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.positions" /></a>
 				<ul>
 					<li class="arrow"></li>
