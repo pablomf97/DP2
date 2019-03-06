@@ -24,40 +24,33 @@
 
 	<table class="displayStyle">
 		<tr>
-			<td><strong> <spring:message code="procession.title" />
-					:
-			</strong></td>
+			<td><strong> <spring:message code="procession.title" />	: </strong></td>
 			<td><jstl:out value="${procession.title}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.ticker" />
-					:
-			</strong></td>
+			<td><strong> <spring:message code="procession.ticker" /> : </strong></td>
 			<td><jstl:out value="${procession.ticker}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="procession.description" /> :
-			</strong></td>
+			<td><strong> <spring:message code="procession.description" /> : </strong></td>
 			<td><jstl:out value="${procession.description}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="procession.organisedMoment" /> :
-			</strong></td>
+			<td><strong> <spring:message code="procession.organisedMoment" /> : </strong></td>
 			<td><jstl:out value="${procession.organisedMoment}" /></td>
-
+		</tr>
+		
+		<tr>
+			<td><strong> <spring:message code="procession.maxCols" /> : </strong></td>
+			<td><jstl:out value="${procession.maxCols}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.isDraft" />
-					:
-			</strong></td>
+			<td><strong> <spring:message code="procession.isDraft" /> : </strong></td>
 			<td><jstl:out value="${procession.isDraft}" /></td>
-
 		</tr>
 
 	</table>

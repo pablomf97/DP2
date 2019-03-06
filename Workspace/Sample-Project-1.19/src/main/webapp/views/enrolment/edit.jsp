@@ -17,6 +17,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 
 <security:authorize access="hasRole('BROTHERHOOD')">
 
@@ -51,9 +53,7 @@
 		</jstl:choose>
 		<br />
 		<br />
-
-		<input type="submit" id="submit" name="save"
-			value="<spring:message code='commit.enrolment' />">
+		<acme:submit code="commit.enrolment" name="save"/>&nbsp;
 	</form:form>
 
 </security:authorize>

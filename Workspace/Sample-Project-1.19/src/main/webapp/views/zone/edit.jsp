@@ -17,6 +17,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<jstl:if test="${permission == true}">
@@ -25,37 +27,19 @@
 			id="zoneForm">
 
 			<form:hidden path="id" />
-			<form:hidden path="version" />
+			
+			<acme:textbox code="zone.name" path="name"/><br>
+			
+			<acme:textbox code="zone.pictures" path="pictures"/><br><br>
+			
+			<acme:submit code="zone.save" name="save"/>&nbsp;
 
-			<form:label path="name">
-				<spring:message code="zone.name" />
-			</form:label>
-			<form:input path="name" />
-			<form:errors cssClass="error" path="name" />
-			<br />
-			<br />
-
-			<form:label path="pictures">
-				<spring:message code="zone.pictures" />
-			</form:label>
-			<form:input path="pictures" />
-			<form:errors cssClass="error" path="pictures" />
-			<br />
-			<br />
-
-			<input type="submit" name="save"
-				value="<spring:message code="zone.save"/>" />&nbsp;
-		
 		<jstl:if test="${zone.id != 0 and isSelected == false}">
-				<input type="submit" name="delete"
-					value="<spring:message code="zone.delete"/>" />&nbsp;
-		
-		</jstl:if>
+				<acme:delete code="zone.delete" name="delete" confirmation="zone.confirm.delete"/>&nbsp;
 
-			<input type="button" name="cancel"
-				value="<spring:message code="zone.cancel"/>"
-				onclick="javascript: relativeRedir('/zone/administrator/list.do');" />
-			<br />
+		</jstl:if>
+			
+			<acme:cancel code="zone.cancel" url="zone/administrator/list.do"/><br/><br/>
 		</form:form>
 	</jstl:if>
 	

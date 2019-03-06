@@ -7,6 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <jstl:if test="${possible == false && mensaje.id==0 && (!broadcast)}">
 	<jstl:if test="${(mensaje.id == 0) && (!broadcast)}">
@@ -20,26 +21,12 @@
 				<form:options items="${recipients}" itemLabel="userAccount.username"
 					itemValue="id" />
 			</form:select>
-			<form:errors cssClass="error" path="recipient" />
-			<br />
-			<br />
+			<form:errors cssClass="error" path="recipient" /><br /><br />
 
+			<acme:textbox code="message.subject" path="subject"/><br><br>
+			
+			<acme:textbox code="message.body" path="body"/><br><br>
 
-			<form:label path="subject">
-				<spring:message code="message.subject" />
-			</form:label>
-			<form:input path="subject" />
-			<form:errors cssClass="error" path="subject" />
-			<br />
-			<br />
-
-			<form:label path="body">
-				<spring:message code="message.body" />
-			</form:label>
-			<form:textarea path="body" />
-			<form:errors cssClass="error" path="body" />
-			<br />
-			<br />
 			<form:label path="priority">
 				<spring:message code="message.priority" />
 			</form:label>
@@ -53,22 +40,14 @@
 			<br />
 
 			<jstl:if test="${mensaje.id == 0}">
-				<input type="submit" name="save"
-					value="<spring:message code="message.send"/>" />&nbsp;
-  	</jstl:if>
+				<acme:submit code="message.send" name="save"/>&nbsp;
+  			</jstl:if>
 
 			<jstl:if test="${(mensaje.id == 0) && (broadcast)}">
-				<input type="submit" name="save"
-					value="<spring:message code="message.broadcast"/>" />
-
+				<acme:submit code="message.broadcast" name="save"/>&nbsp;
 			</jstl:if>
 
-			<input type="button" name="cancel"
-				value="<spring:message code="message.cancel"/>"
-				onclick="javascript: relativeRedir('/messagebox/list.do');" />
-			<br />
-
-
+			<acme:cancel code="message.cancel" url="messagebox/list.do"/><br/><br/>
 		</form:form>
 	</jstl:if>
 </jstl:if>
