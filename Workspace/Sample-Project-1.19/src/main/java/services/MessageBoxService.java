@@ -122,8 +122,8 @@ public class MessageBoxService {
 		this.save(spam);
 
 		final MessageBox notification = this.create(a);
-		spam.setIsPredefined(true);
-		spam.setName("NOTIFICATION");
+		notification.setIsPredefined(true);
+		notification.setName("NOTIFICATION");
 		this.save(notification);
 
 	}

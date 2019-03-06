@@ -2,6 +2,7 @@
 package services;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,6 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
 import domain.Enrolment;
-import domain.Zone;
 import forms.BrotherhoodForm;
 
 @Service
@@ -33,10 +33,6 @@ public class BrotherhoodService {
 	private UserAccountService		userAccountService;
 	@Autowired
 	private BrotherhoodRepository	brotherhoodRepository;
-
-	@Autowired
-	private ZoneService 			zoneService;
-
 	@Autowired
 	private Validator				validator;
 
@@ -60,11 +56,6 @@ public class BrotherhoodService {
 		auth.setAuthority(Authority.BROTHERHOOD);
 		a.addAuthority(auth);
 		res.setUserAccount(a);
-		/*
-		 * res.setBan(false);
-		 * res.setSpammer(false);
-		 * res.setScore(0.0);
-		 */
 		final Date establishmentDate = new Date();
 		res.setEstablishmentDate(establishmentDate);
 
@@ -167,6 +158,7 @@ public class BrotherhoodService {
 
 		} else {
 			final Brotherhood bd = this.brotherhoodRepository.findOne(brotherhoodForm.getId());
+			Assert.notNull(bd, "NotIdValid");
 			if (this.checkValidation(brotherhoodForm, binding, bd)) {
 				bd.setAddress(brotherhoodForm.getAddress());
 				bd.setEmail(brotherhoodForm.getEmail());
@@ -218,16 +210,15 @@ public class BrotherhoodService {
 		return res;
 	}
 
-	public String convetCollectionToString(final Collection<String> pictures) throws MalformedURLException {
+	public String convetCollectionToString(final Collection<String> pictures) throws MalformedURLException, URISyntaxException {
 		String result = "";
-		if (!pictures.isEmpty())
+		if (pictures != null)
 			for (final String p : pictures) {
-				new URL(p.trim());
+				(new URL(p.trim())).toURI();
 				result = result + p.trim() + "< >";
 			}
 		return result;
 	}
-
 	public String checkURLPictures(final Collection<String> pictures) {
 		String result = "";
 		if (!pictures.isEmpty())
@@ -243,7 +234,7 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notNull(brotherhoods);
+		Assert.notEmpty(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
@@ -251,7 +242,7 @@ public class BrotherhoodService {
 			if (count == 0)
 				result = b;
 
-			if (this.enrolmentService.findActiveEnrolmentByBrotherhood(result.getId()).size() < enrolments.size())
+			if (this.enrolmentService.getEnrollmentsByBrotherhood(result.getId()).size() < enrolments.size())
 				result = b;
 
 			count++;
@@ -282,69 +273,6 @@ public class BrotherhoodService {
 		}
 
 		return result;
-	}
-
-	public Double maxBrotherhoodPerArea(){
-		Double result = null;
-		Collection<Zone> zones;
-		Collection<Brotherhood> brotherhoodsInZone;
-		int count = 0;
-
-		zones = this.zoneService.findAll();
-		Assert.notNull(zones);
-
-		for(Zone z: zones){
-			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
-
-			if(count == 0){
-				result = (double) brotherhoodsInZone.size();
-			}
-			
-			if(brotherhoodsInZone.size() > result){
-				
-				result = (double) brotherhoodsInZone.size();
-			}
-			
-			count++;
-		}
-		return result;
-
-	}
-	
-	public Double minBrotherhoodPerArea(){
-		Double result = null;
-		Collection<Zone> zones;
-		Collection<Brotherhood> brotherhoodsInZone;
-		int count = 0;
-
-		zones = this.zoneService.findAll();
-		Assert.notNull(zones);
-
-		for(Zone z: zones){
-			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
-
-			if(count == 0){
-				result = (double) brotherhoodsInZone.size();
-			}
-			
-			if(brotherhoodsInZone.size() < result){
-				
-				result = (double) brotherhoodsInZone.size();
-			}
-			
-			count++;
-		}
-		return result;
-
-	}
-	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId){
-		Collection<Brotherhood> result;
-
-		result = this.brotherhoodRepository.brotherhoodsByZone(zoneId);
-		Assert.notNull(result);
-
-		return result;
-
 	}
 
 }

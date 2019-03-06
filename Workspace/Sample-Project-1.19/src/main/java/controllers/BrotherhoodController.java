@@ -93,53 +93,61 @@ public class BrotherhoodController extends AbstractController {
 		String pictureError = "";
 		Collection<String> pictures = new ArrayList<>();
 		Brotherhood brotherhood;
-		brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
+		String pictureString = "";
 		try {
-			brotherhood.setPictures(this.brotherhoodService.convetCollectionToString(brotherhoodForm.getPictures()));
-		} catch (final Throwable opps) {
-			pictureError = "brotherhood.pictures.error.url";
-		}
-		if (brotherhood.getId() == 0) {
-			passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
-			uniqueUsername = this.actorService.checkUniqueUser(brotherhoodForm.getUsername());
-			check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
-		}
-		if (pictureError.isEmpty())
-			pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
-		else
-			pictures = brotherhoodForm.getPictures();
-		final Collection<Zone> zones = this.zoneService.findAll();
-		brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
-		emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
-			result = new ModelAndView("brotherhood/edit");
-			result.addObject("uri", "brotherhood/edit.do");
-			brotherhood.getUserAccount().setPassword("");
-			result.addObject("brotherhood", brotherhood);
-			result.addObject("emailError", emailError);
-			result.addObject("checkLaw", check);
-			result.addObject("checkPass", passW);
-			result.addObject("uniqueUsername", uniqueUsername);
-			result.addObject("pictures", pictures);
-			result.addObject("areas", zones);
-			result.addObject("picturesError", pictureError);
-
-		} else
+			brotherhood = this.brotherhoodService.reconstruct(brotherhoodForm, binding);
 			try {
-				brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
-				this.brotherhoodService.save(brotherhood);
-				result = new ModelAndView("redirect:/welcome/index.do");
+				pictureString = this.brotherhoodService.convetCollectionToString(brotherhoodForm.getPictures());
 			} catch (final Throwable opps) {
+				pictureError = "brotherhood.pictures.error.url";
+			}
+			brotherhood.setPictures(pictureString);
+			if (brotherhood.getId() == 0) {
+				passW = this.actorService.checkPass(brotherhoodForm.getPassword(), brotherhoodForm.getPassword2());
+				uniqueUsername = this.actorService.checkUniqueUser(brotherhoodForm.getUsername());
+				check = this.actorService.checkLaw(brotherhoodForm.getCheckBox());
+			}
+			if (pictureError.isEmpty())
+				pictures = this.brotherhoodService.getSplitPictures(brotherhood.getPictures());
+			else
+				pictures = brotherhoodForm.getPictures();
+			final Collection<Zone> zones = this.zoneService.findAll();
+			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
+			emailError = this.actorService.checkEmail(brotherhood.getEmail(), brotherhood.getUserAccount().getAuthorities().iterator().next().getAuthority());
+			if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {
+				System.out.println("llega al binding" + binding.getFieldErrors());
 				result = new ModelAndView("brotherhood/edit");
 				result.addObject("uri", "brotherhood/edit.do");
-				result.addObject("messageCode", "actor.commit.error");
-				result.addObject("emailError", emailError);
 				brotherhood.getUserAccount().setPassword("");
+				brotherhood.setZone(null);
 				result.addObject("brotherhood", brotherhood);
+				result.addObject("emailError", emailError);
+				result.addObject("checkLaw", check);
+				result.addObject("checkPass", passW);
+				result.addObject("uniqueUsername", uniqueUsername);
 				result.addObject("pictures", pictures);
 				result.addObject("areas", zones);
-
-			}
+				result.addObject("picturesError", pictureError);
+			} else
+				try {
+					brotherhood.setPhoneNumber(this.actorService.checkSetPhoneCC(brotherhood.getPhoneNumber()));
+					this.brotherhoodService.save(brotherhood);
+					result = new ModelAndView("redirect:/welcome/index.do");
+				} catch (final Throwable opps) {
+					result = new ModelAndView("brotherhood/edit");
+					result.addObject("uri", "brotherhood/edit.do");
+					result.addObject("messageCode", "actor.commit.error");
+					result.addObject("emailError", emailError);
+					brotherhood.getUserAccount().setPassword("");
+					brotherhood.setZone(null);
+					result.addObject("brotherhood", brotherhood);
+					result.addObject("pictures", pictures);
+					result.addObject("areas", zones);
+				}
+		} catch (final Throwable opps) {
+			//TODO: pantalla de error
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 	}
 }

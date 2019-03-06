@@ -96,37 +96,42 @@ public class AdministratorController extends AbstractController {
 		String passW = "";
 		String uniqueUsername = "";
 		Administrator admin;
-		admin = this.administratorService.reconstruct(administratorForm, binding);
-		if (admin.getId() == 0) {
-			passW = this.actorService.checkPass(administratorForm.getPassword(), administratorForm.getPassword2());
-			uniqueUsername = this.actorService.checkUniqueUser(administratorForm.getUsername());
-		}
-		admin.setEmail(admin.getEmail().toLowerCase());
-		emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		if (binding.hasErrors() || !emailError.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
-			result = new ModelAndView("administrator/edit");
-			result.addObject("uri", "administrator/edit.do");
-			admin.getUserAccount().setPassword("");
-			result.addObject("administrator", admin);
-			result.addObject("emailError", emailError);
-			result.addObject("checkPass", passW);
-			result.addObject("uniqueUsername", uniqueUsername);
-		} else
-			try {
-				admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));
-				final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
-				admin.getUserAccount().setPassword(hash);
-				this.administratorService.save(admin);
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (final Throwable opps) {
+		try {
+			admin = this.administratorService.reconstruct(administratorForm, binding);
+			if (admin.getId() == 0) {
+				passW = this.actorService.checkPass(administratorForm.getPassword(), administratorForm.getPassword2());
+				uniqueUsername = this.actorService.checkUniqueUser(administratorForm.getUsername());
+			}
+			admin.setEmail(admin.getEmail().toLowerCase());
+			emailError = this.actorService.checkEmail(admin.getEmail(), admin.getUserAccount().getAuthorities().iterator().next().getAuthority());
+			if (binding.hasErrors() || !emailError.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
 				result = new ModelAndView("administrator/edit");
 				result.addObject("uri", "administrator/edit.do");
-				result.addObject("messageCode", "actor.commit.error");
-				result.addObject("emailError", emailError);
 				admin.getUserAccount().setPassword("");
 				result.addObject("administrator", admin);
-			}
+				result.addObject("emailError", emailError);
+				result.addObject("checkPass", passW);
+				result.addObject("uniqueUsername", uniqueUsername);
+			} else
+				try {
+					admin.setPhoneNumber(this.actorService.checkSetPhoneCC(admin.getPhoneNumber()));
+					final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+					final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
+					admin.getUserAccount().setPassword(hash);
+					this.administratorService.save(admin);
+					result = new ModelAndView("redirect:/welcome/index.do");
+				} catch (final Throwable opps) {
+					result = new ModelAndView("administrator/edit");
+					result.addObject("uri", "administrator/edit.do");
+					result.addObject("messageCode", "actor.commit.error");
+					result.addObject("emailError", emailError);
+					admin.getUserAccount().setPassword("");
+					result.addObject("administrator", admin);
+				}
+		} catch (final Throwable opps) {
+			//TODO: pantalla de error
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
 	}
 
