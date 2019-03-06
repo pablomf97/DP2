@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +20,7 @@ import repositories.ProcessionRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.Enrolment;
+import domain.March;
 import domain.Platform;
 import domain.Procession;
 
@@ -41,6 +43,9 @@ public class ProcessionService {
 	
 	@Autowired
 	private EnrolmentService enrolmentService;
+	
+	@Autowired
+	private MarchService marchService;
 	
 	@Autowired
 	private Validator validator;
@@ -85,6 +90,7 @@ public class ProcessionService {
 		
 		Assert.notNull(procession);
 		Assert.notNull(procession.getDescription());
+		Assert.notNull(procession.getMaxCols());
 		Assert.notNull(procession.getTitle());
 		Assert.notNull(procession.getOrganisedMoment());
 		
@@ -215,6 +221,43 @@ public class ProcessionService {
 		Assert.notNull(result);
 		
 		return result;
-		
 	}
+	
+	public Boolean checkPos(Integer row, Integer column, Procession procession, Collection<March> marchs) {
+		Boolean validPos = true;
+		Integer maxCols = procession.getMaxCols();
+		
+		if(column > maxCols)
+			validPos = false;
+		
+		if(validPos){
+			for(March march : marchs){
+				if(row == march.getRow() && column == march.getCol()){
+					validPos = false;
+					break;
+				}
+			}
+		}
+		return validPos;
+	}
+	
+	public List<Integer> recommendedPos (Procession procession) {
+		List<Integer> rowColumn = new ArrayList<>();
+		Boolean validPos = false;
+		Collection<March> marchs;
+		
+		marchs = this.marchService.findMarchByProcession(procession.getId());
+		
+		for(Integer auxCol = 1 ; auxCol < procession.getMaxCols() ; auxCol++) {
+			for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
+				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
+				if(validPos) {
+					rowColumn.add(auxRow);
+					rowColumn.add(auxCol);
+					break;
+				}
+			}
+		}
+		return rowColumn;
+	}	
 }

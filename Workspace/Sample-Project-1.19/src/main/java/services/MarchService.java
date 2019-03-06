@@ -2,7 +2,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -16,10 +15,8 @@ import repositories.MarchRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.March;
-
-import domain.Procession;
-
 import domain.Member;
+import domain.Procession;
 
 
 @Service
@@ -94,6 +91,9 @@ public class MarchService {
 		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD")){
 
 			Assert.isTrue(march.getId() != 0);
+			Assert.notNull(march.getMember());
+			Assert.notNull(march.getProcession());
+			Assert.notNull(march.getStatus());
 
 			brotherhood = (Brotherhood) principal;
 

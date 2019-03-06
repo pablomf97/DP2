@@ -23,6 +23,8 @@
 					
 					<acme:textbox code="procession.organisedMoment" path="organisedMoment"/><br><br>
 					
+					<acme:textbox code="procession.maxCols" path="maxCols" placeholder="procession.maxCols.placeholder" size="50%"/><br><br>
+					
 					<acme:textbox code="procession.description" path="description"/><br /><br />
 					
 				<form:label path="platforms">
@@ -40,7 +42,7 @@
 				<jstl:if test="${procession.id != 0}">
 					<acme:delete code="procession.delete" name="delete" confirmation="procession.confirm.delete"/>&nbsp; 
 				</jstl:if>
-				<acme:cancel code="procession.cancel" url="procession/member,brotherhod/list.do"/><br /><br />
+				<acme:cancel code="procession.cancel" url="procession/member,brotherhod/list.do"/><br/><br/>
 				
 				</form:form>
 			</jstl:when>

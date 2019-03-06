@@ -31,6 +31,7 @@ public class BrotherhoodService {
 
 	@Autowired
 	private UserAccountService		userAccountService;
+	
 	@Autowired
 	private BrotherhoodRepository	brotherhoodRepository;
 
@@ -378,7 +379,7 @@ public class BrotherhoodService {
 		
 	}
 	
-	
+
 	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId){
 		Collection<Brotherhood> result;
 

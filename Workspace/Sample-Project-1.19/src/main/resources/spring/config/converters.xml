@@ -40,7 +40,10 @@
 		
 		<bean class="converters.MessageBoxToStringConverter" /> 
 		<bean class="converters.StringToMessageBoxConverter" />
-
+		
+		<bean class="converters.ActorToStringConverter"	/>
+		<bean class="converters.StringToActorConverter"	/>
+		
 	</util:list>
 
 </beans>

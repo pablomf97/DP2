@@ -50,7 +50,6 @@ public class ZoneService {
 	
 	public Zone save(final Zone zone){
 		
-		final Zone result;
 		final Zone saved;
 		final Actor principal;
 		
@@ -59,13 +58,11 @@ public class ZoneService {
 		Assert.isTrue(principal instanceof Administrator);
 		
 		Assert.notNull(zone);
+		Assert.notNull(zone.getName());
+		Assert.notNull(zone.getPictures());
 		
-		
-		result = new Zone();
-		result.setName(zone.getName());
-		result.setPictures(zone.getPictures());
-		
-		saved = this.zoneRepository.save(result);
+		saved = this.zoneRepository.save(zone);
+		Assert.notNull(saved);
 		
 		return saved;
 		

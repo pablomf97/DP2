@@ -17,7 +17,7 @@
 	</h3>
 	<jstl:if test="${not empty messageCode}">
 		<h4>
-			<spring:message code="${messageCode}" />
+			<a class="error"><spring:message code="${messageCode}" /></a>
 		</h4>
 	</jstl:if>
 	<spring:message code="messagebox.placeholder.name"
@@ -31,6 +31,14 @@
 	</jstl:if>
 	<br />
 
+	<form:label path="parentMessageBoxes">
+		<spring:message code="messagebox.parentMessageBoxes" />:</form:label>
+	<form:select path="parentMessageBoxes">
+		<form:option label="----" value="" />
+		<form:options items="${messageBoxes}" itemLabel="name" itemValue="id" />
+	</form:select>
+	<form:errors path="parentMessageBoxes" cssClass="error" />
+	<br />
 
 	<input type="submit" name="save"
 		value="<spring:message code="messagebox.save"/>" />
