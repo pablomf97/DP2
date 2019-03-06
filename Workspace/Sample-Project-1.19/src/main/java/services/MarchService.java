@@ -94,7 +94,7 @@ public class MarchService {
 			Assert.notNull(march.getMember());
 			Assert.notNull(march.getProcession());
 			Assert.notNull(march.getStatus());
-
+			
 			brotherhood = (Brotherhood) principal;
 
 			Assert.isTrue(march.getProcession().getBrotherhood().equals(brotherhood), "not.allowed");

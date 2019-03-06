@@ -21,138 +21,146 @@ import domain.Position;
 import domain.Procession;
 
 @Controller
-@RequestMapping(value="statistics/administrator")
-public class DashboardAdministratorController extends AbstractController{
-	
-	//Services
-	
+@RequestMapping(value = "statistics/administrator")
+public class DashboardAdministratorController extends AbstractController {
+
+	// Services
+
 	@Autowired
 	private MemberService memberService;
-	
+
 	@Autowired
 	private BrotherhoodService brotherhoodService;
-	
+
 	@Autowired
 	private MarchService marchService;
-	
+
 	@Autowired
 	private ProcessionService processionService;
-	
+
 	@Autowired
 	private PositionService positionService;
-	
+
 	@Autowired
 	private FinderService finderService;
-	
-	
-	//Display
-	
-	
-	@RequestMapping(value="/display", method = RequestMethod.GET)
-	public ModelAndView display(Locale locale){
-		
+
+	// Display
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(Locale locale) {
+
 		final ModelAndView result;
-		
+
 		Collection<Procession> processions;
 		processions = this.processionService.findAll();
-		
-		Collection<Position>positions;
+
+		Collection<Position> positions;
 		positions = this.positionService.findAll();
-		
+
 		Double averageMemberPerBrotherhood;
 		Double minMemberPerBrotherhood;
 		Double maxMemberPerBrotherhood;
 		Double stdevMemberPerBrotherhood;
 		Collection<Member> acceptedMembers;
-		
+
 		Brotherhood largestBrotherhood;
 		Brotherhood smallestBrotherhood;
-		
+
 		Double ratioApprovedRequests;
 		Double ratioRejectedRequests;
 		Double ratioPendingRequests;
 		Double[] ratioApprovedRequestsInAProcession;
 		Double[] ratioRejectedInAProcession;
 		Double[] ratioPendingInAProcession;
-		
+
 		Integer[] histogram;
-		
+
 		Collection<Procession> earlyProcessions;
-		
+
 		Double[] statsFinder;
 		Double ratioFinders;
-		
+
 		Double maxBrotherhoodPerArea;
 		Double minBrotherhoodPerArea;
 		Double ratioBrotherhoodsPerArea;
 		Double countBrotherhoodsPerArea;
-		
+
 		String language;
 		language = locale.getLanguage();
-		
-		statsFinder=this.finderService.statsFinder();
-		ratioFinders=this.finderService.ratioFinders();
-		
-		maxBrotherhoodPerArea=this.brotherhoodService.maxBrotherhoodPerArea();
-		minBrotherhoodPerArea=this.brotherhoodService.minBrotherhoodPerArea();
-		ratioBrotherhoodsPerArea=this.brotherhoodService.ratioBrotherhoodsPerArea();
-		countBrotherhoodsPerArea=this.brotherhoodService.countBrotherhoodsPerArea();
-		
-		averageMemberPerBrotherhood = this.memberService.averageMemberPerBrotherhood();
+
+		statsFinder = this.finderService.statsFinder();
+		ratioFinders = this.finderService.ratioFinders();
+
+		// maxBrotherhoodPerArea=this.brotherhoodService.maxBrotherhoodPerArea();
+		// minBrotherhoodPerArea=this.brotherhoodService.minBrotherhoodPerArea();
+		// ratioBrotherhoodsPerArea=this.brotherhoodService.ratioBrotherhoodsPerArea();
+		// countBrotherhoodsPerArea=this.brotherhoodService.countBrotherhoodsPerArea();
+		//
+		averageMemberPerBrotherhood = this.memberService
+				.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
 		maxMemberPerBrotherhood = this.memberService.maxMemberPerBrotherhood();
-		stdevMemberPerBrotherhood = this.memberService.stdevMembersPerBrotherhood();
+		// stdevMemberPerBrotherhood =
+		// this.memberService.stdevMembersPerBrotherhood();
 		acceptedMembers = this.memberService.acceptedMembers();
-		
+
 		largestBrotherhood = this.brotherhoodService.largestBrotherhood();
 		smallestBrotherhood = this.brotherhoodService.smallestBrotherhood();
-		
+
 		ratioApprovedRequests = this.marchService.ratioApprovedRequests();
 		ratioRejectedRequests = this.marchService.ratioRejectedRequests();
 		ratioPendingRequests = this.marchService.ratioPendingRequests();
-		ratioApprovedRequestsInAProcession = this.marchService.ratioApprovedInAProcession();
-		ratioRejectedInAProcession=this.marchService.ratioRejectedInAProcession();
-		ratioPendingInAProcession=this.marchService.ratioPendingInAProcession();
-		
+		ratioApprovedRequestsInAProcession = this.marchService
+				.ratioApprovedInAProcession();
+		ratioRejectedInAProcession = this.marchService
+				.ratioRejectedInAProcession();
+		ratioPendingInAProcession = this.marchService
+				.ratioPendingInAProcession();
+
 		earlyProcessions = this.processionService.findEarlyProcessions();
-		
+
 		histogram = this.positionService.histogram();
-		
+
 		result = new ModelAndView("administrator/statistics");
-		
+
 		result.addObject("positions", positions.size());
 		result.addObject("histogram", histogram);
-		
+
 		result.addObject("earlyProcessions", earlyProcessions);
-		
+
 		result.addObject("ratioApprovedRequests", ratioApprovedRequests);
 		result.addObject("ratioRejectedRequests", ratioRejectedRequests);
 		result.addObject("ratioPendingRequests", ratioPendingRequests);
-		result.addObject("ratioApprovedProcession", ratioApprovedRequestsInAProcession);
-		result.addObject("ratioRejectedInAProcession",ratioRejectedInAProcession);
-		result.addObject("ratioPendingInAProcession",ratioPendingInAProcession);
-		
+		result.addObject("ratioApprovedProcession",
+				ratioApprovedRequestsInAProcession);
+		result.addObject("ratioRejectedInAProcession",
+				ratioRejectedInAProcession);
+		result.addObject("ratioPendingInAProcession", ratioPendingInAProcession);
+
 		result.addObject("largestBrotherhood", largestBrotherhood);
 		result.addObject("smallestBrotherhood", smallestBrotherhood);
-		
+
 		result.addObject("acceptedMembers", acceptedMembers);
 		result.addObject("maxMemberPerBrotherhood", maxMemberPerBrotherhood);
 		result.addObject("minMemberPerBrotherhood", minMemberPerBrotherhood);
-		result.addObject("averageMemberPerBrotherhood", averageMemberPerBrotherhood);
-		result.addObject("stdevMemberPerBrotherhood", stdevMemberPerBrotherhood);
-		
-		result.addObject("statsFinder",statsFinder);
-		result.addObject("ratioFinders",ratioFinders);
-		
-		result.addObject("maxBrotherhoodPerArea",maxBrotherhoodPerArea);
-		result.addObject("minBrotherhoodPerArea",minBrotherhoodPerArea);
-		result.addObject("ratioBrotherhoodsPerArea", ratioBrotherhoodsPerArea);
-		result.addObject("countBrotherhoodsPerArea",countBrotherhoodsPerArea);
-		
+		result.addObject("averageMemberPerBrotherhood",
+				averageMemberPerBrotherhood);
+		// result.addObject("stdevMemberPerBrotherhood",
+		// stdevMemberPerBrotherhood);
+
+		result.addObject("statsFinder", statsFinder);
+		result.addObject("ratioFinders", ratioFinders);
+
+		// result.addObject("maxBrotherhoodPerArea",maxBrotherhoodPerArea);
+		// result.addObject("minBrotherhoodPerArea",minBrotherhoodPerArea);
+		// result.addObject("ratioBrotherhoodsPerArea",
+		// ratioBrotherhoodsPerArea);
+		// result.addObject("countBrotherhoodsPerArea",countBrotherhoodsPerArea);
+
 		result.addObject("processions", processions.size());
 		result.addObject("language", language);
 		result.addObject("requestURI", "statistics/administrator/display.do");
 		return result;
-		
+
 	}
 }

@@ -11,9 +11,13 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <div style="float: right">
 	<a href="?language=es" id="es"><img src="images/sp.png"
@@ -198,4 +202,11 @@
 	</ul>
 </div>
 
-
+		<security:authorize access="isAuthenticated()">
+		<jstl:if test="${pageContext.response.locale.language == 'es'}">
+		<h2><strong style="color:red;"><jstl:out value="${breachNotification.get('Español')}"></jstl:out><br/> </strong></h2>
+		</jstl:if>
+		<jstl:if test="${pageContext.response.locale.language == 'en'}">
+			<h2><strong style="color:red;"> <jstl:out value="${breachNotification.get('English')}" ></jstl:out><br/> </strong></h2>
+		</jstl:if>
+	</security:authorize>

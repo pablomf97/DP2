@@ -62,16 +62,19 @@ public class SystemConfigurationService {
 		Assert.isTrue(
 				this.actorService.checkAuthority(principal, "ADMINISTRATOR"),
 				"not.allowed");
-
+		Map<String,String> breachNotification=new HashMap<>();
 		Map<String, String> wellMap = new HashMap<>();
 		wellMap.put("EspaÃ±ol",
 				"Â¡Bienvenidos a Acme MadrugÃ¡! Tu sitio para organizar procesiones.");
 		wellMap.put("English",
 				"Welcome to Acme MadrugÃ¡, the site to organise your processions.");
-
+		
+		breachNotification.put("Español","");
+		breachNotification.put("English","");
 		SystemConfiguration systemConfiguration = new SystemConfiguration();
 		systemConfiguration.setSystemName("Acme-MadrugÃ¡");
 		systemConfiguration.setWelcomeMessage(wellMap);
+		systemConfiguration.setBreachNotification(breachNotification);
 		systemConfiguration
 				.setBanner("https://image.ibb.co/iuaDgV/Untitled.png");
 		systemConfiguration.setCountryCode("+034");
@@ -148,18 +151,26 @@ public class SystemConfigurationService {
 
 		return result;
 	}
+	/*Find BreachNotification*/
+	public Map<String,String> findBreachNotification(){
+		final Map<String, String> result;
+		result=this.findMySystemConfiguration().getBreachNotification();
+		return result;
+	}
 
 	public SystemConfiguration reconstruct(
 			SystemConfiguration systemConfiguration, String nameES,
-			String nameEN, BindingResult binding) {
+			String nameEN,String nEs,String nEn, BindingResult binding) {
 		SystemConfiguration res;
 
 		if (systemConfiguration.getId() == 0) {
 			systemConfiguration
 					.setWelcomeMessage(new HashMap<String, String>());
-
+			systemConfiguration.setBreachNotification(new HashMap<String,String>());
 			systemConfiguration.getWelcomeMessage().put("Español", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
+			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("English",nEn);
 			res = systemConfiguration;
 		} else {
 			res = this.systemConfigurationRepository
@@ -167,11 +178,15 @@ public class SystemConfigurationService {
 
 			systemConfiguration
 					.setWelcomeMessage(new HashMap<String, String>());
-
+			
 			systemConfiguration.getWelcomeMessage().put("Español", nameES);
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
+			systemConfiguration.setBreachNotification(new HashMap<String,String>());
+			systemConfiguration.getBreachNotification().put("Español", nEs);
+			systemConfiguration.getBreachNotification().put("English",nEn);
 
 			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
+			res.setBreachNotification(systemConfiguration.getBreachNotification());
 			res.setSystemName(systemConfiguration.getSystemName());
 			res.setBanner(systemConfiguration.getBanner());
 

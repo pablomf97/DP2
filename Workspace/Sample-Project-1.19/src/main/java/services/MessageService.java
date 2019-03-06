@@ -18,6 +18,7 @@ import repositories.MessageRepository;
 import domain.Actor;
 import domain.Message;
 import domain.MessageBox;
+import domain.Procession;
 
 @Service
 @Transactional
@@ -95,7 +96,7 @@ public class MessageService {
 
 
 			}
-			
+
 		}else if(tags==null){
 			inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "In box");
 			Assert.notNull(inSpamBox);
@@ -115,7 +116,7 @@ public class MessageService {
 			outBox.getMessages().add(result);
 			inSpamBox.getMessages().add(result);
 
-			
+
 		}
 		return result;
 	}
@@ -217,7 +218,7 @@ public class MessageService {
 		Collection<MessageBox> principalBoxes, messageBoxes,recipientBoxes;
 		Collection<Message> messages,updatedOriginBox,updatedDestinationBox;
 		Actor recipient;
-		
+
 
 		principalBoxes = new ArrayList<MessageBox>();
 		messageBoxes = new ArrayList<MessageBox>();
@@ -228,7 +229,7 @@ public class MessageService {
 
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
-		
+
 		recipient = message.getRecipient();
 
 		Assert.isTrue(message.getId()!=0);
@@ -237,7 +238,7 @@ public class MessageService {
 
 		principalBoxes = this.messageBoxService.findByOwner(principal.getId());
 		recipientBoxes = this.messageBoxService.findByOwner(recipient.getId());
-		
+
 		for(MessageBox mb : principalBoxes){
 			messages.addAll(mb.getMessages());
 		}
@@ -250,15 +251,15 @@ public class MessageService {
 				break;
 			}
 		}
-		
+
 		for(MessageBox recipientBox : recipientBoxes){
 			if(recipientBox.getMessages().contains(message)){
 				messageBoxes.add(recipientBox);
 			}
 		}
-		
+
 		messageBoxes.add(destination);
-		
+
 		Assert.isTrue(principalBoxes.contains(origin));
 		Assert.isTrue(principalBoxes.contains(destination));
 
@@ -289,7 +290,7 @@ public class MessageService {
 		notificationBoxes = new ArrayList<MessageBox>();
 		boxes = new ArrayList<MessageBox>();
 		recipients = new ArrayList<Actor>();
-		
+
 		recipients = this.actorService.findAll();
 
 		principal = this.actorService.findByPrincipal();
@@ -309,13 +310,13 @@ public class MessageService {
 			if(!(this.actorService.checkAuthority(a, "ADMINISTRATOR"))){
 				notificationBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification box"));
 			}
-			
+
 		}
-		
+
 		outBoxAdmin = this.messageBoxService.findByName(principal.getId(), "Out box");
 		Assert.notNull(outBoxAdmin);
 
-		
+
 
 		final Message message = new Message();
 		message.setSubject(subject);
@@ -371,35 +372,125 @@ public class MessageService {
 			message.setTags(m.getTags());
 			message.setRecipient(m.getRecipient());
 			message.setSender(m.getSender());
-			
+
 			result = message;
-			
+
 			this.validator.validate(result,binding);
 
-			
+
 		}
 		return result;
 	}
-	
+
 	public Message reconstructBroadcast(final Message message, final BindingResult binding){
-		
+
 		Message result = this.create();
 		Actor principal;
-		
+
 		principal = this.actorService.findByPrincipal();
-		
+
 		Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
 		Assert.isTrue(message.getId() == 0);
-		
+
 		result.setSubject(message.getSubject());
 		result.setBody(message.getBody());
 		result.setPriority(message.getPriority());
 		result.setTags(message.getTags());
 		result.setRecipient(principal);
-		
+
 		this.validator.validate(result,binding);
-		
+
 		return result;
 	}
 
+
+
+	public Message changeStatusNotfication(final Actor actor, final Date moment){
+
+		Message result;
+		Collection<MessageBox> boxes;
+		MessageBox notificationBox,outBox;
+		Actor principal;
+		Message saved;
+
+		principal= this.actorService.findByPrincipal();
+		
+		boxes = new ArrayList<MessageBox>();
+		
+		notificationBox= this.messageBoxService.findByName(actor.getId(), "Notification box");
+		Assert.notNull(notificationBox);
+		
+		outBox = this.messageBoxService.findByName(principal.getId(), "Out box");
+		Assert.notNull(outBox);
+		
+		boxes.add(notificationBox);
+		boxes.add(outBox);
+		
+		result = new Message();
+		result.setSender(principal);
+		result.setRecipient(actor);
+		result.setPriority("NORMAL");
+		result.setSentMoment(moment);
+		result.setIsSpam(false);
+		result.setMessageBoxes(boxes);
+		result.setBody("Request status have been changed");
+		result.setSubject("Request status have been changed");
+		
+		saved = this.messageRepository.save(result);
+		
+		outBox.getMessages().add(saved);
+		notificationBox.getMessages().add(saved);
+		
+		return result;
+		
+	}
+	
+	public Message notificationPublishProcession(Procession p){
+		Message result = new Message();
+		Actor principal;
+		Collection<Actor> recipients;
+		Collection<MessageBox> notBoxes,boxes;
+		MessageBox outBox;
+		Message saved;
+		
+		notBoxes = new ArrayList<MessageBox>();
+		boxes = new ArrayList<MessageBox>();
+		
+		principal = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		
+		recipients = this.actorService.findAll();
+		
+		for(Actor a: recipients){
+		
+			notBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification Box"));
+		}
+		
+		outBox = this.messageBoxService.findByName(principal.getId(), "Out box");
+		
+		boxes.add(outBox);
+		boxes.addAll(notBoxes);
+		
+		result.setSubject("Procession: "+ p.getTitle() + "is published");
+		result.setBody("Its date is: "+p.getOrganisedMoment());
+		result.setSender(principal);
+		result.setRecipient(principal);
+		result.setPriority("NORMAL");
+		result.setIsSpam(false);
+		result.setMessageBoxes(boxes);
+		result.setSentMoment(new Date(System.currentTimeMillis()-1));
+		result.setTags("new procession");
+		
+		saved = this.messageRepository.save(result);
+		
+		for(MessageBox mb : notBoxes){
+			mb.getMessages().add(saved);
+		}
+		
+		outBox.getMessages().add(saved);
+		
+		return saved;
+	}
+
 }
+

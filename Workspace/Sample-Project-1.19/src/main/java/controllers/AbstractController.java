@@ -10,6 +10,8 @@
 
 package controllers;
 
+import java.util.Map;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,11 @@ public class AbstractController {
 		String urlBanner = this.systemConfigurationService.findMyBanner();
 		return urlBanner;
 	}
+	@ModelAttribute("breachNotification")
+	public Map<String,String> getBreachNotification(Model model) {
+
+		return this.systemConfigurationService.findBreachNotification();
+	}
 
 	// Panic handler ----------------------------------------------------------
 
@@ -48,6 +55,8 @@ public class AbstractController {
 		result.addObject("name", ClassUtils.getShortName(oops.getClass()));
 		result.addObject("exception", oops.getMessage());
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
+		result.addObject("breachNotification",this.systemConfigurationService.findBreachNotification());
+		
 		result.addObject("banner",
 				this.systemConfigurationService.findMyBanner());
 

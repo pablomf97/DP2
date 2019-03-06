@@ -65,6 +65,22 @@
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />"
 			required>
 		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
+		
+		<!-- BRECHA -->
+				<p>
+			<spring:message code="breachNotification.name.es" />
+		</p>
+		<input type="text" name="nEs" id="nEs" size="100%"
+			value="${sysConfig.breachNotification.get('Español')}">
+
+		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
+
+		<p>
+			<spring:message code="breachNotification.name.en" />
+		</p>
+		<input type="text" name="nEn" id="nEn" size="100%"
+			value="${sysConfig.breachNotification.get('English')}">
+		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
 
 		<acme:submit code="system.save" name="save"/>&nbsp;
 		<acme:cancel code="system.cancel" url="sysconfig/administrator/display.do"/><br/><br/>

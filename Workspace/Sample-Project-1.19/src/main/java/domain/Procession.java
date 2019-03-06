@@ -42,7 +42,7 @@ public class Procession extends DomainEntity {
 	/* Getters&Setters */
 
 	@NotBlank
-	@Pattern(regexp = "\\d{6})+([-])+([A-Z]{5}")
+	@Pattern(regexp = "\\d{6}-[A-Z]{5}")
 	public String getTicker() {
 		return ticker;
 	}

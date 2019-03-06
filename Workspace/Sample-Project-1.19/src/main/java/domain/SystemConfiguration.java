@@ -29,9 +29,20 @@ public class SystemConfiguration extends DomainEntity {
 	private String spamWords;
 	private String possitiveWords;
 	private String negativeWords;
+	private Map<String,String> breachNotification;
 
 	/* Getters&Setters */
+	
+	@ElementCollection
+	public Map<String, String> getBreachNotification() {
+		return breachNotification;
+	}
 
+	public void setBreachNotification(Map<String, String> breachNotification) {
+		this.breachNotification = breachNotification;
+	}
+	
+	
 	@NotBlank
 	public String getSystemName() {
 		return systemName;
