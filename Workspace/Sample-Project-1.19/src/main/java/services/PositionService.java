@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -146,8 +147,42 @@ public class PositionService {
 
 		return res;
 	}
-
-	public Integer[] histogram() {
+	public Collection<Integer> countPositions(){
+		
+		Collection<Integer> res=this.positionRepository.countPositions();
+		
+		return res;
+		
+	}
+	
+	public Collection<String> nameEsPositions(){
+		Collection<String> result = new ArrayList<String>();
+		Collection<Position> positions;
+		
+		positions = this.findAll();
+		
+		for(Position p : positions){
+			result.add(p.getName().get("Español"));
+		}
+		 
+		return result;
+		
+	}
+	
+	public Collection<String> nameEnPositions(){
+		Collection<String> result = new ArrayList<String>();
+		Collection<Position> positions;
+		
+		positions = this.findAll();
+		
+		for(Position p : positions){
+			result.add("'"+p.getName().get("English")+"'");
+		}
+		 
+		return result;
+		
+	}
+/*	public Integer[] histogram() {
 
 		Collection<Position> positions;
 		Collection<Position> positiosnByEnrolments;
@@ -203,7 +238,7 @@ public class PositionService {
 
 		return result;
 	}
-
+*/
 	public Collection<Position> findPositionByEnrolmennts() {
 		Collection<Position> result;
 

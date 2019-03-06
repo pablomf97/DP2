@@ -13,5 +13,7 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 
 	@Query("select e.position from Enrolment e")
 	Collection<Position> findPositionByEnrolments();
+	@Query("select (select count(e) from Enrolment e where e.position=p) from Position p")
+	Collection<Integer> countPositions();
 }
 

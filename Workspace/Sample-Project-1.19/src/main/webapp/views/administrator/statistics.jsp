@@ -93,7 +93,11 @@
 			<td style="text-align: right">${countBrotherhoodsPerArea}</td>
 		</tr>
 
-
+		<tr>
+			<td><spring:message
+					code="administrator.stdevBrotherhoodPerArea" /></td>
+			<td style="text-align: right">${stdevBrotherhoodPerArea}</td>
+		</tr>
 	</table>
 
 	<table class="displayStyle" style="width: 50%">
@@ -211,11 +215,10 @@ var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["President", "Vicepresident", "Secreatry", "Treasurer", "Historian", "Fundraiser","Officer"],
+        labels: [<jstl:out value="${nameEnPositions}"/>],
         datasets: [{
             label: 'Positions',
-            data: [<jstl:out value="${histogram[0]}" />,<jstl:out value="${histogram[1]}" />,<jstl:out value="${histogram[2]}" />,<jstl:out value="${histogram[3]}" />,
-                   <jstl:out value="${histogram[4]}" />,<jstl:out value="${histogram[5]}" />,<jstl:out value="${histogram[6]}" />],
+            data: <jstl:out value="${countPositions}"/>,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -281,8 +284,8 @@ var myChart = new Chart(ctx, {
         labels: ["Presidente", "Vicepresidente", "Secretario", "Tesorero", "Historiador", "Promotor","Vocal"],
         datasets: [{
             label: 'Cargos',
-            data: [<jstl:out value="${histogram[0]}" />,<jstl:out value="${histogram[1]}" />,<jstl:out value="${histogram[2]}" />,<jstl:out value="${histogram[3]}" />,
-                   <jstl:out value="${histogram[4]}" />,<jstl:out value="${histogram[5]}" />,<jstl:out value="${histogram[6]}" />],
+            data: [<jstl:out value="${countPositions[0]}" />,<jstl:out value="${countPositions[1]}" />,<jstl:out value="${countPositions[2]}" />,<jstl:out value="${countPositions[3]}" />,
+                   <jstl:out value="${countPositions[4]}" />,<jstl:out value="${countPositions[5]}" />,<jstl:out value="${countPositions[6]}" />],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

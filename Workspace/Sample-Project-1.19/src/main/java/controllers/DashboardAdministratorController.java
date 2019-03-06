@@ -75,9 +75,15 @@ public class DashboardAdministratorController extends AbstractController{
 		Double[] ratioRejectedInAProcession;
 		Double[] ratioPendingInAProcession;
 		
-		Integer[] histogram;
-		
+//		Integer[] histogram;
+		Collection<Integer> countPositions;
+		countPositions=this.positionService.countPositions();
 		Collection<Procession> earlyProcessions;
+		Collection<String>nameEsPositions;
+		Collection<String>nameEnPositions;
+		
+		nameEsPositions = this.positionService.nameEsPositions();
+		nameEnPositions = this.positionService.nameEnPositions();
 		
 		Double[] statsFinder;
 		Double ratioFinders;
@@ -86,6 +92,7 @@ public class DashboardAdministratorController extends AbstractController{
 		Double minBrotherhoodPerArea;
 		Double ratioBrotherhoodsPerArea;
 		Double countBrotherhoodsPerArea;
+		Double stdevBrotherhoodPerArea;
 		
 		String language;
 		language = locale.getLanguage();
@@ -97,6 +104,9 @@ public class DashboardAdministratorController extends AbstractController{
 		minBrotherhoodPerArea=this.brotherhoodService.minBrotherhoodPerArea();
 		ratioBrotherhoodsPerArea=this.brotherhoodService.ratioBrotherhoodsPerArea();
 		countBrotherhoodsPerArea=this.brotherhoodService.countBrotherhoodsPerArea();
+		stdevBrotherhoodPerArea = this.brotherhoodService.stdevBrotherhoodPerArea();
+		
+		
 		
 		averageMemberPerBrotherhood = this.memberService.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
@@ -116,12 +126,17 @@ public class DashboardAdministratorController extends AbstractController{
 		
 		earlyProcessions = this.processionService.findEarlyProcessions();
 		
-		histogram = this.positionService.histogram();
+//		histogram = this.positionService.histogram();
 		
 		result = new ModelAndView("administrator/statistics");
 		
+		result.addObject("stdevBrotherhoodPerArea", stdevBrotherhoodPerArea);
+		result.addObject("nameEsPositions", nameEsPositions);
+		result.addObject("nameEnPositions", nameEnPositions);
+		
 		result.addObject("positions", positions.size());
-		result.addObject("histogram", histogram);
+//		result.addObject("histogram", histogram);
+		result.addObject("countPositions",countPositions);
 		
 		result.addObject("earlyProcessions", earlyProcessions);
 		

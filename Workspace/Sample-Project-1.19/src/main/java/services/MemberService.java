@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,8 @@ public class MemberService {
 
 	@Autowired
 	private Validator				validator;
-
+	
+	@Autowired
 	private BrotherhoodService		brotherhoodService;
 
 	@Autowired
@@ -171,8 +173,8 @@ public class MemberService {
 		int total = 0;
 		Double result;
 
-		brotherhoods = this.brotherhoodService.findAll();
-		Assert.notEmpty(brotherhoods);
+		brotherhoods = this.brotherhoodService.allBros();
+
 
 		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
@@ -309,5 +311,30 @@ public class MemberService {
 			check = false;
 		return check;
 	}
+	
+	
+	public Double stdevMembersPerBrotherhood(){
+		Collection<Brotherhood> brotherhoods;
+		Collection<Member> members = new ArrayList<Member>();
 
+		brotherhoods = this.brotherhoodService.allBros();
+
+		for(Brotherhood br : brotherhoods){
+			members.addAll(this.findAllMembersByBrotherhood(br.getId()));
+
+		}
+
+		Double n = (double) members.size();
+		Double average = (double)members.size()/brotherhoods.size();
+		Double averageTimes = (double)average*n;
+		Double lele = (Math.pow(n-averageTimes, 2));
+		Double lolo = 1/(n-1);
+		Double stdev = (double)Math.sqrt(lolo*lele);
+		
+
+		return stdev;
+	}
+
+	
+	
 }
