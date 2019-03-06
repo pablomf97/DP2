@@ -17,7 +17,9 @@
 
 	<display:table name="messageBoxes" id="messagebox" requestURI="${requestURI}"
 		pagesize="10">
-		<display:column property="name" titleKey="messagebox.name" />
+		<display:column>
+			<jstl:out value="${messagebox.name}"></jstl:out>
+		</display:column>
 
 		<display:column>
 			<button
@@ -47,12 +49,21 @@
 	<br />
 	<display:table name="messages" id="row" pagesize="5"
 		requestURI="${requestURI}">
-		<display:column property="subject" titleKey="message.subject" />
-		<display:column property="sender.userAccount.username"
-			titleKey="message.actor.sender" />
-		<display:column property="sentMoment" titleKey="message.sendTime" />
-		<display:column property="priority" titleKey="message.priority" />
-		<display:column property="tags" titleKey="message.tags" />
+<display:column>
+			<jstl:out value="${row.subject}"></jstl:out>
+		</display:column>
+				<display:column>
+			<jstl:out value="${row.sender.userAccount.username}"></jstl:out>
+		</display:column>
+				<display:column>
+			<jstl:out value="${row.sentMoment}"></jstl:out>
+		</display:column>
+				<display:column>
+			<jstl:out value="${row.priority}"></jstl:out>
+		</display:column>
+				<display:column>
+			<jstl:out value="${row.tags}"></jstl:out>
+		</display:column>
 		<display:column>
 			<button
 				onClick="window.location.href='message/display.do?messageId=${row.id}'">

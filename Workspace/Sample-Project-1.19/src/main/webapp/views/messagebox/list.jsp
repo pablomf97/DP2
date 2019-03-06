@@ -16,7 +16,9 @@
 	</jstl:if>
 	<display:table name="messageboxes" id="messagebox" requestURI="${requestURI}"
 		pagesize="10">
-		<display:column property="name" titleKey="messagebox.name" />
+		<display:column>
+			<jstl:out value="${messagebox.name}"></jstl:out>
+		</display:column>
 
 		<display:column>
 			<button
