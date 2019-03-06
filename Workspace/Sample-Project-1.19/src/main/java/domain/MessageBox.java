@@ -19,11 +19,11 @@ public class MessageBox extends DomainEntity {
 
 	/* Attributes */
 
-	private String					name;
-	private boolean					isPredefined;
-	private Collection<MessageBox>	parentMessageBoxes;
-	private Collection<Message>		messages;
-	private Actor					owner;
+	private String				name;
+	private boolean				isPredefined;
+	private MessageBox			parentMessageBoxes;
+	private Collection<Message>	messages;
+	private Actor				owner;
 
 
 	/* Getters&Setters */
@@ -60,7 +60,7 @@ public class MessageBox extends DomainEntity {
 		return this.parentMessageBoxes;
 	}
 
-	public void setParentMessageBoxes(final Collection<MessageBox> parentMessageBoxes) {
+	public void setParentMessageBoxes(final MessageBox parentMessageBoxes) {
 		this.parentMessageBoxes = parentMessageBoxes;
 	}
 

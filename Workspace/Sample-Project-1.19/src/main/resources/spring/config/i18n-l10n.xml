@@ -38,6 +38,7 @@
 
 		<value>/views/messagebox/messages</value>
 		<value>/views/message/messages</value>
+
 	</util:list>
 
 </beans>
