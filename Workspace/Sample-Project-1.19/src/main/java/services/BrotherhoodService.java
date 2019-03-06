@@ -31,6 +31,7 @@ public class BrotherhoodService {
 
 	@Autowired
 	private UserAccountService		userAccountService;
+	
 	@Autowired
 	private BrotherhoodRepository	brotherhoodRepository;
 	@Autowired

@@ -20,11 +20,15 @@
 
 
 <jstl:choose>
-	<jstl:when test="${language == 'es'}">
-		<p>${welcomeMessage.get('Español')}</p>
+	<jstl:when test="${pageContext.response.locale.language == 'es'}">
+		<p>
+			<jstl:out value="${welcomeMessage.get('Español')}" />
+		</p>
 	</jstl:when>
 	<jstl:otherwise>
-		<p>${welcomeMessage.get('English')}</p>
+		<p>
+			<jstl:out value="${welcomeMessage.get('English')}" />
+		</p>
 	</jstl:otherwise>
 </jstl:choose>
 

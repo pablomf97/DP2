@@ -56,7 +56,7 @@ public class MessageBox extends DomainEntity {
 
 	@Valid
 	@OneToMany
-	public Collection<MessageBox> getParentMessageBoxes() {
+	public MessageBox getParentMessageBoxes() {
 		return this.parentMessageBoxes;
 	}
 

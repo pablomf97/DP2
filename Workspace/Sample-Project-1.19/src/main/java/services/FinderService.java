@@ -227,26 +227,26 @@ public class FinderService {
 		  
 		 }
 
-	Double[] statsFinder(){
+	public Double[] statsFinder(){
 		Double [] res;
 		res=this.finderRepository.StatsFinder();
 		return res;
 	} 
 
-	Double ratioFinders(){
-		int emptys=this.FindersEmpty();
-		int all=this.findAll().size();
+	public Double ratioFinders(){
+		Double emptys=this.FindersEmpty();
+		Double all=(double) this.findAll().size();
 		Double res;
 		
-		res=(double) (emptys/all);
+		res=(emptys/all);
 		
 		
 		return res;
 
 	}
-	public int FindersEmpty(){
-		int res;
-		res=this.finderRepository.FindersEmpty();
+	public Double FindersEmpty(){
+		Double res;
+		res=(double) this.finderRepository.FindersEmpty().size();
 		return res;
 	}
 

@@ -51,3 +51,38 @@
 		</form:form>
 	</jstl:if>
 </jstl:if>
+
+<jstl:if test="${possible}">
+
+
+
+	<jstl:if test="${mensaje.id != 0 && !(broadcast)}">
+		<form:form action="message/actor/edit.do" modelAttribute="mensaje">
+
+			<form:hidden path="id" />
+
+			<form:select path="messageBoxes" itemValue="id">
+				<form:options items="${boxes}" itemLabel="name" itemValue="id" />
+			</form:select>
+			<form:errors cssClass="error" path="messageBoxes" />
+			<br />
+			<br />
+
+			<input type="submit" name="move"
+				value="<spring:message code="message.move"/>" />&nbsp;
+		
+	<input type="submit" name="delete"
+				value="<spring:message code="message.delete"/>"
+				onclick="return confirm('<spring:message code="message.confirm.delete"/>') " />&nbsp;
+		
+	<input type="button" name="cancel"
+				value="<spring:message code="message.cancel" />"
+				onclick="javascript: relativeRedir('/box/actor/list.do');" />
+
+			<br />
+		</form:form>
+
+	</jstl:if>
+
+
+</jstl:if>
