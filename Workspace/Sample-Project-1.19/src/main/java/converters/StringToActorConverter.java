@@ -16,13 +16,14 @@ import domain.Actor;
 public class StringToActorConverter implements Converter<String, Actor> {
 
 	@Autowired
-	private ActorRepository	actorRepository;
 
+	ActorRepository	actorRepository;
 
 	@Override
 	public Actor convert(final String text) {
 		Actor result;
-		final int id;
+
+		int id;
 
 		try {
 			if (StringUtils.isEmpty(text))
@@ -36,4 +37,8 @@ public class StringToActorConverter implements Converter<String, Actor> {
 		}
 		return result;
 	}
+
 }
+
+
+

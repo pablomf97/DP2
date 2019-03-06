@@ -31,6 +31,7 @@ public class BrotherhoodService {
 
 	@Autowired
 	private UserAccountService		userAccountService;
+	
 	@Autowired
 	private BrotherhoodRepository	brotherhoodRepository;
 
@@ -337,6 +338,47 @@ public class BrotherhoodService {
 		return result;
 
 	}
+	
+	public Double ratioBrotherhoodsPerArea(){
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Brotherhood> brotherhoodsInZone = new ArrayList<Brotherhood>();
+		Double size;
+		Double ratio;
+		
+		zones = this.zoneService.findAll();
+		brotherhoods = this.brotherhoodRepository.findAll();
+		
+		for(Zone z: zones){
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+			
+			
+		}
+		
+		size = (double) brotherhoodsInZone.size();
+		
+		ratio = size/brotherhoods.size();
+		
+		return ratio;
+		
+	}
+	
+	public Double countBrotherhoodsPerArea(){
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone = new ArrayList<Brotherhood>();
+		
+		zones = this.zoneService.findAll();
+		
+		for(Zone z: zones){
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+			
+			
+		}
+		
+		return (double) brotherhoodsInZone.size();
+		
+	}
+	
 	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId){
 		Collection<Brotherhood> result;
 
