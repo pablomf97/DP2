@@ -166,7 +166,7 @@
 								code="master.page.box.new" /></a></li>
 				</ul></li>
 
-			<li><a class="fNiv" href="brotherhood/brotherhood/list.do"><spring:message
+			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a></li>
 
 			<li><a class="fNiv"> <spring:message

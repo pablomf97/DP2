@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.BrotherhoodService;
 import services.ZoneService;
+import domain.Actor;
 import domain.Brotherhood;
 import domain.Zone;
 import forms.BrotherhoodForm;
@@ -158,6 +159,24 @@ public class BrotherhoodController extends AbstractController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-		return null;
+		ModelAndView res;
+		Actor principal;
+		boolean isMember;
+		Collection<Brotherhood> brotherhoods;
+
+		try {
+			principal = this.actorService.findByPrincipal();
+			isMember = this.actorService.checkAuthority(principal, "MEMBER");
+		} catch (Throwable oops) {
+			isMember = false;
+		}
+
+		brotherhoods = this.brotherhoodService.findAll();
+
+		res = new ModelAndView("brotherhood/list");
+		res.addObject("brotherhoods", brotherhoods);
+		res.addObject("isMember", isMember);
+
+		return res;
 	}
 }

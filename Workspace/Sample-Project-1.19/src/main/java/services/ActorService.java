@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -23,14 +22,13 @@ import forms.ActorForm;
 public class ActorService {
 
 	@Autowired
-	private ActorRepository				actorRepository;
+	private ActorRepository actorRepository;
 
 	@Autowired
-	private UserAccountRepository		userAccountRepository;
+	private UserAccountRepository userAccountRepository;
 
 	@Autowired
-	private SystemConfigurationService	systemConfigurationService;
-
+	private SystemConfigurationService systemConfigurationService;
 
 	public ActorForm createForm() {
 
@@ -38,6 +36,7 @@ public class ActorService {
 
 		return res;
 	}
+
 	/**
 	 * Get all actors from db
 	 * 
@@ -82,12 +81,14 @@ public class ActorService {
 	 */
 	public String checkEmail(final String email, final String authority) {
 		String result = "";
-		final Pattern pattern = Pattern.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
+		final Pattern pattern = Pattern
+				.compile("(^(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})$)|(^((([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]{1}([a-z]|[0-9]){1,}([.]{1}([a-z]|[0-9]){1,}){1,})>)$)");
 		final Matcher matcher = pattern.matcher(email);
 		if (authority.equals("ADMININISTRATOR") && matcher.matches()) {
 			// TODO: faltaría comprobar si se intenta insertar un admin y que
 			// compruebe su correo para su caso
-			final Pattern patternAdmin = Pattern.compile("(^((([a-z]|[0-9]){1,}[@])$)|(^(([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]>))$)");
+			final Pattern patternAdmin = Pattern
+					.compile("(^((([a-z]|[0-9]){1,}[@])$)|(^(([a-z]|[0-9]){1,}[ ]{1}){1,}<(([a-z]|[0-9]){1,}[@]>))$)");
 			final Matcher matcherAdmin = patternAdmin.matcher(email);
 			result = matcherAdmin.matches() ? "" : "actor.email.error";
 		} else
@@ -106,7 +107,9 @@ public class ActorService {
 		final Matcher m = p.matcher(phoneNumber);
 		final boolean b = m.matches();
 		if (b)
-			phoneNumber = this.systemConfigurationService.findAll().iterator().next().getCountryCode() + " " + phoneNumber;
+			phoneNumber = this.systemConfigurationService.findAll().iterator()
+					.next().getCountryCode()
+					+ " " + phoneNumber;
 		return phoneNumber;
 	}
 
@@ -120,7 +123,8 @@ public class ActorService {
 	public boolean checkAuthority(final Actor actor, final String authority) {
 		Assert.notNull(actor);
 		boolean result = false;
-		if (actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals(authority))
+		if (actor.getUserAccount().getAuthorities().iterator().next()
+				.getAuthority().equals(authority))
 			result = true;
 		return result;
 	}
@@ -138,6 +142,7 @@ public class ActorService {
 			result = "actor.check.law";
 		return result;
 	}
+
 	/**
 	 * Check the password of the actor
 	 * 
@@ -151,23 +156,24 @@ public class ActorService {
 			result = "actor.check.passW";
 		return result;
 	}
+
 	public String checkUniqueUser(final String username) {
 		String result = "";
 		if (this.userAccountRepository.findByUsername(username) != null)
 			result = "actor.check.unique.user";
 		return result;
 	}
-	
-	public Collection<Actor> findAllExceptPrincipal(){
+
+	public Collection<Actor> findAllExceptPrincipal() {
 		Collection<Actor> result;
 		Actor principal;
-		
+
 		result = this.actorRepository.findAll();
 		Assert.notNull(result);
-		
+
 		principal = this.findByPrincipal();
 		Assert.notNull(principal);
-		
+
 		result.remove(principal);
 		return result;
 	}
