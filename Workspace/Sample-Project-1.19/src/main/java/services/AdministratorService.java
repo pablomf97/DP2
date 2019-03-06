@@ -144,6 +144,7 @@ public class AdministratorService {
 
 		} else {
 			result = this.administratorRepository.findOne(administratorForm.getId());
+			Assert.notNull(result);
 			if (this.checkValidation(administratorForm, binding, result)) {
 				result.setAddress(administratorForm.getAddress());
 				result.setEmail(administratorForm.getEmail());

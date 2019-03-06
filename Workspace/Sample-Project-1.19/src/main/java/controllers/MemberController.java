@@ -79,38 +79,43 @@ public class MemberController extends AbstractController {
 		String passW = "";
 		String uniqueUsername = "";
 		Member member;
-		member = this.memberService.reconstruct(memberForm, binding);
-		if (member.getId() == 0) {
-			passW = this.actorService.checkPass(memberForm.getPassword(), memberForm.getPassword2());
-			uniqueUsername = this.actorService.checkUniqueUser(memberForm.getUsername());
-			check = this.actorService.checkLaw(memberForm.getCheckBox());
-		}
+		try {
+			member = this.memberService.reconstruct(memberForm, binding);
+			if (member.getId() == 0) {
+				passW = this.actorService.checkPass(memberForm.getPassword(), memberForm.getPassword2());
+				uniqueUsername = this.actorService.checkUniqueUser(memberForm.getUsername());
+				check = this.actorService.checkLaw(memberForm.getCheckBox());
+			}
 
-		member.setEmail(member.getEmail().toLowerCase());
-		emailError = this.actorService.checkEmail(member.getEmail(), member.getUserAccount().getAuthorities().iterator().next().getAuthority());
-		if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
-			result = new ModelAndView("member/edit");
-			result.addObject("uri", "member/edit.do");
-			member.getUserAccount().setPassword("");
-			result.addObject("member", member);
-			result.addObject("emailError", emailError);
-			result.addObject("checkLaw", check);
-			result.addObject("checkPass", passW);
-			result.addObject("uniqueUsername", uniqueUsername);
-		} else
-			try {
-				member.setPhoneNumber(this.actorService.checkSetPhoneCC(member.getPhoneNumber()));
-				this.memberService.save(member);
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (final Throwable opps) {
-				opps.printStackTrace();
+			member.setEmail(member.getEmail().toLowerCase());
+			emailError = this.actorService.checkEmail(member.getEmail(), member.getUserAccount().getAuthorities().iterator().next().getAuthority());
+			if (binding.hasErrors() || !emailError.isEmpty() || !check.isEmpty() || !passW.isEmpty() || !uniqueUsername.isEmpty()) {
 				result = new ModelAndView("member/edit");
 				result.addObject("uri", "member/edit.do");
-				result.addObject("messageCode", "actor.commit.error");
-				result.addObject("emailError", emailError);
 				member.getUserAccount().setPassword("");
 				result.addObject("member", member);
-			}
+				result.addObject("emailError", emailError);
+				result.addObject("checkLaw", check);
+				result.addObject("checkPass", passW);
+				result.addObject("uniqueUsername", uniqueUsername);
+			} else
+				try {
+					member.setPhoneNumber(this.actorService.checkSetPhoneCC(member.getPhoneNumber()));
+					this.memberService.save(member);
+					result = new ModelAndView("redirect:/welcome/index.do");
+				} catch (final Throwable opps) {
+					result = new ModelAndView("member/edit");
+					result.addObject("uri", "member/edit.do");
+					result.addObject("messageCode", "actor.commit.error");
+					result.addObject("emailError", emailError);
+					member.getUserAccount().setPassword("");
+					result.addObject("member", member);
+				}
+		} catch (final Throwable opps) {
+			//TODO: pantalla de error
+			result = new ModelAndView("redirect:/welcome/index.do");
+		}
 		return result;
+
 	}
 }
