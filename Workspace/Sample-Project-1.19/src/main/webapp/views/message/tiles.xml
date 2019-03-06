@@ -10,19 +10,17 @@
 
 <tiles-definitions>
 
-	<definition name="messagebox/list" extends="master.page">
-		<put-attribute name="title" value="My boxes" />
-		<put-attribute name="body" value="/views/messagebox/list.jsp" />
-	</definition>
-	
-		<definition name="messagebox/content" extends="master.page">
-		<put-attribute name="title" value="Box content" />
-		<put-attribute name="body" value="/views/messagebox/content.jsp" />
+	<definition name="message/edit" extends="master.page">
+		<put-attribute name="title" value="Send message" />
+		<put-attribute name="body" value="/views/message/edit.jsp" />
 	</definition>
 
-	<definition name="messagebox/edit" extends="master.page">
-		<put-attribute name="title" value="New box" />
-		<put-attribute name="body" value="/views/messagebox/edit.jsp" />
+
+	<definition name="message/broadcast" extends="master.page">
+		<put-attribute name="title" value="Send broadcast" />
+		<put-attribute name="body" value="/views/message/broadcast.jsp" />
 	</definition>
+
+
 
 </tiles-definitions>

@@ -107,11 +107,3 @@
 
 
 </jstl:if>
-
-
-
-<jstl:if test="${!possible}">
-	<h3>
-		<spring:message code="message.nopermission" />
-	</h3>
-</jstl:if>

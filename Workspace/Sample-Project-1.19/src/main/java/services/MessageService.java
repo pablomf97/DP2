@@ -194,7 +194,7 @@ public class MessageService {
 		Assert.notNull(messageBoxSender);
 
 		for(MessageBox mb : messageBoxSender){
-			if(!mb.getName().equals("Trash Box")){
+			if(!mb.getName().equals("Trash box")){
 				if(mb.getMessages().contains(message)){
 					result = true;
 				}
@@ -212,26 +212,30 @@ public class MessageService {
 	public void move(final Message message, final MessageBox destination){
 		Actor principal;
 		MessageBox origin = null;
-		Collection<MessageBox> principalBoxes, messageBoxes;
+		Collection<MessageBox> principalBoxes, messageBoxes,recipientBoxes;
 		Collection<Message> messages,updatedOriginBox,updatedDestinationBox;
+		Actor recipient;
+		
 
 		principalBoxes = new ArrayList<MessageBox>();
 		messageBoxes = new ArrayList<MessageBox>();
 		messages = new ArrayList<Message>();
 		updatedOriginBox = new ArrayList<Message>();
 		updatedDestinationBox = new ArrayList<Message>();
+		recipientBoxes = new ArrayList<MessageBox>();
 
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
+		
+		recipient = message.getRecipient();
 
 		Assert.isTrue(message.getId()!=0);
 		Assert.isTrue(destination.getId()!=0);
 
-		messageBoxes = message.getMessageBoxes();
-		Assert.notNull(messageBoxes);
 
 		principalBoxes = this.messageBoxService.findByOwner(principal.getId());
-
+		recipientBoxes = this.messageBoxService.findByOwner(recipient.getId());
+		
 		for(MessageBox mb : principalBoxes){
 			messages.addAll(mb.getMessages());
 		}
@@ -239,15 +243,20 @@ public class MessageService {
 		Assert.isTrue(messages.contains(message));
 
 		for(MessageBox principalBox : principalBoxes){
-			if(messages.contains(message)){
+			if(principalBox.getMessages().contains(message)){
 				origin = principalBox;
-				messageBoxes.remove(origin);
 				break;
 			}
 		}
-
+		
+		for(MessageBox recipientBox : recipientBoxes){
+			if(recipientBox.getMessages().contains(message)){
+				messageBoxes.add(recipientBox);
+			}
+		}
+		
 		messageBoxes.add(destination);
-
+		
 		Assert.isTrue(principalBoxes.contains(origin));
 		Assert.isTrue(principalBoxes.contains(destination));
 
@@ -270,11 +279,16 @@ public class MessageService {
 		Date sentMoment;
 		boolean isSpam;
 		MessageBox outBoxAdmin;
-		Collection<MessageBox> notificationBoxes ,boxes;
+		Collection<MessageBox> allBoxes ,boxes,notificationBoxes;
 		Message saved;
+		Collection<Actor>recipients;
 
-		boxes = new ArrayList<MessageBox>();
+		allBoxes = new ArrayList<MessageBox>();
 		notificationBoxes = new ArrayList<MessageBox>();
+		boxes = new ArrayList<MessageBox>();
+		recipients = new ArrayList<Actor>();
+		
+		recipients = this.actorService.findAll();
 
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
@@ -289,10 +303,17 @@ public class MessageService {
 		isSpam = false;
 		sentMoment = new Date(System.currentTimeMillis()-1);
 
+		for(Actor a : recipients){
+			if(!(this.actorService.checkAuthority(a, "ADMINISTRATOR"))){
+				notificationBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification box"));
+			}
+			
+		}
+		
 		outBoxAdmin = this.messageBoxService.findByName(principal.getId(), "Out box");
 		Assert.notNull(outBoxAdmin);
 
-		//notificationBoxes = this.messageBoxService.findAllNotificationExceptAdmin();
+		
 
 		final Message message = new Message();
 		message.setSubject(subject);
@@ -355,6 +376,27 @@ public class MessageService {
 
 			
 		}
+		return result;
+	}
+	
+	public Message reconstructBroadcast(final Message message, final BindingResult binding){
+		
+		Message result = this.create();
+		Actor principal;
+		
+		principal = this.actorService.findByPrincipal();
+		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
+		Assert.isTrue(message.getId() == 0);
+		
+		result.setSubject(message.getSubject());
+		result.setBody(message.getBody());
+		result.setPriority(message.getPriority());
+		result.setTags(message.getTags());
+		result.setRecipient(principal);
+		
+		this.validator.validate(result,binding);
+		
 		return result;
 	}
 
