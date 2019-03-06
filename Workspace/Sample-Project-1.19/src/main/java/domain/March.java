@@ -5,6 +5,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -33,6 +34,7 @@ public class March extends DomainEntity {
 		this.status = status;
 	}
 
+	@Min(value = 1)
 	public Integer getRow() {
 		return row;
 	}
@@ -41,6 +43,7 @@ public class March extends DomainEntity {
 		this.row = row;
 	}
 
+	@Min(value = 1)
 	public Integer getCol() {
 		return col;
 	}

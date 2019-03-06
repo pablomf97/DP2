@@ -17,6 +17,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+
 
 <!-- 	<p id="demo"></p>
 			document.getElementById("demo").innerHTML = pat; -->
@@ -80,19 +82,11 @@
 		<br />
 	</security:authorize>
 
-	<form:label path="surname">
-		<spring:message code="actor.surname" />:
-		</form:label>
-	<form:input path="surname" value="${member.surname}" />
-	<form:errors cssClass="error" path="surname" />
-	<br>
+	<acme:textbox code="actor.surname" path="surname"/><br>
 
-	<form:label path="name">
-		<spring:message code="actor.name" />:
-		</form:label>
-	<form:input path="name" value="${member.name}" />
-	<form:errors cssClass="error" path="name" />
-	<br>
+	<acme:textbox code="actor.name" path="name"/><br>
+	
+	
 
 	<form:label path="middleName">
 		<spring:message code="actor.middlename" />:

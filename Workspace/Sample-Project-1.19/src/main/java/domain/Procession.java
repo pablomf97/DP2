@@ -13,7 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +32,7 @@ public class Procession extends DomainEntity {
 	private String title;
 	private String description;
 	private Date organisedMoment;
+	private Integer maxCols;
 	private boolean isDraft;
 	// Float es un tipo ya predefinido en java, por lo que por ahora Float pasa
 	// a ser Platform.
@@ -39,8 +42,7 @@ public class Procession extends DomainEntity {
 	/* Getters&Setters */
 
 	@NotBlank
-	// @Pattern(regexp = "")
-	// TODO Pattern
+	@Pattern(regexp = "\\d{6})+([-])+([A-Z]{5}")
 	public String getTicker() {
 		return ticker;
 	}
@@ -76,6 +78,16 @@ public class Procession extends DomainEntity {
 
 	public void setOrganisedMoment(Date organisedMoment) {
 		this.organisedMoment = organisedMoment;
+	}
+	
+	@NotNull
+	@Min(value = 1)
+	public Integer getMaxCols() {
+		return maxCols;
+	}
+
+	public void setMaxCols(Integer maxCols) {
+		this.maxCols = maxCols;
 	}
 
 	public boolean getIsDraft() {

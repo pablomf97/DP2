@@ -1145,6 +1145,7 @@ your processions." />
 			value="Procesion asignada para el jueves santo por la hermandad Cigarrera" />
 		<property name="organisedMoment" value="14/03/19 18:00" />
 		<property name="isDraft" value="true" />
+		<property name="maxCols" value="4" />
 		<property name="platforms">
 			<list>
 				<ref bean="platform1" />
@@ -1166,6 +1167,7 @@ your processions." />
 			value="Procesion asignada para el viernes santo por la hermandad Silencio" />
 		<property name="organisedMoment" value="19/05/19 20:00" />
 		<property name="isDraft" value="false" />
+		<property name="maxCols" value="2" />
 		<property name="platforms">
 			<list>
 				<ref bean="platform3" />

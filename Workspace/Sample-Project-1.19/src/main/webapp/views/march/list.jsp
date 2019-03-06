@@ -56,11 +56,14 @@
 		<!-- Attributes-->
 		
 		<display:column titleKey="march.member" sortable="true" >
+		
 			<jstl:out value="${row.member.name}"></jstl:out>
 		</display:column>
 				
 		<display:column titleKey="march.procession" sortable="true" >
-			<jstl:out value="${row.procession.title }"></jstl:out>
+			<a href="procession/display.do?processionId=${row.procession.id}">
+				<jstl:out value="${row.procession.title }"></jstl:out>
+			</a>
 		</display:column>
 				
 		<display:column titleKey="march.status" sortable="true" class="${bgcolor}">
@@ -74,7 +77,7 @@
 		</display:column>
 				
 		<display:column titleKey="march.column" sortable="true" >
-			<jstl:out value="${row.column }"></jstl:out>
+			<jstl:out value="${row.col }"></jstl:out>
 		</display:column>
 		
 		</jstl:if>
@@ -137,7 +140,7 @@
 		</display:column>
 				
 		<display:column titleKey="march.column" sortable="true" >
-			<jstl:out value="${row.column }"></jstl:out>
+			<jstl:out value="${row.col }"></jstl:out>
 		</display:column>
 		
 		</jstl:if>
