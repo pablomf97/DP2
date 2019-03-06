@@ -7,6 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <jstl:choose>
 	<jstl:when test="${isPrincipal && march.status == 'PENDING'}">
@@ -14,18 +15,14 @@
 			<fieldset>
 			<br>
 			<form:hidden path="id" />
-			<form:label path="reason">
-				<spring:message code="march.reason" />
-			</form:label>
-			<form:textarea path="reason" />
-			<form:errors cssClass="error" path="reason" />
-			<br><br>
+			
+			<acme:textarea code="march.reason" path="reason"/><br/><br/>
+			
 		</fieldset>
-		<br />
-		<input type="submit" name="reject" id="reject" value="<spring:message code="march.reject"/>" />&nbsp;
-		<input type="button" name="cancel" value="<spring:message code="march.cancel"/>"
-			onclick="redirect: location.href = 'march/member,brotherhood/list.do';" />
-		<br />
+
+		<acme:submit code="march.reject" name="reject"/>&nbsp; 
+		<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do'"/><br/>
+
 		</form:form>
 	</jstl:when>
 	<jstl:otherwise>

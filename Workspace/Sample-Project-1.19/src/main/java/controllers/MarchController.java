@@ -3,6 +3,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -178,16 +179,21 @@ public class MarchController extends AbstractController {
 		March march;
 		boolean isPrincipal = false;
 		Actor principal;
+		List<Integer> recomendedPos;
 		
 		principal = this.actorService.findByPrincipal();
 		march = this.marchService.findOne(marchId);
 		Assert.notNull(march);
+		
+		recomendedPos = this.processionService.recommendedPos(march.getProcession());
 		
 		if(march.getProcession().getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 		
 		result = new ModelAndView("march/accept");
 		result.addObject("isPrincipal", isPrincipal);
+		result.addObject("recomRow", recomendedPos.get(0));
+		result.addObject("recomCol", recomendedPos.get(1));
 
 		return result;
 	}

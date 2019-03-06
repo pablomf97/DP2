@@ -167,6 +167,7 @@ public class PositionService {
 
 		for (Position p : positiosnByEnrolments) {
 			if (p.getName().containsValue("President")) {
+
 				president++;
 			}
 

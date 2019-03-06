@@ -2,7 +2,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -16,10 +15,8 @@ import repositories.MarchRepository;
 import domain.Actor;
 import domain.Brotherhood;
 import domain.March;
-
-import domain.Procession;
-
 import domain.Member;
+import domain.Procession;
 
 
 @Service
@@ -94,6 +91,9 @@ public class MarchService {
 		} else if (this.actorService.checkAuthority(principal, "BROTHERHOOD")){
 
 			Assert.isTrue(march.getId() != 0);
+			Assert.notNull(march.getMember());
+			Assert.notNull(march.getProcession());
+			Assert.notNull(march.getStatus());
 
 			brotherhood = (Brotherhood) principal;
 
@@ -256,7 +256,93 @@ public class MarchService {
 
 		return result;
 	}
+	
+	public Double[] ratioRejectedInAProcession(){
+		
+		Collection<Procession> processions;
+		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsRejectedInAProcession = new ArrayList<March>();
 
+		int count = 0;
+
+		processions = this.processionService.findAll();
+		
+		Double[] result = new Double[processions.size()];
+		
+		for(Procession p : processions){
+
+			Double ratio = 0.0;
+
+			marchsInAProcession = this.findMarchByProcession(p.getId());
+			Assert.notNull(marchsInAProcession);
+
+			for(March m : marchsInAProcession){
+
+				if(m.getStatus().equals("REJECTED")){
+					marchsRejectedInAProcession.add(m);
+				}
+
+			}
+
+			ratio = (double) ((double)marchsRejectedInAProcession.size()/(double)marchsInAProcession.size());
+
+
+			result[count] = ratio;
+
+
+			count++;
+
+
+
+		}
+
+
+
+		return result;
+
+	}
+	public Double[] ratioPendingInAProcession(){
+		
+		Collection<Procession> processions;
+		Collection<March> marchsInAProcession = new ArrayList<March>(),marchsPendingInAProcession = new ArrayList<March>();
+
+		int count = 0;
+
+		processions = this.processionService.findAll();
+		
+		Double[] result = new Double[processions.size()];
+		
+		for(Procession p : processions){
+
+			Double ratio = 0.0;
+
+			marchsInAProcession = this.findMarchByProcession(p.getId());
+			Assert.notNull(marchsInAProcession);
+
+			for(March m : marchsInAProcession){
+
+				if(m.getStatus().equals("PENDING")){
+					marchsPendingInAProcession.add(m);
+				}
+
+			}
+
+			ratio = (double) ((double)marchsPendingInAProcession.size()/(double)marchsInAProcession.size());
+
+
+			result[count] = ratio;
+
+
+			count++;
+
+
+
+		}
+
+
+
+		return result;
+
+	}
 
 
 }

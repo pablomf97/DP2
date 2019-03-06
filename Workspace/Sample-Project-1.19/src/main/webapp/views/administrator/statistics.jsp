@@ -46,7 +46,7 @@
 			<td><spring:message code="administrator.stdevMember" /></td>
 			<td style="text-align: right">${stdevMemberPerBrotherhood}</td>
 		</tr>
-
+<jstl:if test="${not empty acceptedMembers}">
 		<tr>
 			<td><spring:message code="administrator.acceptedMembers" /></td>
 			<jstl:forEach var="member" items="${acceptedMembers}">
@@ -56,6 +56,7 @@
 			</jstl:forEach>
 
 		</tr>
+		</jstl:if>
 	</table>
 
 	<table class="displayStyle" style="width: 50%">
@@ -70,6 +71,26 @@
 		<tr>
 			<td><spring:message code="administrator.smallestBrotherhood" /></td>
 			<td style="text-align: right">${smallestBrotherhood.title}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.maxBrotherhoodPerArea" /></td>
+			<td style="text-align: right">${maxBrotherhoodPerArea}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.minBrotherhoodPerArea" /></td>
+			<td style="text-align: right">${minBrotherhoodPerArea}</td>
+		</tr>
+
+		<tr>
+			<td><spring:message
+					code="administrator.ratioBrotherhoodsPerArea" /></td>
+			<td style="text-align: right">${ratioBrotherhoodsPerArea}</td>
+		</tr>
+
+		<tr>
+			<td><spring:message
+					code="administrator.countBrotherhoodsPerArea" /></td>
+			<td style="text-align: right">${countBrotherhoodsPerArea}</td>
 		</tr>
 
 
@@ -93,7 +114,7 @@
 			<td><spring:message code="administrator.requests.pending" /></td>
 			<td style="text-align: right">${ratioPendingRequests}</td>
 		</tr>
-
+<jstl:if test="${not empty processions}">
 		<tr>
 			<td><spring:message
 					code="administrator.requests.approved.procession" /></td>
@@ -102,8 +123,29 @@
 			</jstl:forEach>
 
 		</tr>
+		
+		
+		<tr>
+			<td><spring:message
+					code="administrator.requests.rejected.procession" /></td>
+			<jstl:forEach var="i" begin="0" end="${processions}">
+				<td style="text-align: right">${ratioRejectedInAProcession[i]}</td>
+			</jstl:forEach>
+
+		</tr>
+		
+				<tr>
+			<td><spring:message
+					code="administrator.requests.pending.procession" /></td>
+			<jstl:forEach var="i" begin="0" end="${processions}">
+				<td style="text-align: right">${ratioPendingInAProcession[i]}</td>
+			</jstl:forEach>
+
+		</tr>
+		</jstl:if>
 	</table>
 
+<jstl:if test="${not empty earlyProcessions}">
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2"><spring:message
@@ -118,6 +160,35 @@
 			</jstl:forEach>
 
 		</tr>
+		
+	</table>
+</jstl:if>
+	<table class="displayStyle" style="width: 50%">
+
+		<tr>
+			<th colspan="2"><spring:message
+					code="administrator.finder.statistics" /></th>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.resultsFinder" /></td>
+			<td style="text-align: right">${statsFinder[0]}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.resultsFinder.min" /></td>
+			<td style="text-align: right">${statsFinder[1]}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.resultsFinder.avg" /></td>
+			<td style="text-align: right">${statsFinder[2]}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.resultsFinder.stdev" /></td>
+			<td style="text-align: right">${statsFinder[3]}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="administrator.emptyFinder" /></td>
+			<td style="text-align: right">${ratioFinders}</td>
+		</tr>
 	</table>
 
 	<table class="displayStyle" style="width: 50%">
@@ -127,20 +198,15 @@
 		</tr>
 
 		<tr>
-			 
-			
-				<td style="text-align: right">
-				
-				
-					<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
- 
-	<canvas id="myChart" width="100" height="100"></canvas>
-	
-	
-				
-			<jstl:if test="${language == 'en'}">
-  
-<script>
+
+
+			<td style="text-align: right"><script
+					src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+				<canvas id="myChart" width="100" height="100"></canvas> <jstl:if
+					test="${language == 'en'}">
+
+					<script>
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -204,11 +270,10 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
- 
-	</jstl:if>			
-	<jstl:if test="${language == 'es'}">			
-				
-		<script>
+
+				</jstl:if> <jstl:if test="${language == 'es'}">
+
+					<script>
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -271,18 +336,17 @@ var myChart = new Chart(ctx, {
  }
     }
 });
-</script>		
-		
-		
-		</jstl:if>		
-				</td>
-		
- 
+</script>
+
+
+				</jstl:if></td>
+
+
 
 
 		</tr>
 	</table>
-	
 
- 
+
+
 </security:authorize>

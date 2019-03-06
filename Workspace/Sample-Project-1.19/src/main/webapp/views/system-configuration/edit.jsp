@@ -17,6 +17,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 
@@ -24,89 +26,26 @@
 		modelAttribute="sysConfig" methodParam="post">
 
 		<form:hidden path="id" />
-		<form:hidden path="version" />
 
-		<form:label path="systemName">
-			<spring:message code="system.name" />:
-		</form:label>
-		<form:input path="systemName" value="${sysConfig.systemName}" />
-		<form:errors cssClass="error" path="systemName" />
-		<br>
-		<br>
-
-		<form:label path="messagePriority">
-			<spring:message code="system.message.priority" />:
-		</form:label>
-		<form:input path="messagePriority"
-			value="${sysConfig.messagePriority}" />
-		<form:errors cssClass="error" path="messagePriority" />
-		<br>
-		<br>
-
-		<form:label path="banner">
-			<spring:message code="system.bannerURL" />:
-		</form:label>
-		<form:input path="banner" value="${sysConfig.banner}" size="50%" />
-		<form:errors cssClass="error" path="banner" />
-		<br>
-		<br>
-
-		<form:label path="timeResultsCached">
-			<spring:message code="system.resultscached" />:
-		</form:label>
-		<form:input path="timeResultsCached"
-			value="${sysConfig.timeResultsCached}" size="5%" />
-		<form:errors cssClass="error" path="timeResultsCached"
-			code="${timeErr}" />
-		<br>
-		<br>
-
-		<form:label path="maxResults">
-			<spring:message code="system.resultspersearch" />:
-		</form:label>
-		<form:input required="true" path="maxResults"
-			value="${sysConfig.maxResults}" size="5%" />
-		<form:errors cssClass="error" path="maxResults" code="${maxErr}" />
-		<br>
-		<br>
-
-		<form:label path="countryCode">
-			<spring:message code="system.countrycode" />:
-		</form:label>
-		<form:input path="countryCode" value="${sysConfig.countryCode}" />
-		<form:errors cssClass="error" path="countryCode" />
-		<br>
-		<br>
-
-		<form:label path="spamWords">
-			<spring:message code="system.spamwords" />:
-		</form:label>
-		<form:input path="spamWords"
-			placeholder="<spring:message code='system.lists.placeholder' />"
-			value="${sysConfig.spamWords}" size="100%" />
-		<form:errors cssClass="error" path="spamWords" />
-		<br>
-		<br>
-
-		<form:label path="negativeWords">
-			<spring:message code="system.negativewords" />:
-		</form:label>
-		<form:input path="negativeWords"
-			placeholder="<spring:message code='system.lists.placeholder' />"
-			value="${sysConfig.negativeWords}" size="100%" />
-		<form:errors cssClass="error" path="negativeWords" />
-		<br>
-		<br>
-
-		<form:label path="possitiveWords">
-			<spring:message code="system.positivewords" />:
-		</form:label>
-		<form:input path="possitiveWords"
-			placeholder="<spring:message code='system.lists.placeholder' />"
-			value="${sysConfig.possitiveWords}" size="100%" />
-		<form:errors cssClass="error" path="possitiveWords" />
-		<br>
-		<br>
+		<acme:textbox code="system.name" path="systemName"/><br><br>
+		
+		<acme:textbox code="system.message.priority" path="messagePriority"/><br><br>
+		
+		<acme:textbox code="system.bannerURL" path="banner"/><br><br>
+		
+		<acme:textbox code="system.resultscached" path="timeResultsCached" size="5%" codeErr="timeErr"/><br><br>
+		
+		<acme:textbox code="system.bannerURL" path="banner"/><br><br>
+		
+		<acme:textbox code="system.resultspersearch" path="maxResults" size="5%" codeErr="maxErr"/><br><br>
+		
+		<acme:textbox code="system.countrycode" path="countryCode"/><br><br>
+		
+		<acme:textbox code="system.spamwords" path="spamWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
+		
+		<acme:textbox code="system.negativewords" path="negativeWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
+		
+		<acme:textbox code="system.positivewords" path="possitiveWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
 
 		<p>
 			<spring:message code="wel.name.es" />
@@ -116,9 +55,7 @@
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />"
 			required>
 
-		<form:errors cssClass="error" path="welcomeMessage" />
-		<br />
-		<br />
+		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
 
 		<p>
 			<spring:message code="wel.name.en" />
@@ -127,15 +64,10 @@
 			value="${sysConfig.welcomeMessage.get('English')}"
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />"
 			required>
-		<form:errors cssClass="error" path="welcomeMessage" />
-		<br />
-		<br />
+		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
 
-		<input type="submit" name="save" id="save"
-			value='<spring:message code="system.save"/>' />
-		<input type="button" name="cancel"
-			value="<spring:message code="system.cancel" />"
-			onclick="javascript: relativeRedir('sysconfig/administrator/display.do');" />
+		<acme:submit code="system.save" name="save"/>&nbsp;
+		<acme:cancel code="system.cancel" url="sysconfig/administrator/display.do"/><br/><br/>
 	</form:form>
 
 </security:authorize>

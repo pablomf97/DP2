@@ -73,7 +73,7 @@ public class MessageController extends AbstractController{
 
 
 	@RequestMapping(value="/edit", method = RequestMethod.POST, params="save")
-	public ModelAndView save(@Valid final Message mensaje, final BindingResult binding){
+	public ModelAndView save(final Message mensaje, final BindingResult binding){
 		ModelAndView result;
 		Message message;
 
@@ -93,7 +93,7 @@ public class MessageController extends AbstractController{
 	}
 
 	@RequestMapping(value="/edit",method = RequestMethod.POST, params="move")
-	public ModelAndView move(@Valid final Message mensaje, final BindingResult binding){
+	public ModelAndView move(final Message mensaje, final BindingResult binding){
 		ModelAndView result;
 		MessageBox destination;
 

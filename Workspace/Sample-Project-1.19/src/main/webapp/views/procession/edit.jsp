@@ -7,6 +7,8 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
 
 <jstl:choose>
 	<jstl:when test="${isPrincipal || procession.id == 0}">
@@ -16,48 +18,32 @@
 					<fieldset>
 					<br>
 					<form:hidden path="id" />
-					<form:label path="title">
-						<spring:message code="procession.title" />
-					</form:label>
-					<form:input path="title" />
-					<form:errors cssClass="error" path="title" />
-					<br><br>
 					
-					<form:label path="organisedMoment">
-						<spring:message code="procession.organisedMoment" />
-					</form:label>
-					<form:input path="organisedMoment" />
-					<form:errors cssClass="error" path="organisedMoment" />
-					<br><br>
+					<acme:textbox code="procession.title" path="title"/><br><br>
 					
-					<form:label path="description">
-						<spring:message code="procession.description" />
-					</form:label>
-					<br>
-					<form:textarea path="description" />
-					<form:errors cssClass="error" path="description" />					
-					<br />	<br />
+					<acme:textbox code="procession.organisedMoment" path="organisedMoment"/><br><br>
 					
-					<form:label path="platforms">
-						<spring:message code="procession.platform" />
-					</form:label>
-					<br>
+					<acme:textbox code="procession.maxCols" path="maxCols" placeholder="procession.maxCols.placeholder" size="50%"/><br><br>
+					
+					<acme:textbox code="procession.description" path="description"/><br /><br />
+					
+				<form:label path="platforms">
+					<spring:message code="procession.platform" />
+				</form:label><br>
 				<form:select multiple="true" path="platforms" items="${platforms}" itemLabel="title" />				
 				<br><br>
 				</fieldset>
 				<br />
 							
 				<jstl:if test="${procession.isDraft == true || procession.id == 0}">
-					<input type="submit" id="saveFinal" name="saveFinal" value="<spring:message code="procession.save.final"/>" />&nbsp;
-					<input type="submit" id="save" name="save" value="<spring:message code="procession.save"/>" />
+					<acme:submit code="procession.save" name="save"/>&nbsp;
+					<acme:submit code="procession.save.final" name="saveFinal"/>&nbsp; 
 				</jstl:if>
 				<jstl:if test="${procession.id != 0}">
-					<input type="submit" name="delete" value="<spring:message code="procession.delete"/>"
-						onclick="return confirm('<spring:message code="procession.confirm.delete"/>')" />&nbsp;
+					<acme:delete code="procession.delete" name="delete" confirmation="procession.confirm.delete"/>&nbsp; 
 				</jstl:if>
-				<input type="button" name="cancel" value="<spring:message code="procession.cancel"/>"
-					onclick="redirect: location.href = 'procession/member,brotherhood/list.do';" />
-				<br />
+				<acme:cancel code="procession.cancel" url="procession/member,brotherhod/list.do"/><br/><br/>
+				
 				</form:form>
 			</jstl:when>
 			<jstl:otherwise>

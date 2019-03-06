@@ -1,5 +1,5 @@
 <%--
- * textbox.tag
+ * submit.tag
  *
  * Copyright (C) 2019 Universidad de Sevilla
  * 
@@ -21,30 +21,14 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <%-- Attributes --%> 
- 
-<%@ attribute name="path" required="true" %>
+
+<%@ attribute name="name" required="true" %> 
 <%@ attribute name="code" required="true" %>
-
-<%@ attribute name="codeErr" required="false" %>
-<%@ attribute name="size" required="false" %>
-<%@ attribute name="placeholder" required="false" %>
-<%@ attribute name="readonly" required="false" %>
-
-<jstl:if test="${readonly == null}">
-	<jstl:set var="readonly" value="false" />
-</jstl:if>
+<%@ attribute name="confirmation" required="true" %>
 
 <%-- Definition --%>
 
-<div>
-	<jstl:if test="${not empty placeholder }">
-		<spring:message code="${placeholder}" var="place" />
-	</jstl:if>
-	
-	<form:label path="${path}">
-		<spring:message code="${code}" />
-	</form:label>	
-	<form:input path="${path}" readonly="${readonly}" size="${size }"
-		placeholder="${place}"/>	
-	<form:errors path="${path}" cssClass="${codeErr }" />
-</div>	
+<button type="submit" name="${name}" class="btn btn-primary"
+	onclick="return confirm('<spring:message code="${confirmation}" />')">
+	<spring:message code="${code}" />
+</button>

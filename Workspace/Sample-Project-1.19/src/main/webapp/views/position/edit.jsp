@@ -17,6 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
 
@@ -47,17 +48,13 @@
 		<form:errors cssClass="error" path="name" />
 		<br />
 		<br />
-
-		<input type="submit" id="submit" name="save"
-			value="<spring:message code='position.save' />">
+		
+		<acme:submit code="position.save" name="save"/>&nbsp;
 
 		<jstl:if test="${position.id != 0}">
-			<input type="submit" id="submit" name="delete"
-				value="<spring:message code='position.delete' />" />
+			<acme:delete code="position.delete" name="delete" confirmation="position.confirm.delete"/>&nbsp;
 		</jstl:if>
-		<input type="button" name="cancel"
-			onclick="redirect: location.href = 'position/administrator/list.do';"
-			value="<spring:message code='position.cancel' />" />
+		<acme:cancel code="position.cancel" url="position/administrator/list.do"/><br/><br/>
 		<form:errors cssClass="error" code="${message}" />
 	</form:form>
 
