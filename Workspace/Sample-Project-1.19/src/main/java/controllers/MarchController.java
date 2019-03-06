@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.MarchService;
+import services.MessageService;
 import services.ProcessionService;
 import domain.Actor;
 import domain.March;
@@ -35,7 +37,9 @@ public class MarchController extends AbstractController {
 	
 	@Autowired
 	private ProcessionService processionService;
-
+	
+	@Autowired
+	private MessageService messageService;
 	// Display
 	
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -180,10 +184,12 @@ public class MarchController extends AbstractController {
 		boolean isPrincipal = false;
 		Actor principal;
 		List<Integer> recomendedPos;
+	
 		
 		principal = this.actorService.findByPrincipal();
 		march = this.marchService.findOne(marchId);
 		Assert.notNull(march);
+		
 		
 		recomendedPos = this.processionService.recommendedPos(march.getProcession());
 		
@@ -200,10 +206,16 @@ public class MarchController extends AbstractController {
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "accept")
 	public ModelAndView accept(March march, final BindingResult binding) {
+		
+		
+		
 		ModelAndView result;
-
+		
 		march.setStatus("ACCEPTED");
 		march = this.marchService.reconstruct(march, binding);
+		
+		this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
+		
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
 		else
@@ -245,6 +257,9 @@ public class MarchController extends AbstractController {
 
 		march.setStatus("REJECTED");
 		march = this.marchService.reconstruct(march, binding);
+		
+		this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
+		
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
 		else

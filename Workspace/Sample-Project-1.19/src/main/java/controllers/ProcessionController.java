@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.MessageService;
 import services.PlatformService;
 import services.ProcessionService;
 import domain.Actor;
@@ -33,6 +34,9 @@ public class ProcessionController extends AbstractController {
 
 	@Autowired
 	private ActorService actorService;
+	
+	@Autowired
+	private MessageService messageService;
 
 	// Display
 	
@@ -181,6 +185,9 @@ public class ProcessionController extends AbstractController {
 		else
 			try {
 				this.processionService.save(procession);
+				
+				this.messageService.notificationPublishProcession(procession);
+				
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (IllegalArgumentException oops) {
 				result = new ModelAndView("misc/403");

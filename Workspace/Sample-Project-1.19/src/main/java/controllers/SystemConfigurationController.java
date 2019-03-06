@@ -48,6 +48,7 @@ public class SystemConfigurationController extends AbstractController {
 		String[] positiveWords;
 		String[] messagePriority;
 		Map<String, String> welcomeMessage;
+		Map<String,String> breachNotification;
 		Boolean err;
 
 		try {
@@ -63,7 +64,8 @@ public class SystemConfigurationController extends AbstractController {
 			positiveWords = sysConfig.getPossitiveWords().split(",");
 			messagePriority = sysConfig.getMessagePriority().split(",");
 			welcomeMessage = sysConfig.getWelcomeMessage();
-
+			breachNotification=sysConfig.getBreachNotification();
+			
 			res = new ModelAndView("sysConfig/display");
 			res.addObject("sysConfig", sysConfig);
 			res.addObject("spamWords", spamWords);
@@ -71,6 +73,7 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("positiveWords", positiveWords);
 			res.addObject("messagePriority", messagePriority);
 			res.addObject("welcomeMessage", welcomeMessage);
+			res.addObject("breachNotification",breachNotification);
 
 		} catch (IllegalArgumentException oops) {
 			res = new ModelAndView("misc/403");
@@ -124,7 +127,7 @@ public class SystemConfigurationController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(SystemConfiguration systemConfiguration,
 			@RequestParam("nameES") String nameES,
-			@RequestParam("nameEN") String nameEN, BindingResult binding) {
+			@RequestParam("nameEN") String nameEN,@RequestParam("nEs") String nEs,@RequestParam("nEn") String nEn,BindingResult binding) {
 		ModelAndView res;
 		String message = null;
 
@@ -134,7 +137,7 @@ public class SystemConfigurationController extends AbstractController {
 		} else {
 			try {
 				systemConfiguration = this.systemConfigurationService
-						.reconstruct(systemConfiguration, nameES, nameEN,
+						.reconstruct(systemConfiguration, nameES, nameEN,nEs,nEn,
 								binding);
 
 				this.systemConfigurationService.save(systemConfiguration);

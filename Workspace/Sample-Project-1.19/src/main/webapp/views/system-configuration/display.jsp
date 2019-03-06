@@ -137,6 +137,22 @@
 							</display:table></td>
 				</table>
 			</div>
+			
+			<div style="width: 20%; float: left; position: static">
+				<table class="displayStyle">
+					<tr>
+						<td><display:table pagesize="5" class="displaytag"
+								name="breachNotification"
+								requestURI="sysconfig/administrator/display.do"
+								id="breachNotification">
+
+								<display:column titleKey="system.breachNotification" sortable="true">
+									<jstl:out value="${breachNotification}" />
+								</display:column>
+
+							</display:table></td>
+				</table>
+			</div>
 
 			<input type="button" name="edit"
 				value='<spring:message code="system.edit"/>'
@@ -144,5 +160,6 @@
 
 		</jstl:otherwise>
 	</jstl:choose>
+
 
 </security:authorize>
