@@ -21,7 +21,7 @@
 		</fieldset>
 
 		<acme:submit code="march.reject" name="reject"/>&nbsp; 
-		<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do'"/><br/>
+		<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do"/><br/>
 
 		</form:form>
 	</jstl:when>

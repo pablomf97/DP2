@@ -248,7 +248,7 @@ public class ProcessionService {
 		
 		marchs = this.marchService.findMarchByProcession(procession.getId());
 		
-		for(Integer auxCol = 1 ; auxCol < procession.getMaxCols() ; auxCol++) {
+		for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
 			for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
 				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
 				if(validPos) {
@@ -257,6 +257,8 @@ public class ProcessionService {
 					break;
 				}
 			}
+			if(validPos)
+				break;
 		}
 		return rowColumn;
 	}	

@@ -11,7 +11,7 @@
 
 
 <jstl:choose>
-	<jstl:when test="${isPrincipal || procession.id == 0}">
+	<jstl:when test="${(isPrincipal || procession.id == 0) &&  not empty actorBrother.zone}">
 		<jstl:choose>
 			<jstl:when test="${procession.id == 0 || procession.isDraft == true}">
 				<form:form action="procession/edit.do" modelAttribute="procession" id="form">
@@ -52,6 +52,11 @@
 				</h3>
 			</jstl:otherwise>
 		</jstl:choose>
+	</jstl:when>
+	<jstl:when test="${empty actorBrother.zone }">
+		<p>
+			<spring:message code="procession.noArea" />
+		</p>
 	</jstl:when>
 	<jstl:otherwise>
 		<p>

@@ -76,10 +76,7 @@ public class SocialProfileService {
 		if(socialProfile.getId() != 0){
 			Assert.isTrue(checkifPrincipalIsOwnerBySocialProfileId(socialProfile.getId()),"not.allowed");
 		}
-		
-		
-		
-		
+
 		Assert.notNull(socialProfile.getName(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getNick(), "socialProfile.NotEmpty");
 		Assert.notNull(socialProfile.getLinkProfile(), "socialProfile.NotEmpty");
@@ -149,10 +146,18 @@ public class SocialProfileService {
 		return res;
 	}*/
 	
-	public Collection<SocialProfile> socialProfilesByUser(String username){
+	public Collection<SocialProfile> socialProfilesByUserName(String username){
 		
 		Collection<SocialProfile> res;
-		res=this.socialProfileRepository.socialProfilesByUser(username);
+		res=this.socialProfileRepository.socialProfilesByUserName(username);
+		return res;
+		
+	}
+	
+	public Collection<SocialProfile> socialProfilesByUserId(int userId){
+		
+		Collection<SocialProfile> res;
+		res=this.socialProfileRepository.socialProfilesByUserId(userId);
 		return res;
 		
 	}
