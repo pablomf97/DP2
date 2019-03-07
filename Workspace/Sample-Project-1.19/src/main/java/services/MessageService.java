@@ -6,8 +6,6 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -16,6 +14,8 @@ import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import domain.Actor;
+import domain.Enrolment;
+import domain.Member;
 import domain.Message;
 import domain.MessageBox;
 import domain.Procession;
@@ -490,6 +490,92 @@ public class MessageService {
 		outBox.getMessages().add(saved);
 		
 		return saved;
+	}
+	
+	public Message notMessageEnrolAMember(Enrolment e){
+		Message result = new Message();
+		
+		Actor principal;
+		MessageBox outBox,notBox;
+		Collection<MessageBox> boxes;
+		Message saved;
+		
+		boxes = new ArrayList<MessageBox>();
+		
+		principal = this.actorService.findByPrincipal();
+		
+		outBox = this.messageBoxService.findByName(principal.getId(), "Notification Box");
+		Assert.notNull(outBox);
+		
+		notBox = this.messageBoxService.findByName(e.getMember().getId(),"Notification Box");
+		Assert.notNull(notBox);
+		
+		
+		boxes.add(outBox);
+		boxes.add(notBox);
+		
+		result.setSubject("Member "+ e.getMember().getName() + "has been enrolled in this brotherhood: "+ e.getBrotherhood().getTitle());
+		result.setBody("Date is: "+ e.getMoment());
+		result.setSender(principal);
+		result.setRecipient(e.getMember());
+		result.setPriority("NORMAL");
+		result.setIsSpam(false);
+		result.setMessageBoxes(boxes);
+		result.setSentMoment(new Date(System.currentTimeMillis()-1));
+		result.setTags("New member enrolled");
+		
+		saved = this.messageRepository.save(result);
+		
+		outBox.getMessages().add(saved);
+		notBox.getMessages().add(saved);
+		
+		return saved;
+		
+	}
+	
+	public Message notOutMember(Enrolment e){
+		
+		Assert.isTrue(e.getIsOut() == true);
+		
+		Message result = new Message();
+		Actor principal;
+		MessageBox outBox,notBox;
+		Collection<MessageBox>boxes;
+		Message saved;
+		
+		boxes = new ArrayList<MessageBox>();
+		
+		principal = this.actorService.findByPrincipal();
+		
+		Assert.isTrue(principal.getId() == e.getMember().getId());
+		
+		outBox = this.messageBoxService.findByName(principal.getId(), "Out box");
+		Assert.notNull(outBox);
+		
+		notBox = this.messageBoxService.findByName(e.getBrotherhood().getId(), "Notification box");
+		Assert.notNull(notBox);
+		
+		boxes.add(outBox);
+		boxes.add(notBox);
+		
+		result.setSubject("Member "+ e.getMember().getName()+" is Out from Brotherhood :" + e.getBrotherhood().getTitle());
+		result.setBody("Date is: " + e.getMoment());
+		result.setSender(principal);
+		result.setRecipient(e.getBrotherhood());
+		result.setMessageBoxes(boxes);
+		result.setTags("Member out of a brotherhood");
+		result.setPriority("NEUTRAL");
+		result.setIsSpam(false);
+		result.setSentMoment(new Date(System.currentTimeMillis()-1));
+		
+		
+		saved = this.messageRepository.save(result);
+		
+		outBox.getMessages().add(saved);
+		notBox.getMessages().add(saved);
+		
+		return saved;
+		
 	}
 
 }

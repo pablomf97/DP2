@@ -24,6 +24,7 @@ public class Enrolment extends DomainEntity {
 
 	private Date moment;
 	private List<Date> dropOutMoment;
+	
 	// Tipo envoltura ya que se haran comprobaciones en servicios para ciertas
 	// operaciones
 	private Boolean isOut;

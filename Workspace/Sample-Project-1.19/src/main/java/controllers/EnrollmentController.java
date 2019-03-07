@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.BrotherhoodService;
 import services.EnrolmentService;
+import services.MessageService;
 import services.PositionService;
 import domain.Actor;
 import domain.Brotherhood;
@@ -29,6 +30,10 @@ public class EnrollmentController extends AbstractController {
 
 	@Autowired
 	private EnrolmentService enrolmentService;
+	
+	@Autowired
+	private MessageService messageService;
+	
 
 	@Autowired
 	private ActorService actorService;
@@ -178,6 +183,9 @@ public class EnrollmentController extends AbstractController {
 				enrolment.setIsOut(true);
 				enrolment.setPosition(null);
 				this.enrolmentService.save(enrolment);
+				
+				this.messageService.notOutMember(enrolment);
+				
 				// TODO Cambiar cuando tenga lo de chema
 				res = new ModelAndView(
 						"redirect:/enrolment/brotherhood/list.do");
@@ -219,6 +227,8 @@ public class EnrollmentController extends AbstractController {
 						.getId());
 
 				this.enrolmentService.save(enrolment);
+				
+				this.messageService.notMessageEnrolAMember(enrolment);
 
 				res = new ModelAndView("redirect:list.do");
 			} catch (IllegalArgumentException oops) {
