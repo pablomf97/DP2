@@ -19,5 +19,10 @@
 		<put-attribute name="title" value="Enviar broadcast" />
 		<put-attribute name="body" value="/views/message/broadcast.jsp" />
 	</definition>
+	
+		<definition name="message/display" extends="master.page">
+		<put-attribute name="title" value="See message" />
+		<put-attribute name="body" value="/views/message/display.jsp" />
+	</definition>
 
 </tiles-definitions>

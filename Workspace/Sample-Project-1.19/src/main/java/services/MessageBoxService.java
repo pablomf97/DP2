@@ -27,8 +27,8 @@ public class MessageBoxService {
 	@Autowired
 	private ActorService			actorService;
 
-	//@Autowired
-	//private MessageService			messageService;
+	@Autowired
+	private MessageService			messageService;
 	@Autowired
 	private Validator				validator;
 
@@ -46,7 +46,7 @@ public class MessageBoxService {
 		MessageBox saved;
 		if (box.getId() != 0) {
 			final MessageBox boxBD = this.findOne(box.getId());
-			Assert.isTrue(this.actorService.findByPrincipal().equals(box.getOwner()) && this.actorService.findByPrincipal().equals(boxBD.getOwner()));
+			Assert.isTrue(this.actorService.findByPrincipal().equals(box.getOwner()) || this.actorService.findByPrincipal().equals(boxBD.getOwner()));
 			if (boxBD.getIsPredefined() == false)
 				boxBD.setName(box.getName());
 			Assert.isTrue(this.checkParentBox(boxBD, box));
@@ -92,10 +92,9 @@ public class MessageBoxService {
 			for (final MessageBox b : childBoxes)
 				this.delete(b);
 		if (messageBox.getMessages() != null)
-			for (final Message m : messageBox.getMessages()) {
+			for (final Message m : messageBox.getMessages())
 				//TODO: cuando esté mensajes hecho
-				//this.messageService.deleteMessages(m, messageBox);
-			}
+				this.messageService.deleteMessages(m, messageBox);
 		this.messageBoxRepository.delete(messageBox);
 	}
 	//Other requirements

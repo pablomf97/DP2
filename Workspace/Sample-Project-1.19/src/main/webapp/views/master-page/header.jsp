@@ -173,6 +173,13 @@
 								code="master.page.box.list" /></a></li>
 					<li><a href="messagebox/create.do"><spring:message
 								code="master.page.box.new" /></a></li>
+					<li><a href="message/actor/create.do"><spring:message
+								code="master.page.message.send" /></a></li>
+					<security:authorize access="hasRole('ADMINISTRATOR')">
+						<li><a href="message/administrator/broadcast.do"> <spring:message
+									code="master.page.message.broadcast" /></a></li>
+					</security:authorize>
+
 				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message

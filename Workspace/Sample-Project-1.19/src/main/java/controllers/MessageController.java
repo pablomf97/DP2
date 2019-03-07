@@ -1,10 +1,9 @@
+
 package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,25 +23,24 @@ import domain.MessageBox;
 
 @Controller
 @RequestMapping("/message/actor")
-public class MessageController extends AbstractController{
+public class MessageController extends AbstractController {
 
 	//Services
 
 	@Autowired
-	private MessageService messageService;
+	private MessageService		messageService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private MessageBoxService messageBoxService;
-
+	private MessageBoxService	messageBoxService;
 
 
 	//Create ----------------------------------------------------------------------
 
-	@RequestMapping(value="/create", method= RequestMethod.GET)
-	public ModelAndView create(){
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
 		final ModelAndView result;
 		Message mensaje;
 
@@ -55,9 +53,22 @@ public class MessageController extends AbstractController{
 
 	//Edition ------------------------------------------------------------
 
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int messageId) {
+		ModelAndView result;
+		Message message;
 
-	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int messageId){
+		message = this.messageService.findOne(messageId);
+		Assert.notNull(message);
+		result = new ModelAndView("message/display");
+		result.addObject("messageO", message);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int messageId) {
 		ModelAndView result;
 		Message message;
 
@@ -68,32 +79,29 @@ public class MessageController extends AbstractController{
 
 		return result;
 
-
 	}
-
-
-	@RequestMapping(value="/edit", method = RequestMethod.POST, params="save")
-	public ModelAndView save(final Message mensaje, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final Message mensaje, final BindingResult binding) {
 		ModelAndView result;
 		Message message;
 
 		message = this.messageService.reconstruct(mensaje, binding);
 
-		if(binding.hasErrors())
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(message);
 		else
-			try{
+			try {
 				this.messageService.save(message);
 				result = new ModelAndView("redirect:/messagebox/list.do");
-			}catch(final Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(message, "message.commit.error");
 			}
 		return result;
 
 	}
 
-	@RequestMapping(value="/edit",method = RequestMethod.POST, params="move")
-	public ModelAndView move(final Message mensaje, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "move")
+	public ModelAndView move(final Message mensaje, final BindingResult binding) {
 		ModelAndView result;
 		MessageBox destination;
 
@@ -101,53 +109,49 @@ public class MessageController extends AbstractController{
 
 		message = this.messageService.reconstruct(mensaje, binding);
 
-
-		if(binding.hasErrors())
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(message);
 		else
-			try{
+			try {
 
 				destination = message.getMessageBoxes().iterator().next();
 				this.messageService.move(message, destination);
 				result = new ModelAndView("redirect:/messagebox/list.do");
-			}catch (final Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(message, "message.commit.error");
 
 			}
 
 		return result;
 
-
-
 	}
 
-	@RequestMapping(value="/edit", method=RequestMethod.POST, params="delete")
-	public ModelAndView delete(final Message mensaje, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(final Message mensaje, final BindingResult binding) {
 		ModelAndView result;
-		
+
 		Message message;
 
 		message = this.messageService.reconstruct(mensaje, binding);
-		
-		if(binding.hasErrors())
+
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(message);
 		else
-			try{
+			try {
 				this.messageService.delete(message);
 				result = new ModelAndView("redirect:/messagebox/list.do");
 
-			}catch(Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(message, "message.commit.error");
 
 			}
 
 		return result;
 	}
-	
+
 	//Ancillary methods ------------------------------------------------------
-	
-	
-	protected ModelAndView createEditModelAndView(final Message mensaje){
+
+	protected ModelAndView createEditModelAndView(final Message mensaje) {
 		ModelAndView result;
 
 		result = this.createEditModelAndView(mensaje, null);
@@ -155,40 +159,35 @@ public class MessageController extends AbstractController{
 		return result;
 
 	}
-	
-	
-	protected ModelAndView createEditModelAndView(final Message mensaje, String messageError){
+
+	protected ModelAndView createEditModelAndView(final Message mensaje, final String messageError) {
 		ModelAndView result;
-		Collection<MessageBox> boxes,messageBoxes;
+		Collection<MessageBox> boxes, messageBoxes;
 		Collection<Message> messages;
 		Actor sender;
 		boolean possible = false;
 		Actor principal;
 		Date sentMoment;
 		Collection<Actor> recipients;
-		
+
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
 
-
 		messages = new ArrayList<Message>();
 		recipients = new ArrayList<Actor>();
-		
-		boxes = this.messageBoxService.findByOwner(principal.getId());
-		
-		for(MessageBox mb : boxes){
-			messages.addAll(mb.getMessages());
-			if(mb.getMessages().contains(mensaje) && mb.getOwner().equals(principal)){
-				possible = true;
-				
-			}
-		}
 
+		boxes = this.messageBoxService.findByOwner(principal.getId());
+
+		for (final MessageBox mb : boxes) {
+			messages.addAll(mb.getMessages());
+			if (mb.getMessages().contains(mensaje) && mb.getOwner().equals(principal))
+				possible = true;
+		}
 
 		sentMoment = mensaje.getSentMoment();
 		messageBoxes = mensaje.getMessageBoxes();
 		sender = mensaje.getSender();
-		
+
 		recipients = this.actorService.findAllExceptPrincipal();
 
 		result = new ModelAndView("message/edit");
@@ -202,8 +201,6 @@ public class MessageController extends AbstractController{
 		result.addObject("broadcast", false);
 		result.addObject("message", messageError);
 		result.addObject("recipients", recipients);
-		
-
 
 		return result;
 	}
