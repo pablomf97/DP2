@@ -5,25 +5,22 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import domain.Actor;
-import domain.Finder;
-import domain.Member;
-import domain.Procession;
 
 import repositories.FinderRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Actor;
+import domain.Finder;
+import domain.Member;
+import domain.Procession;
 
 @Service
 @Transactional

@@ -78,18 +78,19 @@ public class UtilityService {
 		return stringBuilder.toString();
 
 	}
-
-//	public void checkSpammers() {
-//		Collection<Actor> allActors = this.actorService.findAll();
-//
-//		for (Actor actor : allActors) {
-//			if ((this.messageService.findNumberMessagesSpamByActorId(actor
-//					.getId()) / this.messageService
-//					.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
-//				actor.setSpammer(true);
-//			}
-//		}
-//	}
+	
+	public Integer checkSpammers() {
+		Collection<Actor> allActors = this.actorService.findAll();
+		Integer spammers = 0;
+		
+		for(Actor actor: allActors) {
+			if((this.messageService.findNumberMessagesSpamByActorId(actor.getId())/this.messageService.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
+				actor.setSpammer(true);
+				spammers ++;				
+			}
+		}
+		return spammers;
+	}
 
 	// public List<String> getNegativeWords() {
 	// Administrator principal;

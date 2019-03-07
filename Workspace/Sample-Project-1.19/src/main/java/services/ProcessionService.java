@@ -48,6 +48,9 @@ public class ProcessionService {
 
 	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	private BrotherhoodService brotherhoodService;
 
 	// Simple CRUD methods -----------------------------------
 
@@ -261,8 +264,8 @@ public class ProcessionService {
 
 		marchs = this.marchService.findMarchByProcession(procession.getId());
 		
-		for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
-			for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
+		for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
+			for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
 				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
 				if (validPos) {
 					rowColumn.add(auxRow);
@@ -274,5 +277,26 @@ public class ProcessionService {
 				break;
 		}
 		return rowColumn;
+	}
+	
+	private Collection<Procession> findFinalProcessionByBrotherhood(int brotherhoodId) {
+		Collection<Procession> result;
+
+		result = this.processionRepository.findFinalProcessionByBrotherhood(brotherhoodId);
+
+		return result;
+	}
+	
+	public Collection<Procession> findPossibleProcessionsToMarchByMember(int memberId){
+		Collection<Procession> result = new ArrayList<>();
+		Collection<Brotherhood> brotherhoods = this.brotherhoodService.brotherhoodsByMemberInId(memberId);
+		
+		for(Brotherhood brotherhood : brotherhoods) {
+			Collection<Procession> aux1 = this.findFinalProcessionByBrotherhood(brotherhood.getId());
+			Collection<Procession> aux2 = this.findProcessionsAlreadyApplied(memberId);
+			aux1.removeAll(aux2);
+			result.addAll(aux1);
+		}
+		return result;
 	}
 }

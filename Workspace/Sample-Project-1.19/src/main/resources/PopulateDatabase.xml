@@ -165,7 +165,6 @@ your processions." />
 		<property name="subject" value="Message 2" />
 		<property name="body" value="Message from admin1 to brotherhood 1" />
 		<property name="priority" value="LOW" />
-		<property name="isSpam" value="true" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
 			<list>
@@ -233,6 +232,7 @@ your processions." />
 		<property name="sentMoment" value="10/04/2017 21:45:14" />
 		<property name="subject" value="Message 5" />
 		<property name="body" value="Answer from Member 1 to Admin 1" />
+		<property name="isSpam" value="true" />
 		<property name="priority" value="LOW" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">

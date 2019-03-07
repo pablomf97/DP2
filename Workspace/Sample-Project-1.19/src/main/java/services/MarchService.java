@@ -39,6 +39,7 @@ public class MarchService {
 	@Autowired
 	private ProcessionService processionService;
 
+
 	// Simple CRUD methods -----------------------------------
 
 	public March create() {
@@ -249,6 +250,7 @@ public class MarchService {
 
 		return result;
 	}
+	
 
 	public Collection<March> findMarchByProcession(int processionId){
 		Collection<March> result;

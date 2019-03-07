@@ -161,12 +161,18 @@
 				</ul></li>
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a></li>
+						code="master.page.administrator.brotherhoods" /></a>
+					<ul>
+						<li class="arrow"></li>
+						<li><a href="brotherhood/members/list.do"><spring:message
+								code="master.page.brotherhood.members.list" /></a></li>
+					</ul></li>
 
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
 
+<<<<<<< HEAD
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
 						property="principal.username" />)
@@ -186,8 +192,16 @@
 
 				</ul></li>
 
+=======
+>>>>>>> Fran
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
-						code="master.page.administrator.brotherhoods" /></a></li>
+						code="master.page.administrator.brotherhoods" /></a>
+					<ul>
+						<li class="arrow"></li>
+						<li><a href="brotherhood/members/list.do"><spring:message
+								code="master.page.brotherhood.members.list" /></a></li>
+					</ul></li>
+						
 
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
@@ -201,6 +215,8 @@
 								code="master.page.profile.edit" /></a></li>
 					<li><a href="box/actor/list.do"><spring:message
 								code="master.page.profile.message.boxes" /></a></li>
+					<li><a href="messagebox/create.do"><spring:message
+								code="master.page.box.new" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>

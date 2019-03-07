@@ -36,7 +36,7 @@
 </jstl:choose>
 <script>
 	function recommendedPos(){
-		alert("The rcommended position for this member is row: ${recomRow} and column: ${recomRow}");
+		alert("The rcommended position for this member is row: ${recomRow} and column: ${recomCol}");
 	}
 	window.onload = recommendedPos;
 </script>
