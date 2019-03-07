@@ -71,7 +71,7 @@
 				<display:column titleKey="enrolments.actions">
 
 					<jstl:choose>
-						<jstl:when test="${enrolment.isOut == true}">
+						<jstl:when test="${enrolment.isOut != false}">
 							<a
 								href="enrolment/brotherhood/action.do?action=accept&enrolmentID=${enrolment.id}"><jstl:out
 									value="${enroll}" /></a>

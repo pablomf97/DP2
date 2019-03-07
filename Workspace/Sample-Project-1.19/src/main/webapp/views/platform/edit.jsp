@@ -10,7 +10,7 @@
 
 
 <jstl:choose>
-	<jstl:when test="${isPrincipal || platform.id ==0}">
+	<jstl:when test="${(isPrincipal || platform.id ==0) && not empty actorBrother.zone}">
 		<form:form modelAttribute="platform" action="platform/edit.do"
 			id="form">
 			<fieldset>
@@ -33,6 +33,11 @@
 			<acme:cancel code="platform.cancel" url="platform/list.do"/><br />
 		
 		</form:form>
+	</jstl:when>
+	<jstl:when test="${empty actorBrother.zone }">
+		<p>
+			<spring:message code="platform.noArea" />
+		</p>
 	</jstl:when>
 	<jstl:otherwise>
 		<p>

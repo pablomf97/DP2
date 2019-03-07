@@ -22,9 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(indexes = {
- @Index( columnList ="ticker,title,description,organisedMoment,isDraft,brotherhood")
- })
+@Table(indexes = { @Index(columnList = "ticker,title,description,organisedMoment,isDraft,brotherhood") })
 public class Procession extends DomainEntity {
 
 	/* Attributes */
@@ -42,7 +40,7 @@ public class Procession extends DomainEntity {
 	/* Getters&Setters */
 
 	@NotBlank
-	@Pattern(regexp = "\\d{6})+([-])+([A-Z]{5}")
+	@Pattern(regexp = "\\d{6}-[A-Z]{5}")
 	public String getTicker() {
 		return ticker;
 	}
@@ -79,7 +77,7 @@ public class Procession extends DomainEntity {
 	public void setOrganisedMoment(Date organisedMoment) {
 		this.organisedMoment = organisedMoment;
 	}
-	
+
 	@NotNull
 	@Min(value = 1)
 	public Integer getMaxCols() {
@@ -179,7 +177,5 @@ public class Procession extends DomainEntity {
 			return false;
 		return true;
 	}
-	
-	
 
 }

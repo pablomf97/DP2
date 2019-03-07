@@ -16,7 +16,7 @@
 		<value>/views/misc/messages</value>
 		<value>/views/security/messages</value>
 		<value>/views/welcome/messages</value>
-		
+
 		<value>/views/actor/messages</value>
 		<value>/views/administrator/messages</value>
 		<value>/views/brotherhood/messages</value>
@@ -32,12 +32,16 @@
 		<value>/views/system-configuration/messages</value>
 
 		<value>/views/zone/messages</value>
-		
+
 		<value>/views/terms/messages</value>
 		<value>/views/finder/messages</value>
 
 		<value>/views/messagebox/messages</value>
 		<value>/views/message/messages</value>
+		
+		<value>/views/socialProfile/messages</value>
+
+		<value>/views/socialProfile/messages</value>
 
 	</util:list>
 

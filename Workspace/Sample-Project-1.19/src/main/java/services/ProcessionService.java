@@ -1,6 +1,5 @@
 package services;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -34,19 +33,19 @@ public class ProcessionService {
 	private ProcessionRepository processionRepository;
 
 	// Supporting services -----------------------------------
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private UtilityService utilityService;
-	
+
 	@Autowired
 	private EnrolmentService enrolmentService;
-	
+
 	@Autowired
 	private MarchService marchService;
-	
+
 	@Autowired
 	private Validator validator;
 
@@ -57,8 +56,10 @@ public class ProcessionService {
 		Procession result;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+
 		result = new Procession();
 
 		return result;
@@ -67,7 +68,7 @@ public class ProcessionService {
 	public Collection<Procession> findAll() {
 		Collection<Procession> result;
 		result = this.processionRepository.findAll();
-		
+
 		return result;
 	}
 
@@ -84,21 +85,24 @@ public class ProcessionService {
 		Procession result;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
-		Assert.isTrue(procession.getBrotherhood().equals(principal), "not.allowed");
-		
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+
+		Assert.isTrue(procession.getBrotherhood().equals(principal),
+				"not.allowed");
+
 		Assert.notNull(procession);
 		Assert.notNull(procession.getDescription());
 		Assert.notNull(procession.getMaxCols());
 		Assert.notNull(procession.getTitle());
 		Assert.notNull(procession.getOrganisedMoment());
-		
+
 		brotherhood = (Brotherhood) principal;
-				
-		if(procession.getId() == 0){
+
+		if (procession.getId() == 0) {
 			Assert.notNull(brotherhood.getZone());
-		}		
+		}
 
 		result = this.processionRepository.save(procession);
 		Assert.notNull(result);
@@ -113,23 +117,25 @@ public class ProcessionService {
 		Assert.isTrue(procession.getId() != 0, "wrong.id");
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
-		Assert.isTrue(procession.getBrotherhood().equals(principal), "not.allowed");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+
+		Assert.isTrue(procession.getBrotherhood().equals(principal),
+				"not.allowed");
 
 		this.processionRepository.delete(procession.getId());
 
 	}
 
 	// Other business methods -------------------------------
-	
+
 	public Procession reconstruct(Procession procession, BindingResult binding) {
 		Procession result;
-		Actor principal = null;
-		
-		if(procession.getId() == 0) {
-			principal = this.actorService.findByPrincipal();
-			
+		Actor principal = this.actorService.findByPrincipal();
+
+		if (procession.getId() == 0) {
+
 			result = procession;
 			result.setTicker(this.utilityService.generateTicker());
 			result.setPlatforms(new ArrayList<Platform>());
@@ -137,6 +143,8 @@ public class ProcessionService {
 
 		} else {
 			result = this.findOne(procession.getId());
+			Assert.notNull(result);
+			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
 			
 			result.setTitle(procession.getTitle());
 			result.setDescription(procession.getDescription());
@@ -145,94 +153,99 @@ public class ProcessionService {
 		}
 
 		validator.validate(result, binding);
-		
+
 		return result;
 	}
-	
-	public Collection<Procession> findProcessionsByBrotherhoodId(int brotherhoodId) {
+
+	public Collection<Procession> findProcessionsByBrotherhoodId(
+			int brotherhoodId) {
 		Collection<Procession> result;
-		
-		result = this.processionRepository.findProcessionsByBrotherhoodId(brotherhoodId);
-		
+
+		result = this.processionRepository
+				.findProcessionsByBrotherhoodId(brotherhoodId);
+
 		return result;
 	}
-	
+
 	public Collection<Procession> findAcceptedProcessionsByMemberId(int memberId) {
 		Collection<Procession> result;
-		
-		result = this.processionRepository.findAcceptedProcessionsByMemberId(memberId);
-		
+
+		result = this.processionRepository
+				.findAcceptedProcessionsByMemberId(memberId);
+
 		return result;
 	}
-	
+
 	private Collection<Procession> findProcessionsAlreadyApplied(int memberId) {
 		Collection<Procession> result;
-		
-		result = this.processionRepository.findProcessionsAlreadyApplied(memberId);
-		
+
+		result = this.processionRepository
+				.findProcessionsAlreadyApplied(memberId);
+
 		return result;
 	}
-	
+
 	public Collection<Procession> processionsToApply(int memberId) {
 		Collection<Procession> toApply;
 		Collection<Enrolment> memberEnrolments;
 		Collection<Integer> brotherhoodIds = new ArrayList<>();
-		
-		Collection<Procession> notToApply = this.findProcessionsAlreadyApplied(memberId);
+
+		Collection<Procession> notToApply = this
+				.findProcessionsAlreadyApplied(memberId);
 
 		toApply = this.findFinalProcessions();
 		toApply.removeAll(notToApply);
-		
+
 		Collection<Procession> result = new ArrayList<Procession>(toApply);
-		
-		memberEnrolments = this.enrolmentService.findActiveEnrolmentsByMember(memberId);
-		for(Enrolment enrolment : memberEnrolments) {
+
+		memberEnrolments = this.enrolmentService
+				.findActiveEnrolmentsByMember(memberId);
+		for (Enrolment enrolment : memberEnrolments) {
 			brotherhoodIds.add(enrolment.getBrotherhood().getId());
 		}
-		
-		for(Procession procesion: toApply) {
-			for(Integer brotherhoodId : brotherhoodIds) {
-				if(procesion.getBrotherhood().getId() != brotherhoodId){
+
+		for (Procession procesion : toApply) {
+			for (Integer brotherhoodId : brotherhoodIds) {
+				if (procesion.getBrotherhood().getId() != brotherhoodId) {
 					result.remove(procesion);
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private Collection<Procession> findFinalProcessions() {
 		Collection<Procession> result;
-		
+
 		result = this.processionRepository.findFinalProcessions();
-		
+
 		return result;
 	}
-	
-	
 
-	public Collection<Procession> findEarlyProcessions(){
-		Collection<Procession>result;
+	public Collection<Procession> findEarlyProcessions() {
+		Collection<Procession> result;
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.DATE, 30);
 		Date maxDate = c.getTime();
-		
+
 		result = this.processionRepository.findEarlyProcessions(maxDate);
 		Assert.notNull(result);
-		
+
 		return result;
 	}
-	
-	public Boolean checkPos(Integer row, Integer column, Procession procession, Collection<March> marchs) {
+
+	public Boolean checkPos(Integer row, Integer column, Procession procession,
+			Collection<March> marchs) {
 		Boolean validPos = true;
 		Integer maxCols = procession.getMaxCols();
-		
-		if(column > maxCols)
+
+		if (column > maxCols)
 			validPos = false;
-		
-		if(validPos){
-			for(March march : marchs){
-				if(row == march.getRow() && column == march.getCol()){
+
+		if (validPos) {
+			for (March march : marchs) {
+				if (row == march.getRow() && column == march.getCol()) {
 					validPos = false;
 					break;
 				}
@@ -240,24 +253,26 @@ public class ProcessionService {
 		}
 		return validPos;
 	}
-	
-	public List<Integer> recommendedPos (Procession procession) {
+
+	public List<Integer> recommendedPos(Procession procession) {
 		List<Integer> rowColumn = new ArrayList<>();
 		Boolean validPos = false;
 		Collection<March> marchs;
-		
+
 		marchs = this.marchService.findMarchByProcession(procession.getId());
 		
-		for(Integer auxCol = 1 ; auxCol < procession.getMaxCols() ; auxCol++) {
+		for(Integer auxCol = 1 ; auxCol <= procession.getMaxCols() ; auxCol++) {
 			for(Integer auxRow = 1 ; auxRow < 20000 ; auxRow++) {
 				validPos = this.checkPos(auxRow, auxCol, procession, marchs);
-				if(validPos) {
+				if (validPos) {
 					rowColumn.add(auxRow);
 					rowColumn.add(auxCol);
 					break;
 				}
 			}
+			if(validPos)
+				break;
 		}
 		return rowColumn;
-	}	
+	}
 }
