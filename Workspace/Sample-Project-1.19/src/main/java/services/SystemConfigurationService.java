@@ -64,10 +64,10 @@ public class SystemConfigurationService {
 				"not.allowed");
 
 		Map<String, String> wellMap = new HashMap<>();
-		wellMap.put("EspaÃ±ol",
-				"Â¡Bienvenidos a Acme MadrugÃ¡! Tu sitio para organizar procesiones.");
+		wellMap.put("Español",
+				"¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones.");
 		wellMap.put("English",
-				"Welcome to Acme MadrugÃ¡, the site to organise your processions.");
+				"Welcome to Acme Madrugá, the site to organise your processions.");
 
 		SystemConfiguration systemConfiguration = new SystemConfiguration();
 		systemConfiguration.setSystemName("Acme-MadrugÃ¡");
@@ -78,10 +78,10 @@ public class SystemConfigurationService {
 		systemConfiguration.setTimeResultsCached(1);
 		systemConfiguration.setMaxResults(10);
 		systemConfiguration
-				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millÃ³n,ha sido seleccionado");
+				.setSpamWords("sex,viagra,cialis,one million,you've been selected,nigeria,sexo,un millon,un millón,ha sido seleccionado");
 		systemConfiguration
-				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantÃ¡stico,excelente,genial,"
-						+ "increÃ­ble,increible,asombroso,bonito");
+				.setPossitiveWords("good,fantastic,excellent,great,amazing,terrific,beautiful,bueno,fantastico,fantástico,excelente,genial,"
+						+ "increíble,increible,asombroso,bonito");
 		systemConfiguration
 				.setNegativeWords("not,bad,horrible,average,disaster,no,malo,mediocre,desastre,desastroso");
 		return systemConfiguration;
@@ -152,7 +152,10 @@ public class SystemConfigurationService {
 	public SystemConfiguration reconstruct(
 			SystemConfiguration systemConfiguration, String nameES,
 			String nameEN, BindingResult binding) {
-		SystemConfiguration res;
+		SystemConfiguration res = new SystemConfiguration();
+
+		Assert.isTrue(systemConfiguration.getId() == this
+				.findMySystemConfiguration().getId());
 
 		if (systemConfiguration.getId() == 0) {
 			systemConfiguration
@@ -162,7 +165,7 @@ public class SystemConfigurationService {
 			systemConfiguration.getWelcomeMessage().put("English", nameEN);
 			res = systemConfiguration;
 		} else {
-			res = this.systemConfigurationRepository
+			SystemConfiguration bd = this.systemConfigurationRepository
 					.findOne(systemConfiguration.getId());
 
 			systemConfiguration
@@ -174,27 +177,18 @@ public class SystemConfigurationService {
 			res.setWelcomeMessage(systemConfiguration.getWelcomeMessage());
 			res.setSystemName(systemConfiguration.getSystemName());
 			res.setBanner(systemConfiguration.getBanner());
-
-			// TODO
-			// Assert.isTrue(systemConfiguration.getCountryCode() >= 0
-			// && systemConfiguration.getCountryCode() <= 999);
 			res.setCountryCode(systemConfiguration.getCountryCode());
-
-//			Assert.isTrue(systemConfiguration.getTimeResultsCached() >= 0
-//					&& systemConfiguration.getTimeResultsCached() < 24,
-//					"sysconfig.time.cache");
 			res.setTimeResultsCached(systemConfiguration.getTimeResultsCached());
-
-			// Assert.isTrue(systemConfiguration.getMaxResults() >= 0
-			// && systemConfiguration.getMaxResults() <= 100,
-			// "sysconfig.max.results");
 			res.setMaxResults(systemConfiguration.getMaxResults());
 			res.setMessagePriority(systemConfiguration.getMessagePriority());
 			res.setSpamWords(systemConfiguration.getSpamWords());
 			res.setPossitiveWords(systemConfiguration.getPossitiveWords());
 			res.setNegativeWords(systemConfiguration.getNegativeWords());
+			this.validator.validate(res, binding);
+			if (!binding.hasErrors()) {
+				res.setId(bd.getId());
+			}
 		}
-		this.validator.validate(res, binding);
 
 		return res;
 	}

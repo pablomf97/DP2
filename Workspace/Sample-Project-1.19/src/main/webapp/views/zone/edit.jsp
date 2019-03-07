@@ -27,24 +27,32 @@
 			id="zoneForm">
 
 			<form:hidden path="id" />
-			
-			<acme:textbox code="zone.name" path="name"/><br>
-			
-			<acme:textbox code="zone.pictures" path="pictures"/><br><br>
-			
-			<acme:submit code="zone.save" name="save"/>&nbsp;
 
-		<jstl:if test="${zone.id != 0 and isSelected == false}">
-				<acme:delete code="zone.delete" name="delete" confirmation="zone.confirm.delete"/>&nbsp;
+			<acme:textbox code="zone.name" path="name" />
+			<br>
+
+			<acme:textbox code="zone.pictures" path="pictures" />
+			<br>
+			<br>
+
+			<acme:submit code="zone.save" name="save" />&nbsp;
+			
+
+
+			<jstl:if test="${zone.id != 0 and isSelected == false}">
+				<acme:delete code="zone.delete" name="delete"
+					confirmation="zone.confirm.delete" />&nbsp;
 
 		</jstl:if>
-			
-			<acme:cancel code="zone.cancel" url="zone/administrator/list.do"/><br/><br/>
+
+			<acme:cancel code="zone.cancel" url="zone/administrator/list.do" />
+			<br />
+			<br />
 		</form:form>
 	</jstl:if>
-	
+
 	<jstl:if test="${permission == false }">
-		<spring:message code="zone.noPermission"/>
+		<spring:message code="zone.noPermission" />
 	</jstl:if>
 </security:authorize>
 

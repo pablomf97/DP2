@@ -1,4 +1,3 @@
-
 package domain;
 
 import java.util.Collection;
@@ -18,12 +17,11 @@ public class MessageBox extends DomainEntity {
 
 	/* Attributes */
 
-	private String				name;
-	private boolean				isPredefined;
-	private MessageBox			parentMessageBoxes;
-	private Collection<Message>	messages;
-	private Actor				owner;
-
+	private String name;
+	private boolean isPredefined;
+	private MessageBox parentMessageBoxes;
+	private Collection<Message> messages;
+	private Actor owner;
 
 	/* Getters&Setters */
 
@@ -55,7 +53,7 @@ public class MessageBox extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = true)
 	public MessageBox getParentMessageBoxes() {
 		return this.parentMessageBoxes;
 	}

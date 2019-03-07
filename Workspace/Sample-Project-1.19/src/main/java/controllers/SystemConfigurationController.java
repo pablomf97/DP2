@@ -143,10 +143,11 @@ public class SystemConfigurationController extends AbstractController {
 				if (systemConfiguration.getMaxResults() <= 0
 						|| systemConfiguration.getMaxResults() > 100) {
 					message = "sysconfig.max.results.err";
-				}
-				if (systemConfiguration.getTimeResultsCached() < 0
+				} else if (systemConfiguration.getTimeResultsCached() < 0
 						|| systemConfiguration.getTimeResultsCached() >= 24) {
 					message = "sysconfig.time.err";
+				} else {
+					message = "sysconfig.commit.error";
 				}
 				res = this.createEditModelAndView(systemConfiguration, message);
 			}

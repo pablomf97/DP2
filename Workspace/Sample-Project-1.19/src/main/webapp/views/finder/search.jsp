@@ -70,4 +70,34 @@
 		</jstl:if>
 
 	</form:form>
+	
+	<jstl:if test="${not empty processions}">
+		<display:table name="processions" id="row"
+		requestURI="finder/member/list.do" pagesize="10" class="displaytag">
+
+		<!-- Attributes-->
+
+		<display:column titleKey="procession.title" sortable="true">
+			<jstl:out value="${row.title}" />
+		</display:column>
+		<display:column titleKey="procession.ticker" sortable="true">
+			<jstl:out value="${row.ticker}" />
+		</display:column>
+		<display:column property="description"
+			titleKey="procession.description">
+			<jstl:out value="${row.description}" />
+		</display:column>
+		<display:column titleKey="procession.organisedMoment" sortable="true">
+			<jstl:out value="${row.organisedMoment}" />
+		</display:column>
+
+		<!-- Action links -->
+
+		<display:column>
+			<a href="procession/display.do?processionId=${row.id}"> <spring:message
+					code="procession.display" />
+			</a>
+		</display:column>
+	</display:table>
+	</jstl:if>
 </security:authorize>

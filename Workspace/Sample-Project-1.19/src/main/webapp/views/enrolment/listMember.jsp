@@ -22,9 +22,8 @@
 
 	<jstl:choose>
 		<jstl:when test="${permission}">
-			<display:table style="width: 40%" class="displaytag"
-				name="enrolments" requestURI="enrolment/member/list.do"
-				id="enrolment">
+			<display:table class="displaytag" name="enrolments"
+				requestURI="enrolment/member/list.do" id="enrolment">
 
 				<display:column titleKey="enrolment.moment" sortable="true">
 					<jstl:out value="${enrolment.moment}" />
@@ -63,6 +62,16 @@
 							<jstl:out value="${message3}" />
 						</jstl:otherwise>
 					</jstl:choose>
+				</display:column>
+
+				<spring:message code="enrollment.unenroll" var="unenroll" />
+
+				<display:column>
+					<jstl:if test="${enrolment.isOut == false}">
+						<a
+							href="enrolment/brotherhood/action.do?action=reject&enrolmentID=${enrolment.id}"><jstl:out
+								value="${unenroll}" /></a>
+					</jstl:if>
 				</display:column>
 
 			</display:table>

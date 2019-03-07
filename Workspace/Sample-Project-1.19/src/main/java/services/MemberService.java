@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -29,32 +28,31 @@ public class MemberService {
 	// Managed Repository
 
 	@Autowired
-	private MemberRepository		memberRepository;
+	private MemberRepository memberRepository;
 
 	// Supporting Services
 
 	@Autowired
-	private Validator				validator;
+	private Validator validator;
 
-	private BrotherhoodService		brotherhoodService;
-
-	@Autowired
-	private EnrolmentService		enrolmentService;
+	private BrotherhoodService brotherhoodService;
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private EnrolmentService enrolmentService;
 
 	@Autowired
-	private MarchService			marchService;
+	private AdministratorService administratorService;
 
 	@Autowired
-	private UserAccountService		userAccountService;
+	private MarchService marchService;
 
 	@Autowired
-	private FinderService			finderService;
-	@Autowired
-	private MessageBoxService		messageBoxService;
+	private UserAccountService userAccountService;
 
+	@Autowired
+	private FinderService finderService;
+	@Autowired
+	private MessageBoxService messageBoxService;
 
 	// Simple CRUD methods
 	/* Create a member */
@@ -78,6 +76,7 @@ public class MemberService {
 
 		return res;
 	}
+
 	/* Find one by ID */
 	public Member findOne(final int memberId) {
 		Member res;
@@ -106,11 +105,14 @@ public class MemberService {
 			final UserAccount account = member.getUserAccount();
 			final Authority au = new Authority();
 			au.setAuthority(Authority.MEMBER);
-			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
-			final UserAccount savedAccount = this.userAccountService.save(account);
+			Assert.isTrue(account.getAuthorities().contains(au),
+					"You can not register with this authority");
+			final UserAccount savedAccount = this.userAccountService
+					.save(account);
 			member.setUserAccount(savedAccount);
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			final String hash = encoder.encodePassword(member.getUserAccount().getPassword(), null);
+			final String hash = encoder.encodePassword(member.getUserAccount()
+					.getPassword(), null);
 			member.getUserAccount().setPassword(hash);
 			final Finder f = this.finderService.save(member.getFinder());
 			member.setFinder(f);
@@ -118,8 +120,11 @@ public class MemberService {
 			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
-			final Member memberBD = this.memberRepository.findOne(member.getId());
-			Assert.isTrue(member.getUserAccount().equals(userAccount) && memberBD.getUserAccount().equals(userAccount), "This account does not belong to you");
+			final Member memberBD = this.memberRepository.findOne(member
+					.getId());
+			Assert.isTrue(member.getUserAccount().equals(userAccount)
+					|| memberBD.getUserAccount().equals(userAccount),
+					"This account does not belong to you");
 			result = this.memberRepository.save(member);
 		}
 		return result;
@@ -152,17 +157,20 @@ public class MemberService {
 		return res;
 	}
 
-	public Collection<Member> findAllMembersByBrotherhood(final int brotherhoodId) {
+	public Collection<Member> findAllMembersByBrotherhood(
+			final int brotherhoodId) {
 		Collection<Member> result;
 
-		result = this.memberRepository.findAllMembersByBrotherhood(brotherhoodId);
+		result = this.memberRepository
+				.findAllMembersByBrotherhood(brotherhoodId);
 		Assert.notNull(result);
 
 		return result;
 
 	}
 
-	//Dashboard --------------------------------------------------------------------
+	// Dashboard
+	// --------------------------------------------------------------------
 
 	public Double averageMemberPerBrotherhood() {
 
@@ -253,6 +261,7 @@ public class MemberService {
 		return members;
 
 	}
+
 	/**
 	 * Change the incomplete member to an domain object
 	 * 
@@ -260,7 +269,8 @@ public class MemberService {
 	 * @param binding
 	 * @return member
 	 */
-	public Member reconstruct(final MemberForm memberForm, final BindingResult binding) {
+	public Member reconstruct(final MemberForm memberForm,
+			final BindingResult binding) {
 		Member result = this.create();
 		if (memberForm.getId() == 0) {
 			result.getUserAccount().setUsername(memberForm.getUsername());
@@ -298,7 +308,9 @@ public class MemberService {
 		}
 		return result;
 	}
-	private boolean checkValidation(final MemberForm memberForm, final BindingResult binding, final Member member) {
+
+	private boolean checkValidation(final MemberForm memberForm,
+			final BindingResult binding, final Member member) {
 		boolean check = true;
 		memberForm.setCheckBox(true);
 		memberForm.setPassword(member.getUserAccount().getPassword());
