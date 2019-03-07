@@ -32,14 +32,15 @@ function myFunction() {
 <script>
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber").value;
-		var phonePattern = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/);
-		var pat = phonePattern.test(phone);
+		var pattern = /^(((([+][1-9]{1}[0-9]{0,2}[\s]){0,1}([(][1-9]{1}[0-9]{0,2}[)][\s]){0,1})){0,1}([0-9]{4}){1}([0-9]{0,}))$/;
+		var pat = pattern.test(phone);
 		if (pat) {
 			return true;
 		} else {
 			return confirm(msg);
 		}
 	}
+
 	function unCheck() {
 		var checkbox = document.getElementById('checkBox');
 		checkbox.checked = false;
