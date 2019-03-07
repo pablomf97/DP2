@@ -11,19 +11,21 @@
 
 <jstl:choose>
 	<jstl:when test="${isPrincipal && march.status == 'PENDING'}">
-		<form:form action="march/acceptb.do" modelAttribute="march" id="form">
+	
+		<form:form action="march/accept.do" modelAttribute="march" id="form">
+
 			<fieldset>
 				<br>
 				<form:hidden path="id" />
 				
 				<acme:textbox code="march.row" path="row"/><br/><br/>
 				
-				<acme:textbox code="march.column" path="col"/><br/><br/>
+				<acme:textbox code="march.column" path="col"/><br/>
 			
-			</fieldset>
+			</fieldset><br/>
 			
 			<acme:submit code="march.accept" name="accept"/>&nbsp; 
-			<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do'"/><br/>
+			<acme:cancel code="march.cancel" url="march/member,brotherhood/list.do"/><br/>
 		</form:form>
 	</jstl:when>
 	<jstl:otherwise>
@@ -32,3 +34,9 @@
 		</p>
 	</jstl:otherwise>
 </jstl:choose>
+<script>
+	function recommendedPos(){
+		alert("The rcommended position for this member is row: ${recomRow} and column: ${recomRow}");
+	}
+	window.onload = recommendedPos;
+</script>

@@ -165,6 +165,7 @@ your processions." />
 		<property name="subject" value="Message 2" />
 		<property name="body" value="Message from admin1 to brotherhood 1" />
 		<property name="priority" value="LOW" />
+		<property name="isSpam" value="true" />
 		<property name="tags" value="good" />
 		<property name="messageBoxes">
 			<list>

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.PlatformService;
 import domain.Actor;
+import domain.Brotherhood;
 import domain.Platform;
 
 @Controller
@@ -63,7 +64,6 @@ public class PlatformController extends AbstractController {
 		try {
 			principal = this.actorService.findByPrincipal();
 			Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
-			
 			permission = true;
 			
 			platforms = this.platformService.findPlatformsByBrotherhoodId(principal.getId());
@@ -192,6 +192,8 @@ public class PlatformController extends AbstractController {
 		
 		principal = this.actorService.findByPrincipal();
 		
+		Brotherhood actorBrother = (Brotherhood) principal;
+		
 		if(this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 			isBrotherhood = true;
 		}
@@ -204,6 +206,7 @@ public class PlatformController extends AbstractController {
 		result.addObject("isBrotherhood", isBrotherhood);
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("message", messageCode);
+		result.addObject("actorBrother", actorBrother);
 
 		return result;
 

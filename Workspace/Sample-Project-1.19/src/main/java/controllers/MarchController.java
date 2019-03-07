@@ -177,7 +177,7 @@ public class MarchController extends AbstractController {
 	}
 	
 	//Accept
-	@RequestMapping(value = "/accept")
+	@RequestMapping(value = "/accept", method = RequestMethod.GET)
 	public ModelAndView acceptView(@RequestParam final int marchId) {
 		ModelAndView result;
 		March march;
@@ -200,21 +200,22 @@ public class MarchController extends AbstractController {
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("recomRow", recomendedPos.get(0));
 		result.addObject("recomCol", recomendedPos.get(1));
+		result.addObject("march", march);
 
 		return result;
 	}
 	
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "accept")
+	@RequestMapping(value = "/accept", method = RequestMethod.POST, params = "accept")
 	public ModelAndView accept(March march, final BindingResult binding) {
 		
 		
 		
 		ModelAndView result;
-		
-		march.setStatus("ACCEPTED");
+
+
+		march.setStatus("APPROVED");
+
 		march = this.marchService.reconstruct(march, binding);
-		
-		this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
 		
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
@@ -261,13 +262,15 @@ public class MarchController extends AbstractController {
 		march.setStatus("REJECTED");
 		march = this.marchService.reconstruct(march, binding);
 		
-		this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
+		
 		
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(march);
 		else
 			try {
 				this.marchService.save(march);
+				this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
+				
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(march,
@@ -315,6 +318,8 @@ public class MarchController extends AbstractController {
 		
 		principal = this.actorService.findByPrincipal();
 		
+		
+		
 		if(this.actorService.checkAuthority(principal, "MEMBER")){
 			toApply = this.processionService.processionsToApply(principal.getId());
 			if(principal.getId() == march.getId()){
@@ -331,7 +336,6 @@ public class MarchController extends AbstractController {
 		result.addObject("toApply", toApply);
 
 		return result;
-
 	}
 
 }

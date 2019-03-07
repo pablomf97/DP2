@@ -17,6 +17,7 @@ import services.MessageService;
 import services.PlatformService;
 import services.ProcessionService;
 import domain.Actor;
+import domain.Brotherhood;
 import domain.Platform;
 import domain.Procession;
 
@@ -251,6 +252,9 @@ public class ProcessionController extends AbstractController {
 		principal = this.actorService.findByPrincipal();
 		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
 		
+		Brotherhood actorBrother = (Brotherhood) principal;
+
+		
 		if(procession.getId() != 0 && procession.getBrotherhood().getId() == principal.getId())
 			isPrincipal = true;
 		
@@ -261,6 +265,7 @@ public class ProcessionController extends AbstractController {
 		result.addObject("isPrincipal", isPrincipal);
 		result.addObject("message", messageCode);
 		result.addObject("platforms", platforms);
+		result.addObject("actorBrother", actorBrother);
 
 		return result;
 	}
