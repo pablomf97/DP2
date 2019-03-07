@@ -9,7 +9,7 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 		
-	@Query("select count(m) from Message m where m.sender.id = = ?1")
+	@Query("select count(m) from Message m where m.sender.id = ?1")
 	Integer findNumberMessagesByActorId(int actorId);
 	
 	@Query("select count(m) from Message m where m.sender.id= ?1 and m.isSpam = true")
