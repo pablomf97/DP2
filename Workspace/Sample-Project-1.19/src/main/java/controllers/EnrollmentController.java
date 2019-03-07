@@ -184,7 +184,7 @@ public class EnrollmentController extends AbstractController {
 				enrolment.setPosition(null);
 				this.enrolmentService.save(enrolment);
 				
-				this.messageService.notOutMember(enrolment);
+				this.messageService.notificationOutMember(enrolment);
 				
 				// TODO Cambiar cuando tenga lo de chema
 				res = new ModelAndView(
@@ -228,7 +228,7 @@ public class EnrollmentController extends AbstractController {
 
 				this.enrolmentService.save(enrolment);
 				
-				this.messageService.notMessageEnrolAMember(enrolment);
+				this.messageService.notificationMessageEnrolAMember(enrolment);
 
 				res = new ModelAndView("redirect:list.do");
 			} catch (IllegalArgumentException oops) {

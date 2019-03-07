@@ -223,7 +223,7 @@ public class MarchController extends AbstractController {
 			try {
 				this.marchService.save(march);
 				
-				this.messageService.changeStatusNotfication(march.getMember(), new Date(System.currentTimeMillis()-1));
+				this.messageService.changeStatusNotfication(march,march.getMember(), new Date(System.currentTimeMillis()-1));
 				
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {
@@ -269,7 +269,7 @@ public class MarchController extends AbstractController {
 		else
 			try {
 				this.marchService.save(march);
-				this.messageService.changeStatusNotfication(march.getMember(),new Date(System.currentTimeMillis()-1));
+				this.messageService.changeStatusNotfication(march,march.getMember(),new Date(System.currentTimeMillis()-1));
 				
 				result = new ModelAndView("redirect:member,brotherhood/list.do");
 			} catch (final Throwable oops) {

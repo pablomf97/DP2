@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.MessageRepository;
 import domain.Actor;
 import domain.Enrolment;
+import domain.March;
 import domain.Member;
 import domain.Message;
 import domain.MessageBox;
@@ -406,11 +407,13 @@ public class MessageService {
 		this.validator.validate(result,binding);
 
 		return result;
+		
+		
 	}
 
 
 
-	public Message changeStatusNotfication(final Actor actor, final Date moment){
+	public Message changeStatusNotfication(final March march,final Actor actor, final Date moment){
 
 		Message result;
 		Collection<MessageBox> boxes;
@@ -419,7 +422,10 @@ public class MessageService {
 		Message saved;
 
 		principal= this.actorService.findByPrincipal();
-
+		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(actor.getId() == march.getMember().getId());
+		
 		boxes = new ArrayList<MessageBox>();
 
 		notificationBox= this.messageBoxService.findByName(actor.getId(), "Notification box");
@@ -438,8 +444,9 @@ public class MessageService {
 		result.setSentMoment(moment);
 		result.setIsSpam(false);
 		result.setMessageBoxes(boxes);
-		result.setBody("Request status have been changed");
-		result.setSubject("Request status have been changed");
+		result.setBody("Request have been changed status to " + march.getStatus());
+		result.setSubject("Request status changed");
+		result.setTags("status changed");
 
 		saved = this.messageRepository.save(result);
 
@@ -497,7 +504,7 @@ public class MessageService {
 		return saved;
 	}
 
-	public Message notMessageEnrolAMember(Enrolment e){
+	public Message notificationMessageEnrolAMember(Enrolment e){
 		Message result = new Message();
 
 		Actor principal;
@@ -508,8 +515,11 @@ public class MessageService {
 		boxes = new ArrayList<MessageBox>();
 
 		principal = this.actorService.findByPrincipal();
-
-		outBox = this.messageBoxService.findByName(principal.getId(), "Notification Box");
+		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"));
+		Assert.isTrue(this.actorService.checkAuthority(e.getMember(), "MEMBER"));
+		
+		outBox = this.messageBoxService.findByName(principal.getId(), "Out Box");
 		Assert.notNull(outBox);
 
 		notBox = this.messageBoxService.findByName(e.getMember().getId(),"Notification Box");
@@ -519,7 +529,7 @@ public class MessageService {
 		boxes.add(outBox);
 		boxes.add(notBox);
 
-		result.setSubject("Member "+ e.getMember().getName() + "has been enrolled in this brotherhood: "+ e.getBrotherhood().getTitle());
+		result.setSubject("Member "+ e.getMember().getName() + " has been enrolled in this brotherhood: "+ e.getBrotherhood().getTitle());
 		result.setBody("Date is: "+ e.getMoment());
 		result.setSender(principal);
 		result.setRecipient(e.getMember());
@@ -538,20 +548,22 @@ public class MessageService {
 
 	}
 
-	public Message notOutMember(Enrolment e){
+	public Message notificationOutMember(Enrolment e){
 
 		Assert.isTrue(e.getIsOut() == true);
-
+		
 		Message result = new Message();
 		Actor principal;
 		MessageBox outBox,notBox;
 		Collection<MessageBox>boxes;
 		Message saved;
 
+		
 		boxes = new ArrayList<MessageBox>();
 
 		principal = this.actorService.findByPrincipal();
-
+		
+		Assert.isTrue(this.actorService.checkAuthority(principal, "MEMBER"));
 		Assert.isTrue(principal.getId() == e.getMember().getId());
 
 		outBox = this.messageBoxService.findByName(principal.getId(), "Out box");
