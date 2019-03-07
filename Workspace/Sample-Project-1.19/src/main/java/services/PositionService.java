@@ -24,7 +24,6 @@ public class PositionService {
 
 	@Autowired
 	private PositionRepository positionRepository;
-
 	// Supporting Services
 
 	@Autowired
@@ -158,13 +157,11 @@ public class PositionService {
 	public Collection<String> nameEsPositions(){
 		Collection<String> result = new ArrayList<String>();
 		Collection<Position> positions;
-		
 		positions = this.findAll();
 		
 		for(Position p : positions){
-			result.add(p.getName().get("Español"));
+			result.add("'"+p.getName().get("Español")+"'");
 		}
-		 
 		return result;
 		
 	}

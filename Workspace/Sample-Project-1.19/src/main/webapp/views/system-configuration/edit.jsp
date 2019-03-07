@@ -35,8 +35,6 @@
 		
 		<acme:textbox code="system.resultscached" path="timeResultsCached" size="5%" codeErr="timeErr"/><br><br>
 		
-		<acme:textbox code="system.bannerURL" path="banner"/><br><br>
-		
 		<acme:textbox code="system.resultspersearch" path="maxResults" size="5%" codeErr="maxErr"/><br><br>
 		
 		<acme:textbox code="system.countrycode" path="countryCode"/><br><br>

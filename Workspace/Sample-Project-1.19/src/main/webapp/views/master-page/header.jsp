@@ -201,7 +201,7 @@
 		</security:authorize>
 	</ul>
 </div>
-
+	
 		<security:authorize access="isAuthenticated()">
 		<jstl:if test="${pageContext.response.locale.language == 'es'}">
 		<h2><strong style="color:red;"><jstl:out value="${breachNotification.get('Español')}"></jstl:out><br/> </strong></h2>

@@ -172,7 +172,7 @@ public class MarchService {
 		Double result;
 
 		result = this.marchRepository.ratioApprovedRequests();
-		Assert.notNull(result);
+		
 
 		return result;
 	}
@@ -181,7 +181,7 @@ public class MarchService {
 		Double result;
 
 		result = this.marchRepository.ratioPendingRequests();
-		Assert.notNull(result);
+		
 
 		return result;
 	}
@@ -190,7 +190,7 @@ public class MarchService {
 		Double result;
 
 		result = this.marchRepository.ratioRejectedRequests();
-		Assert.notNull(result);
+		
 
 		return result;
 	}
@@ -212,7 +212,7 @@ public class MarchService {
 			Double ratio = 0.0;
 
 			marchsInAProcession = this.findMarchByProcession(p.getId());
-			Assert.notNull(marchsInAProcession);
+			
 
 			for(March m : marchsInAProcession){
 
@@ -221,8 +221,10 @@ public class MarchService {
 				}
 
 			}
-
-			ratio = (double) (marchsApprovedInAProcession.size()/marchsInAProcession.size());
+			
+			if(marchsInAProcession.size() != 0){
+				ratio = (double) (marchsApprovedInAProcession.size()/marchsInAProcession.size());
+			}
 
 
 			result[count] = ratio;

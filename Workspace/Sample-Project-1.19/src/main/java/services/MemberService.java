@@ -171,7 +171,7 @@ public class MemberService {
 		Collection<Brotherhood> brotherhoods;
 		Collection<Member> members;
 		int total = 0;
-		Double result;
+		Double result = 0.0;
 
 		brotherhoods = this.brotherhoodService.allBros();
 
@@ -180,8 +180,10 @@ public class MemberService {
 			members = this.findAllMembersByBrotherhood(b.getId());
 			total = total + members.size();
 		}
-
-		result = (double) (total / brotherhoods.size());
+		
+		if(total != 0){
+			result = (double) (total / brotherhoods.size());
+		}
 
 		return result;
 	}
@@ -193,7 +195,6 @@ public class MemberService {
 		Double result = 0.0;
 
 		brotherhoods = this.brotherhoodService.findAll();
-		Assert.notEmpty(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
@@ -215,7 +216,6 @@ public class MemberService {
 		Double result = 0.0;
 
 		brotherhoods = this.brotherhoodService.findAll();
-		Assert.notEmpty(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			members = this.findAllMembersByBrotherhood(b.getId());
@@ -331,6 +331,7 @@ public class MemberService {
 		Double lolo = 1/(n-1);
 		Double stdev = (double)Math.sqrt(lolo*lele);
 		
+	
 
 		return stdev;
 	}

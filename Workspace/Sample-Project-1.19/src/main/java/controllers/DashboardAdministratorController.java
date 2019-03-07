@@ -16,6 +16,8 @@ import services.MemberService;
 import services.PositionService;
 import services.ProcessionService;
 import domain.Brotherhood;
+import domain.Finder;
+import domain.March;
 import domain.Member;
 import domain.Position;
 import domain.Procession;
@@ -44,6 +46,8 @@ public class DashboardAdministratorController extends AbstractController{
 	@Autowired
 	private FinderService finderService;
 	
+
+	
 	
 	//Display
 	
@@ -52,9 +56,13 @@ public class DashboardAdministratorController extends AbstractController{
 	public ModelAndView display(Locale locale){
 		
 		final ModelAndView result;
-		
+		Collection<Member> members=this.memberService.findAll();
+		Collection<Brotherhood> bros=this.brotherhoodService.findAll();
 		Collection<Procession> processions;
 		processions = this.processionService.findAll();
+		Collection<March>marchs=this.marchService.findAll();
+		
+		Collection<Finder> finders=this.finderService.findAll();
 		
 		Collection<Position>positions;
 		positions = this.positionService.findAll();
@@ -133,7 +141,10 @@ public class DashboardAdministratorController extends AbstractController{
 		result.addObject("stdevBrotherhoodPerArea", stdevBrotherhoodPerArea);
 		result.addObject("nameEsPositions", nameEsPositions);
 		result.addObject("nameEnPositions", nameEnPositions);
-		
+		result.addObject("finders",finders);
+		result.addObject("members",members);
+		result.addObject("bros",bros);
+		result.addObject("marchs",marchs);
 		result.addObject("positions", positions.size());
 //		result.addObject("histogram", histogram);
 		result.addObject("countPositions",countPositions);

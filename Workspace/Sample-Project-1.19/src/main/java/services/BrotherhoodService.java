@@ -239,7 +239,7 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notEmpty(brotherhoods);
+		
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());
@@ -263,7 +263,7 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notEmpty(brotherhoods);
+		
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService.findActiveEnrolmentByBrotherhood(b.getId());

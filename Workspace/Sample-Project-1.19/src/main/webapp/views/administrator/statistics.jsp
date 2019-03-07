@@ -19,10 +19,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
-
-
-
-
+	<jstl:if test="${not empty members }">
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2"><spring:message
@@ -46,7 +43,7 @@
 			<td><spring:message code="administrator.stdevMember" /></td>
 			<td style="text-align: right">${stdevMemberPerBrotherhood}</td>
 		</tr>
-<jstl:if test="${not empty acceptedMembers}">
+
 		<tr>
 			<td><spring:message code="administrator.acceptedMembers" /></td>
 			<jstl:forEach var="member" items="${acceptedMembers}">
@@ -56,9 +53,10 @@
 			</jstl:forEach>
 
 		</tr>
-		</jstl:if>
+		
 	</table>
-
+</jstl:if>
+<jstl:if test="${not empty bros}">
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2"><spring:message
@@ -99,7 +97,8 @@
 			<td style="text-align: right">${stdevBrotherhoodPerArea}</td>
 		</tr>
 	</table>
-
+</jstl:if>
+<jstl:if test="${not empty marchs }">
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2"><spring:message
@@ -148,7 +147,7 @@
 		</tr>
 		</jstl:if>
 	</table>
-
+</jstl:if>
 <jstl:if test="${not empty earlyProcessions}">
 	<table class="displayStyle" style="width: 50%">
 		<tr>
@@ -167,6 +166,7 @@
 		
 	</table>
 </jstl:if>
+<jstl:if test="${not empty finders}">
 	<table class="displayStyle" style="width: 50%">
 
 		<tr>
@@ -194,7 +194,7 @@
 			<td style="text-align: right">${ratioFinders}</td>
 		</tr>
 	</table>
-
+</jstl:if>
 	<table class="displayStyle" style="width: 50%">
 		<tr>
 			<th colspan="2" style="text-align: center"><spring:message
@@ -211,32 +211,42 @@
 					test="${language == 'en'}">
 
 					<script>
+					
+					var pos= ${nameEnPositions};
+					var cpos = ${countPositions};
+
+				     function getRandomColor() {
+				    var letters = '789ABCD'.split('');
+				    var color = '#';
+				    for (var i = 0; i < 6; i++ ) {
+				        color += letters[Math.round(Math.random() * 6)];
+				    }
+				    return color;
+				}
+				   
+				     function pushColor(pos){
+				         var colors = [];
+				         var len = ${nameEnPositions};
+				      for(var i = 0; i < len.length ; i++){
+				      colors.push(getRandomColor());
+				      }
+
+				      return colors;
+				      }
+					
+					
 var ctx = document.getElementById("myChart");
+
 var myChart = new Chart(ctx, {
+
     type: 'bar',
     data: {
-        labels: [<jstl:out value="${nameEnPositions}"/>],
+        labels: pos,
         datasets: [{
             label: 'Positions',
-            data: <jstl:out value="${countPositions}"/>,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(55, 59, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(55, 59, 64, 1)'
-            ],
+            data: cpos,
+            backgroundColor: pushColor(),
+            borderColor: pushColor(),
             borderWidth: 1
         }]
     },
@@ -275,35 +285,43 @@ var myChart = new Chart(ctx, {
 </script>
 
 				</jstl:if> <jstl:if test="${language == 'es'}">
+	<script>
+					
+					var pos= ${nameEsPositions};
+					var cpos = ${countPositions};
 
-					<script>
+				     function getRandomColor() {
+				    var letters = '789ABCD'.split('');
+				    var color = '#';
+				    for (var i = 0; i < 6; i++ ) {
+				        color += letters[Math.round(Math.random() * 6)];
+				    }
+				    return color;
+				}
+				   
+				     function pushColor(pos){
+				         var colors = [];
+				         var len = ${nameEsPositions};
+				      for(var i = 0; i < len.length ; i++){
+				      colors.push(getRandomColor());
+				      }
+
+				      return colors;
+				      }
+					
+					
 var ctx = document.getElementById("myChart");
+
 var myChart = new Chart(ctx, {
+
     type: 'bar',
     data: {
-        labels: ["Presidente", "Vicepresidente", "Secretario", "Tesorero", "Historiador", "Promotor","Vocal"],
+        labels: pos,
         datasets: [{
-            label: 'Cargos',
-            data: [<jstl:out value="${countPositions[0]}" />,<jstl:out value="${countPositions[1]}" />,<jstl:out value="${countPositions[2]}" />,<jstl:out value="${countPositions[3]}" />,
-                   <jstl:out value="${countPositions[4]}" />,<jstl:out value="${countPositions[5]}" />,<jstl:out value="${countPositions[6]}" />],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(55, 59, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(55, 59, 64, 1)'
-            ],
+            label: 'Positions',
+            data: cpos,
+            backgroundColor: pushColor(),
+            borderColor: pushColor(),
             borderWidth: 1
         }]
     },
@@ -340,8 +358,6 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-
-
 				</jstl:if></td>
 
 

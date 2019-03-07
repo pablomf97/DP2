@@ -102,7 +102,6 @@ public class ZoneService {
 		final Collection<Zone> result;
 		
 		result = this.zoneRepository.findAll();
-		Assert.notEmpty(result);
 		
 		return result;
 		
