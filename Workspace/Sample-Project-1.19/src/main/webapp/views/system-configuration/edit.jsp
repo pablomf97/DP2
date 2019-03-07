@@ -39,16 +39,12 @@
 		<br>
 		<br>
 
-		<acme:textError code="system.resultscached" path="timeResultsCached"
+		<acme:textbox code="system.resultscached" path="timeResultsCached"
 			size="5%" codeErr="timeErr" />
 		<br>
 		<br>
 
-		<acme:textbox code="system.bannerURL" path="banner" />
-		<br>
-		<br>
-
-		<acme:textError code="system.resultspersearch" path="maxResults"
+		<acme:textbox code="system.resultspersearch" path="maxResults"
 			size="5%" codeErr="maxErr" />
 		<br>
 		<br>
@@ -91,29 +87,29 @@
 			value="${sysConfig.welcomeMessage.get('English')}"
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />"
 			required>
+		<form:errors cssClass="error" path="welcomeMessage" />
+		<br />
+		<br />
 
-		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
-		
 		<!-- BRECHA -->
-				<p>
+		<p>
 			<spring:message code="breachNotification.name.es" />
 		</p>
 		<input type="text" name="nEs" id="nEs" size="100%"
 			value="${sysConfig.breachNotification.get('Español')}">
 
-		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
+		<form:errors cssClass="error" path="breachNotification" />
+		<br />
+		<br />
 
 		<p>
 			<spring:message code="breachNotification.name.en" />
 		</p>
 		<input type="text" name="nEn" id="nEn" size="100%"
 			value="${sysConfig.breachNotification.get('English')}">
-		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
-
-		<form:errors cssClass="error" path="welcomeMessage" />
+		<form:errors cssClass="error" path="breachNotification" />
 		<br />
 		<br />
-
 
 		<acme:submit code="system.save" name="save" />&nbsp;
 		<acme:cancel code="system.cancel"

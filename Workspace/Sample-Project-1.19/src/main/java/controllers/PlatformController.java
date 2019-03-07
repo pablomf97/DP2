@@ -161,7 +161,7 @@ public class PlatformController extends AbstractController {
 		return result;
 
 	}
-
+	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Platform platform, final BindingResult binding) {
 		ModelAndView result;

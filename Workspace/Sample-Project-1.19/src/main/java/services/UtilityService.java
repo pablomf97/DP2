@@ -21,16 +21,15 @@ public class UtilityService {
 
 	@Autowired
 	private ProcessionService processionService;
-	
+
 	@Autowired
 	private MessageService messageService;
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
-
 
 	// Utility methods ----------------------------------------
 
@@ -79,63 +78,65 @@ public class UtilityService {
 		return stringBuilder.toString();
 
 	}
-	
-	public void checkSpammers() {
-		Collection<Actor> allActors = this.actorService.findAll();
-		
-		for(Actor actor: allActors) {
-			if((this.messageService.findNumberMessagesSpamByActorId(actor.getId())/this.messageService.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
-				actor.setSpammer(true);
-			}
-		}
-	}
 
-//	public List<String> getNegativeWords() {
-//		Administrator principal;
+//	public void checkSpammers() {
+//		Collection<Actor> allActors = this.actorService.findAll();
 //
-//		principal = this.administratorService.findByPrincipal();
-//		Assert.notNull(principal);
-//
-//		final String makes = this.systemConfigurationService
-//				.findMySystemConfiguration().getNegativeWords();
-//		final List<String> listNegWords = new ArrayList<String>(
-//				Arrays.asList(makes.split(",")));
-//		return listNegWords;
+//		for (Actor actor : allActors) {
+//			if ((this.messageService.findNumberMessagesSpamByActorId(actor
+//					.getId()) / this.messageService
+//					.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
+//				actor.setSpammer(true);
+//			}
+//		}
 //	}
-//
-//	public int getNumberNegativeWords(final String s) {
-//		int res = 0;
-//		final List<String> negativeWords = this.getNegativeWords();
-//		final String[] words = s.split("(에,.-_/!?) ");
-//		for (final String a : words)
-//			if (negativeWords.contains(a))
-//				res++;
-//		return res;
-//	}
-//
-//	public List<String> getPositiveWords() {
-//		Administrator principal;
-//
-//		principal = this.administratorService.findByPrincipal();
-//		Assert.notNull(principal);
-//
-//		final String makes = this.systemConfigurationService
-//				.findMySystemConfiguration().getPositiveWords();
-//		final List<String> listPosWords = new ArrayList<String>(
-//				Arrays.asList(makes.split(",")));
-//		return listPosWords;
-//	}
-//
-//	public int getNumberPositiveWords(final String s) {
-//		int res = 0;
-//		final List<String> positiveWords = this.getPositiveWords();
-//		final String[] words = s.split("(에,.-_/!?) ");
-//		for (final String a : words)
-//			if (positiveWords.contains(a))
-//				res++;
-//		return res;
-//	}
-	
+
+	// public List<String> getNegativeWords() {
+	// Administrator principal;
+	//
+	// principal = this.administratorService.findByPrincipal();
+	// Assert.notNull(principal);
+	//
+	// final String makes = this.systemConfigurationService
+	// .findMySystemConfiguration().getNegativeWords();
+	// final List<String> listNegWords = new ArrayList<String>(
+	// Arrays.asList(makes.split(",")));
+	// return listNegWords;
+	// }
+	//
+	// public int getNumberNegativeWords(final String s) {
+	// int res = 0;
+	// final List<String> negativeWords = this.getNegativeWords();
+	// final String[] words = s.split("(에,.-_/!?) ");
+	// for (final String a : words)
+	// if (negativeWords.contains(a))
+	// res++;
+	// return res;
+	// }
+	//
+	// public List<String> getPositiveWords() {
+	// Administrator principal;
+	//
+	// principal = this.administratorService.findByPrincipal();
+	// Assert.notNull(principal);
+	//
+	// final String makes = this.systemConfigurationService
+	// .findMySystemConfiguration().getPositiveWords();
+	// final List<String> listPosWords = new ArrayList<String>(
+	// Arrays.asList(makes.split(",")));
+	// return listPosWords;
+	// }
+	//
+	// public int getNumberPositiveWords(final String s) {
+	// int res = 0;
+	// final List<String> positiveWords = this.getPositiveWords();
+	// final String[] words = s.split("(에,.-_/!?) ");
+	// for (final String a : words)
+	// if (positiveWords.contains(a))
+	// res++;
+	// return res;
+	// }
+
 	public boolean isSpam(List<String> atributosAComprobar) {
 		boolean containsSpam = false;
 		String[] spamWords = this.systemConfigurationService
@@ -155,5 +156,5 @@ public class UtilityService {
 		}
 		return containsSpam;
 	}
-	
+
 }

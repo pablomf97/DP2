@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
- * PopulateDatabase.xml
- *
- * Copyright (C) 2019 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
@@ -16,8 +10,8 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
-	
-<!-- Admin -->
+
+	<!-- Admin -->
 
 	<bean id="userAdmin1" class="security.UserAccount">
 		<property name="username" value="admin" />
@@ -30,8 +24,8 @@
 			</list>
 		</property>
 	</bean>
-	
-		<bean id="administrator1" class="domain.Administrator">
+
+	<bean id="administrator1" class="domain.Administrator">
 		<property name="name" value="José" />
 		<property name="middleName" value="Carlos" />
 		<property name="surname" value="Gamiz Redondo" />
@@ -44,7 +38,7 @@
 	</bean>
 
 	<!-- SYSTEM CONFIGURATION -->
-	
+
 	<bean id="sysConf" class="domain.SystemConfiguration">
 		<property name="systemName" value="Acme Madrugá" />
 		<property name="welcomeMessage">
@@ -74,7 +68,7 @@ your processions." />
 
 	</bean>
 
-		<!-- MESSAGE BOXES -->
+	<!-- MESSAGE BOXES -->
 	<!-- ADMIN 1 -->
 	<bean id="inBoxAdmin1" class="domain.MessageBox">
 		<property name="name" value="In box" />
@@ -84,7 +78,7 @@ your processions." />
 		</property>
 		<property name="messages">
 			<list>
-			<null />
+				<null />
 			</list>
 		</property>
 
@@ -111,7 +105,7 @@ your processions." />
 		</property>
 		<property name="messages">
 			<list>
-				
+
 			</list>
 		</property>
 
@@ -138,12 +132,12 @@ your processions." />
 		</property>
 		<property name="messages">
 			<list>
-				
+
 			</list>
 		</property>
 
 	</bean>
-	
+
 	<!--POSITION -->
 
 	<bean id="POSITION1" class="domain.Position">
@@ -237,7 +231,7 @@ your processions." />
 		</property>
 
 	</bean>
-	
-	
-	
+
+
+
 </beans>

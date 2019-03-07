@@ -22,6 +22,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Brotherhood;
 import domain.Enrolment;
+import domain.Zone;
 import forms.BrotherhoodForm;
 
 @Service
@@ -38,8 +39,12 @@ public class BrotherhoodService {
 
 	@Autowired
 	private EnrolmentService enrolmentService;
+
 	@Autowired
 	private MessageBoxService messageBoxService;
+
+	@Autowired
+	private ZoneService zoneService;
 
 	/**
 	 * Create a new empty brotherhood
@@ -253,7 +258,6 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notEmpty(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService
@@ -279,7 +283,6 @@ public class BrotherhoodService {
 		int count = 0;
 
 		brotherhoods = this.findAll();
-		Assert.notEmpty(brotherhoods);
 
 		for (final Brotherhood b : brotherhoods) {
 			enrolments = this.enrolmentService
@@ -296,6 +299,129 @@ public class BrotherhoodService {
 		}
 
 		return result;
+	}
+
+	public Double ratioBrotherhoodsPerArea() {
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoods;
+		Collection<Brotherhood> brotherhoodsInZone = new ArrayList<Brotherhood>();
+		Double size;
+		Double ratio;
+
+		zones = this.zoneService.findAll();
+		brotherhoods = this.brotherhoodRepository.findAll();
+
+		for (Zone z : zones) {
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+		}
+
+		size = (double) brotherhoodsInZone.size();
+
+		ratio = size / brotherhoods.size();
+
+		return ratio;
+
+	}
+
+	public Double countBrotherhoodsPerArea() {
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone = new ArrayList<Brotherhood>();
+
+		zones = this.zoneService.findAll();
+
+		for (Zone z : zones) {
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+		}
+
+		return (double) brotherhoodsInZone.size();
+
+	}
+
+	public Double maxBrotherhoodPerArea() {
+		Double result = null;
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone;
+		int count = 0;
+
+		zones = this.zoneService.findAll();
+		Assert.notNull(zones);
+
+		for (Zone z : zones) {
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+			if (count == 0) {
+				result = (double) brotherhoodsInZone.size();
+			}
+
+			if (brotherhoodsInZone.size() > result) {
+
+				result = (double) brotherhoodsInZone.size();
+			}
+
+			count++;
+		}
+		return result;
+
+	}
+
+	public Double minBrotherhoodPerArea() {
+		Double result = null;
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoodsInZone;
+		int count = 0;
+
+		zones = this.zoneService.findAll();
+		Assert.notNull(zones);
+
+		for (Zone z : zones) {
+			brotherhoodsInZone = this.findBrotherhoodsByZone(z.getId());
+
+			if (count == 0) {
+				result = (double) brotherhoodsInZone.size();
+			}
+
+			if (brotherhoodsInZone.size() < result) {
+
+				result = (double) brotherhoodsInZone.size();
+			}
+
+			count++;
+		}
+		return result;
+
+	}
+
+	public Collection<Brotherhood> allBros() {
+		return this.brotherhoodRepository.allBros();
+	}
+
+	public Collection<Brotherhood> findBrotherhoodsByZone(int zoneId) {
+		Collection<Brotherhood> result = this.brotherhoodRepository
+				.brotherhoodsByZone(zoneId);
+		return result;
+
+	}
+
+	public Double stdevBrotherhoodPerArea() {
+		Collection<Zone> zones;
+		Collection<Brotherhood> brotherhoods = new ArrayList<Brotherhood>();
+
+		zones = this.zoneService.findAll();
+
+		for (Zone z : zones) {
+			brotherhoods.addAll(this.findBrotherhoodsByZone(z.getId()));
+
+		}
+		Double n = (double) brotherhoods.size();
+		Double average = (double) brotherhoods.size() / zones.size();
+		Double averageTimes = (double) average * n;
+		Double lele = (Math.pow(n - averageTimes, 2));
+		Double lolo = 1 / (n - 1);
+		Double stdev = (double) Math.sqrt(lolo * lele);
+
+		return stdev;
 	}
 
 	public Collection<Brotherhood> brotherhoodsByMemberId(int memberId) {

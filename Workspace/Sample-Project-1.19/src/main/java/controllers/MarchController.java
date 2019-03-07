@@ -212,7 +212,6 @@ public class MarchController extends AbstractController {
 		
 		ModelAndView result;
 
-
 		march.setStatus("APPROVED");
 
 		march = this.marchService.reconstruct(march, binding);

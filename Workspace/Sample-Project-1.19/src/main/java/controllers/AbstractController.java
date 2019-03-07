@@ -41,9 +41,11 @@ public class AbstractController {
 	}
 	@ModelAttribute("breachNotification")
 	public Map<String,String> getBreachNotification(Model model) {
-
-		return this.systemConfigurationService.findBreachNotification();
+		Map<String,String> res=this.systemConfigurationService.findBreachNotification();
+		
+		return res;
 	}
+	
 
 	// Panic handler ----------------------------------------------------------
 
@@ -55,7 +57,7 @@ public class AbstractController {
 		result.addObject("name", ClassUtils.getShortName(oops.getClass()));
 		result.addObject("exception", oops.getMessage());
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
-		result.addObject("breachNotification",this.systemConfigurationService.findBreachNotification());
+		
 		
 		result.addObject("banner",
 				this.systemConfigurationService.findMyBanner());
