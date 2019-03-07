@@ -158,6 +158,8 @@ public class AdministratorService {
 			result = this.administratorRepository.findOne(administratorForm
 					.getId());
 			Assert.notNull(result);
+			Assert.isTrue(result.getId() == this.actorService.findByPrincipal()
+					.getId());
 			if (this.checkValidation(administratorForm, binding, result)) {
 				result.setAddress(administratorForm.getAddress());
 				result.setEmail(administratorForm.getEmail());

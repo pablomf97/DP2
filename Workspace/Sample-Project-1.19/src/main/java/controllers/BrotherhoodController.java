@@ -127,9 +127,9 @@ public class BrotherhoodController extends AbstractController {
 				pictures = brotherhoodForm.getPictures();
 			final Collection<Zone> zones = this.zoneService.findAll();
 			brotherhood.setEmail(brotherhood.getEmail().toLowerCase());
-			// emailError = this.actorService.checkEmail(brotherhood.getEmail(),
-			// brotherhood.getUserAccount().getAuthorities().iterator()
-			//	.next().getAuthority());
+			emailError = this.actorService.checkEmail(brotherhood.getEmail(),
+					brotherhood.getUserAccount().getAuthorities().iterator()
+							.next().getAuthority());
 			if (binding.hasErrors() || !emailError.isEmpty()
 					|| !check.isEmpty() || !passW.isEmpty()
 					|| !uniqueUsername.isEmpty() || !pictureError.isEmpty()) {

@@ -172,6 +172,7 @@ public class EnrollmentController extends AbstractController {
 			} else {
 				Assert.isTrue(enrolment.getBrotherhood().getId() == principal
 						.getId());
+				Assert.notNull(enrolment.getBrotherhood().getZone());
 			}
 
 			if (action.equals("accept")) {
@@ -182,7 +183,6 @@ public class EnrollmentController extends AbstractController {
 
 			} else if (action.equals("reject")) {
 
-				// TODO isout null
 				if (!enrolment.getIsOut()) {
 					enrolment.getDropOutMoment().add(
 							new Date(System.currentTimeMillis() - 1));

@@ -24,32 +24,44 @@
 
 	<table class="displayStyle">
 		<tr>
-			<td><strong> <spring:message code="procession.title" />	: </strong></td>
+			<td><strong> <spring:message code="procession.title" />
+					:
+			</strong></td>
 			<td><jstl:out value="${procession.title}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.ticker" /> : </strong></td>
+			<td><strong> <spring:message code="procession.ticker" />
+					:
+			</strong></td>
 			<td><jstl:out value="${procession.ticker}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.description" /> : </strong></td>
+			<td><strong> <spring:message
+						code="procession.description" /> :
+			</strong></td>
 			<td><jstl:out value="${procession.description}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.organisedMoment" /> : </strong></td>
+			<td><strong> <spring:message
+						code="procession.organisedMoment" /> :
+			</strong></td>
 			<td><jstl:out value="${procession.organisedMoment}" /></td>
 		</tr>
-		
+
 		<tr>
-			<td><strong> <spring:message code="procession.maxCols" /> : </strong></td>
+			<td><strong> <spring:message code="procession.maxCols" />
+					:
+			</strong></td>
 			<td><jstl:out value="${procession.maxCols}" /></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message code="procession.isDraft" /> : </strong></td>
+			<td><strong> <spring:message code="procession.isDraft" />
+					:
+			</strong></td>
 			<td><jstl:out value="${procession.isDraft}" /></td>
 		</tr>
 
@@ -64,23 +76,24 @@
 			<jstl:forEach var="platform" items="${procession.platforms}">
 				<table>
 					<tr>
-						<td><strong> <spring:message code="procession.platform.title" />
-								:
+						<td><strong> <spring:message
+									code="procession.platform.title" /> :
 						</strong></td>
 						<td><jstl:out value="${platform.title}">
 							</jstl:out></td>
-					</tr>		
-					
+					</tr>
+
 					<tr>
-						<td><strong> <spring:message code="procession.platform.description" />
-								:
+						<td><strong> <spring:message
+									code="procession.platform.description" /> :
 						</strong></td>
 						<td><jstl:out value="${platform.description}">
 							</jstl:out></td>
 					</tr>
-					<tr><td>
-					<a href="platform/display.do?platformId=${platform.id}"> <spring:message
-							code="procession.platform.display" />	</a></td>
+					<tr>
+						<td><a href="platform/display.do?platformId=${platform.id}">
+								<spring:message code="procession.platform.display" />
+						</a></td>
 					</tr>
 				</table>
 			</jstl:forEach>
@@ -92,7 +105,7 @@
 			</p>
 		</jstl:otherwise>
 	</jstl:choose>
-	
+
 	<div></div>
 
 	<input type="button" name="back"
@@ -107,7 +120,8 @@
 
 </security:authorize>
 
-<security:authorize access="hasRole('MEMBER')">
+<security:authorize
+	access="hasRole('MEMBER') or hasRole('ADMINISTRATOR') or isAnonymous()">
 
 	<jstl:choose>
 		<jstl:when test="${!procession.isDraft}">

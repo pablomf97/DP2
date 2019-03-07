@@ -17,7 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <div style="float: right">
 	<a href="?language=es" id="es"><img src="images/sp.png"
@@ -162,46 +162,24 @@
 
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-					<ul>
-						<li class="arrow"></li>
-						<li><a href="brotherhood/members/list.do"><spring:message
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="brotherhood/members/list.do"><spring:message
 								code="master.page.brotherhood.members.list" /></a></li>
-					</ul></li>
+				</ul></li>
 
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
 
-<<<<<<< HEAD
-			<li><a class="fNiv"> <spring:message
-						code="master.page.profile" /> (<security:authentication
-						property="principal.username" />)
-			</a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="messagebox/list.do"><spring:message
-								code="master.page.box.list" /></a></li>
-					<li><a href="messagebox/create.do"><spring:message
-								code="master.page.box.new" /></a></li>
-					<li><a href="message/actor/create.do"><spring:message
-								code="master.page.message.send" /></a></li>
-					<security:authorize access="hasRole('ADMINISTRATOR')">
-						<li><a href="message/administrator/broadcast.do"> <spring:message
-									code="master.page.message.broadcast" /></a></li>
-					</security:authorize>
-
-				</ul></li>
-
-=======
->>>>>>> Fran
 			<li><a class="fNiv" href="brotherhood/list.do"><spring:message
 						code="master.page.administrator.brotherhoods" /></a>
-					<ul>
-						<li class="arrow"></li>
-						<li><a href="brotherhood/members/list.do"><spring:message
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="brotherhood/members/list.do"><spring:message
 								code="master.page.brotherhood.members.list" /></a></li>
-					</ul></li>
-						
+				</ul></li>
+
 
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
@@ -224,12 +202,19 @@
 		</security:authorize>
 	</ul>
 </div>
-	
-		<security:authorize access="isAuthenticated()">
-		<jstl:if test="${pageContext.response.locale.language == 'es'}">
-		<h2><strong style="color:red;"><jstl:out value="${breachNotification.get('Español')}"></jstl:out><br/> </strong></h2>
-		</jstl:if>
-		<jstl:if test="${pageContext.response.locale.language == 'en'}">
-			<h2><strong style="color:red;"> <jstl:out value="${breachNotification.get('English')}" ></jstl:out><br/> </strong></h2>
-		</jstl:if>
-	</security:authorize>
+
+<security:authorize access="isAuthenticated()">
+	<jstl:if test="${pageContext.response.locale.language == 'es'}">
+		<h2>
+			<strong style="color: red;"><jstl:out
+					value="${breachNotification.get('Español')}"></jstl:out><br /> </strong>
+		</h2>
+	</jstl:if>
+	<jstl:if test="${pageContext.response.locale.language == 'en'}">
+		<h2>
+			<strong style="color: red;"> <jstl:out
+					value="${breachNotification.get('English')}"></jstl:out><br />
+			</strong>
+		</h2>
+	</jstl:if>
+</security:authorize>

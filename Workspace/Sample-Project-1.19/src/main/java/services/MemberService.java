@@ -40,7 +40,7 @@ public class MemberService {
 	private BrotherhoodService brotherhoodService;
 
 	@Autowired
-	private EnrolmentService enrolmentService;
+	private ActorService actorService;
 
 	@Autowired
 	private AdministratorService administratorService;
@@ -288,6 +288,8 @@ public class MemberService {
 		} else {
 			result = this.memberRepository.findOne(memberForm.getId());
 			Assert.notNull(result);
+			Assert.isTrue(result.getId() == this.actorService.findByPrincipal()
+					.getId());
 			if (this.checkValidation(memberForm, binding, result)) {
 				result.setAddress(memberForm.getAddress());
 				result.setEmail(memberForm.getEmail());

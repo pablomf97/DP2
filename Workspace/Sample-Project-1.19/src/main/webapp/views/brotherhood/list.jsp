@@ -13,6 +13,20 @@
 
 <display:table pagesize="5" class="displaytag" name="brotherhoods"
 	requestURI="brotherhood/list.do" id="brotherhood">
+
+	<!-- Action links -->
+
+	<jstl:if test="${isMember}">
+		<display:column>
+			<jstl:if test="${!enrolledBrotherhoods.contains(brotherhood)}">
+				<a
+					href="enrolment/member/request.do?brotherhoodID=${brotherhood.id}">
+					<spring:message code="brotherhood.request" />
+				</a>
+			</jstl:if>
+		</display:column>
+	</jstl:if>
+
 	<!-- Attributes-->
 
 	<jstl:if test="${isMember}">
@@ -37,17 +51,26 @@
 	<display:column titleKey="brotherhood.zone">
 		<jstl:out value="${brotherhood.zone.name}" />
 	</display:column>
-	
+
 	<display:column>
-	<a href="brotherhood/members/list.do?brotherhoodId=${brotherhood.id}">
-		<spring:message code="brotherhood.members" />
-	</a>
+		<a href="brotherhood/members/list.do?brotherhoodId=${brotherhood.id}">
+			<spring:message code="brotherhood.members" />
+		</a>
 	</display:column>
-	
+
 	<display:column>
-	<a href="platform/list.do?brotherhoodId=${brotherhood.id}">
-		<spring:message code="brotherhood.floats" />
-	</a>
+		<a href="platform/list.do?brotherhoodId=${brotherhood.id}"> <spring:message
+				code="brotherhood.floats" />
+		</a>
 	</display:column>
+
+
+	<display:column titleKey="brotherhood.processions">
+		<a
+			href="procession/member,brotherhood/list.do?brotherhoodId=${brotherhood.id}">
+			<spring:message code="brotherhood.processions" />
+		</a>
+	</display:column>
+
 </display:table>
 

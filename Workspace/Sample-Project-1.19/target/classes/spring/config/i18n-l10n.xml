@@ -43,6 +43,8 @@
 
 		<value>/views/socialProfile/messages</value>
 
+		<value>/views/socialProfile/messages</value>
+
 	</util:list>
 
 </beans>
