@@ -2,27 +2,24 @@ package controllers;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Actor;
-import domain.SocialProfile;
-
 import services.ActorService;
 import services.SocialProfileService;
+import domain.Actor;
+import domain.SocialProfile;
 
 @Controller
 @RequestMapping("/socialProfile/actor")
 public class SocialProfileController extends AbstractController {
-
 
 	// Services
 
@@ -31,6 +28,9 @@ public class SocialProfileController extends AbstractController {
 
 	@Autowired
 	private SocialProfileService socialProfileService;
+	
+	@Autowired
+	private Validator validator;
 
 	// Constructors
 
@@ -59,12 +59,8 @@ public class SocialProfileController extends AbstractController {
 		Boolean editable = true;
 
 		principal = this.actorService.findByPrincipal();
-
-
-
 		
-		socialProfiles = this.socialProfileService.findAll();//this.socialProfileService.socialProfilesByUser(principal.getUserAccount().getUsername());
-
+		socialProfiles = this.socialProfileService.socialProfilesByUserId(principal.getId());
 
 		res = new ModelAndView("socialProfile/list");
 		res.addObject("editable", editable);
@@ -73,6 +69,7 @@ public class SocialProfileController extends AbstractController {
 
 		return res;
 	}
+
 	@RequestMapping(value = "/edit", params = "socialprofileID")
 	public ModelAndView display(@RequestParam int socialprofileID) {
 		ModelAndView res;
@@ -80,22 +77,36 @@ public class SocialProfileController extends AbstractController {
 
 		socialProfile = this.socialProfileService.findOne(socialprofileID);
 		Assert.notNull(socialProfile);
-		Assert.isTrue(this.socialProfileService.checkifPrincipalIsOwnerBySocialProfileId(socialprofileID),"not.allowed");
+		Assert.isTrue(this.socialProfileService
+				.checkifPrincipalIsOwnerBySocialProfileId(socialprofileID),
+				"not.allowed");
 		res = this.createEditModelAndView(socialProfile);
 
 		return res;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid SocialProfile socialProfile,
-			BindingResult binding) {
+	public ModelAndView save(SocialProfile socialProfile, BindingResult binding) {
 		ModelAndView res;
-
+		Actor principal, owner;
+		principal = this.actorService.findByPrincipal();
+		
+		if(socialProfile.getId()== 0) {
+			socialProfile.setActor(this.actorService.findByPrincipal());
+			socialProfile.setActor(principal);
+		} else {
+			owner = this.actorService.findBySocialProfileId(socialProfile.getId());
+			Assert.isTrue(owner.equals(principal));
+			socialProfile.setActor(owner);
+		}
+		
+		this.validator.validate(socialProfile, binding);
+		
 		if (binding.hasErrors()) {
 			res = createEditModelAndView(socialProfile);
 		} else {
 			try {
-				
+
 				this.socialProfileService.save(socialProfile);
 				res = new ModelAndView("redirect:list.do");
 			} catch (Throwable oops) {
@@ -107,18 +118,28 @@ public class SocialProfileController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(@Valid SocialProfile socialProfile,
+	public ModelAndView delete(SocialProfile socialProfile,
 			BindingResult binding) {
 		ModelAndView res;
+		Actor principal, owner;
+		
+		owner = this.actorService.findBySocialProfileId(socialProfile.getId());
+		principal = this.actorService.findByPrincipal();
+		
+		Assert.isTrue(owner.equals(principal));
+		
+		socialProfile.setActor(owner);
+		
+		this.validator.validate(socialProfile, binding);
+		
 
 		if (binding.hasErrors()) {
 			res = createEditModelAndView(socialProfile);
 		} else {
 			try {
-				Actor actor = this.actorService.findByPrincipal();
 				this.socialProfileService.delete(socialProfile);
-				res = new ModelAndView("redirect:list.do"
-						+ actor.getId());
+				res = new ModelAndView("redirect:list.do");
+
 			} catch (Throwable oops) {
 				res = createEditModelAndView(socialProfile,
 						"system.commit.error");
@@ -127,8 +148,7 @@ public class SocialProfileController extends AbstractController {
 		return res;
 	}
 
-
-	///--------ModelAndView
+	// /--------ModelAndView
 
 	protected ModelAndView createEditModelAndView(SocialProfile socialProfile) {
 		ModelAndView res;
@@ -143,27 +163,17 @@ public class SocialProfileController extends AbstractController {
 		ModelAndView res;
 		Boolean editable;
 		Actor principal;
-		principal=this.actorService.findByPrincipal();
+		principal = this.actorService.findByPrincipal();
 
 		editable = this.socialProfileService
 				.checkifPrincipalIsOwnerBySocialProfileId(socialProfile.getId());
 
 		res = new ModelAndView("socialProfile/edit");
-		res.addObject("principal",principal);
+		res.addObject("principal", principal);
 		res.addObject("editable", editable);
 		res.addObject("socialProfile", socialProfile);
 		res.addObject("message", messageCode);
 		return res;
 	}
-
-
-
-
-
-
-
-
-
-
 
 }

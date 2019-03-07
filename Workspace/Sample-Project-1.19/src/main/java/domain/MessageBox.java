@@ -1,4 +1,3 @@
-
 package domain;
 
 import java.util.Collection;
@@ -8,7 +7,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,12 +17,11 @@ public class MessageBox extends DomainEntity {
 
 	/* Attributes */
 
-	private String				name;
-	private boolean				isPredefined;
-	private MessageBox			parentMessageBoxes;
-	private Collection<Message>	messages;
-	private Actor				owner;
-
+	private String name;
+	private boolean isPredefined;
+	private MessageBox parentMessageBoxes;
+	private Collection<Message> messages;
+	private Actor owner;
 
 	/* Getters&Setters */
 
@@ -45,6 +42,7 @@ public class MessageBox extends DomainEntity {
 		this.isPredefined = isPredefined;
 	}
 
+	@Valid
 	@ManyToOne
 	public Actor getOwner() {
 		return this.owner;
@@ -55,7 +53,8 @@ public class MessageBox extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = true)
+
 	public MessageBox getParentMessageBoxes() {
 		return this.parentMessageBoxes;
 	}

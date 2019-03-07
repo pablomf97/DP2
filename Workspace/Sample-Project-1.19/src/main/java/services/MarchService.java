@@ -284,7 +284,6 @@ public class MarchService {
 				}
 
 			}
-
 			ratio = (double) ((double)marchsRejectedInAProcession.size()/(double)marchsInAProcession.size());
 
 

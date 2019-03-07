@@ -155,16 +155,24 @@ public class EnrollmentController extends AbstractController {
 
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+			Assert.isTrue((this.actorService.checkAuthority(principal,
+					"BROTHERHOOD"))
+					|| (this.actorService.checkAuthority(principal, "MEMBER")));
 
 			enrolment = this.enrolmentService.findOne(enrolmentID);
 
-			Assert.isTrue(enrolment.getBrotherhood().getId() == principal
-					.getId());
+			if (principal instanceof Member) {
+				Assert.isTrue(principal.getId() == enrolment.getMember()
+						.getId());
+			} else {
+				Assert.isTrue(enrolment.getBrotherhood().getId() == principal
+						.getId());
+			}
 
 			if (action.equals("accept")) {
 
+				enrolment.setIsOut(false);
+				this.enrolmentService.save(enrolment);
 				res = this.createEditModelAndView(enrolment);
 
 			} else if (action.equals("reject")) {
@@ -178,9 +186,13 @@ public class EnrollmentController extends AbstractController {
 				enrolment.setIsOut(true);
 				enrolment.setPosition(null);
 				this.enrolmentService.save(enrolment);
-				// TODO Cambiar cuando tenga lo de chema
-				res = new ModelAndView(
-						"redirect:/enrolment/brotherhood/list.do");
+
+				if (principal instanceof Member) {
+					res = new ModelAndView("redirect:/enrolment/member/list.do");
+				} else {
+					res = new ModelAndView(
+							"redirect:/enrolment/brotherhood/list.do");
+				}
 
 			} else {
 

@@ -2,12 +2,15 @@ package services;
 
 import java.security.SecureRandom;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import domain.Actor;
 import domain.Procession;
 
 @Service
@@ -19,6 +22,14 @@ public class UtilityService {
 	@Autowired
 	private ProcessionService processionService;
 
+	@Autowired
+	private MessageService messageService;
+
+	@Autowired
+	private ActorService actorService;
+
+	@Autowired
+	private SystemConfigurationService systemConfigurationService;
 
 	// Utility methods ----------------------------------------
 
@@ -68,88 +79,82 @@ public class UtilityService {
 
 	}
 
-//	public List<String> getCreditCardMakes() {
+//	public void checkSpammers() {
+//		Collection<Actor> allActors = this.actorService.findAll();
 //
-//		final String makes = this.systemConfigurationService
-//				.findMySystemConfiguration().getListCreditCardMakes();
-//		final List<String> listCCMakes = new ArrayList<String>(
-//				Arrays.asList(makes.split(",")));
-//		return listCCMakes;
-//	}
-//
-//	public List<String> getNegativeWords() {
-//		Administrator principal;
-//
-//		principal = this.administratorService.findByPrincipal();
-//		Assert.notNull(principal);
-//
-//		final String makes = this.systemConfigurationService
-//				.findMySystemConfiguration().getNegativeWords();
-//		final List<String> listNegWords = new ArrayList<String>(
-//				Arrays.asList(makes.split(",")));
-//		return listNegWords;
-//	}
-//
-//	public int getNumberNegativeWords(final String s) {
-//		int res = 0;
-//		final List<String> negativeWords = this.getNegativeWords();
-//		final String[] words = s.split("(에,.-_/!?) ");
-//		for (final String a : words)
-//			if (negativeWords.contains(a))
-//				res++;
-//		return res;
-//	}
-//
-//	public List<String> getPositiveWords() {
-//		Administrator principal;
-//
-//		principal = this.administratorService.findByPrincipal();
-//		Assert.notNull(principal);
-//
-//		final String makes = this.systemConfigurationService
-//				.findMySystemConfiguration().getPositiveWords();
-//		final List<String> listPosWords = new ArrayList<String>(
-//				Arrays.asList(makes.split(",")));
-//		return listPosWords;
-//	}
-//
-//	public int getNumberPositiveWords(final String s) {
-//		int res = 0;
-//		final List<String> positiveWords = this.getPositiveWords();
-//		final String[] words = s.split("(에,.-_/!?) ");
-//		for (final String a : words)
-//			if (positiveWords.contains(a))
-//				res++;
-//		return res;
-//	}
-//
-//	public boolean validEmail(String email) {
-//		
-//		String toValidate = email.replace(" ","");
-//		Pattern pattern = Pattern.compile("([0-9a-z ]+((<)|())+([0-9a-z])+@+(()|([0-9a-z.]))+((>)|())|((<)|())+([0-9a-z])+@+(()|([0-9a-z.]))+((>)|()))");
-//		Matcher match = pattern.matcher(toValidate);
-//
-//		return match.matches();
-//	}
-//
-//	public boolean isSpam(List<String> atributosAComprobar) {
-//		boolean containsSpam = false;
-//		String[] spamWords = this.systemConfigurationService
-//				.findMySystemConfiguration().getSpamWords().split(",");
-//		for (int i = 0; i < atributosAComprobar.size(); i++) {
-//			if (containsSpam == false) {
-//				for (String spamWord : spamWords) {
-//					if (atributosAComprobar.get(i).toLowerCase()
-//							.contains(spamWord.toLowerCase())) {
-//						containsSpam = true;
-//						break;
-//					}
-//				}
-//			} else {
-//				break;
+//		for (Actor actor : allActors) {
+//			if ((this.messageService.findNumberMessagesSpamByActorId(actor
+//					.getId()) / this.messageService
+//					.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
+//				actor.setSpammer(true);
 //			}
 //		}
-//		return containsSpam;
 //	}
-//	
+
+	// public List<String> getNegativeWords() {
+	// Administrator principal;
+	//
+	// principal = this.administratorService.findByPrincipal();
+	// Assert.notNull(principal);
+	//
+	// final String makes = this.systemConfigurationService
+	// .findMySystemConfiguration().getNegativeWords();
+	// final List<String> listNegWords = new ArrayList<String>(
+	// Arrays.asList(makes.split(",")));
+	// return listNegWords;
+	// }
+	//
+	// public int getNumberNegativeWords(final String s) {
+	// int res = 0;
+	// final List<String> negativeWords = this.getNegativeWords();
+	// final String[] words = s.split("(에,.-_/!?) ");
+	// for (final String a : words)
+	// if (negativeWords.contains(a))
+	// res++;
+	// return res;
+	// }
+	//
+	// public List<String> getPositiveWords() {
+	// Administrator principal;
+	//
+	// principal = this.administratorService.findByPrincipal();
+	// Assert.notNull(principal);
+	//
+	// final String makes = this.systemConfigurationService
+	// .findMySystemConfiguration().getPositiveWords();
+	// final List<String> listPosWords = new ArrayList<String>(
+	// Arrays.asList(makes.split(",")));
+	// return listPosWords;
+	// }
+	//
+	// public int getNumberPositiveWords(final String s) {
+	// int res = 0;
+	// final List<String> positiveWords = this.getPositiveWords();
+	// final String[] words = s.split("(에,.-_/!?) ");
+	// for (final String a : words)
+	// if (positiveWords.contains(a))
+	// res++;
+	// return res;
+	// }
+
+	public boolean isSpam(List<String> atributosAComprobar) {
+		boolean containsSpam = false;
+		String[] spamWords = this.systemConfigurationService
+				.findMySystemConfiguration().getSpamWords().split(",");
+		for (int i = 0; i < atributosAComprobar.size(); i++) {
+			if (containsSpam == false) {
+				for (String spamWord : spamWords) {
+					if (atributosAComprobar.get(i).toLowerCase()
+							.contains(spamWord.toLowerCase())) {
+						containsSpam = true;
+						break;
+					}
+				}
+			} else {
+				break;
+			}
+		}
+		return containsSpam;
+	}
+
 }

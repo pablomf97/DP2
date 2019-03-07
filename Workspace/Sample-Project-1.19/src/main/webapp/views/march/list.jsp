@@ -155,7 +155,7 @@
 		
 		<display:column>
 			<jstl:if test="${row.status == 'PENDING'}">
-				<a onclick="redirect: location.href = 'march/accept.do?marchId=${row.id}';">
+				<a href="march/accept.do?marchId=${row.id}">
 					<spring:message code="march.accept" />
 				</a>
 			</jstl:if>
@@ -163,7 +163,7 @@
 			
 		<display:column>
 			<jstl:if test="${row.status == 'PENDING'}">
-				<a onclick="redirect: location.href = 'march/rejectv.do?marchId=${row.id}';">
+				<a href="march/rejectv.do?marchId=${row.id}">
 					<spring:message code="march.reject" />
 				</a>
 			</jstl:if>			

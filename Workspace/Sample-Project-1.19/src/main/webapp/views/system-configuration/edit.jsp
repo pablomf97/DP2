@@ -17,7 +17,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
 <security:authorize access="hasRole('ADMINISTRATOR')">
@@ -27,23 +27,46 @@
 
 		<form:hidden path="id" />
 
-		<acme:textbox code="system.name" path="systemName"/><br><br>
-		
-		<acme:textbox code="system.message.priority" path="messagePriority"/><br><br>
-		
-		<acme:textbox code="system.bannerURL" path="banner"/><br><br>
-		
-		<acme:textbox code="system.resultscached" path="timeResultsCached" size="5%" codeErr="timeErr"/><br><br>
-		
-		<acme:textbox code="system.resultspersearch" path="maxResults" size="5%" codeErr="maxErr"/><br><br>
-		
-		<acme:textbox code="system.countrycode" path="countryCode"/><br><br>
-		
-		<acme:textbox code="system.spamwords" path="spamWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
-		
-		<acme:textbox code="system.negativewords" path="negativeWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
-		
-		<acme:textbox code="system.positivewords" path="possitiveWords" size="100%" placeholder="system.lists.placeholder"/><br><br>
+		<acme:textbox code="system.name" path="systemName" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.message.priority" path="messagePriority" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.bannerURL" path="banner" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.resultscached" path="timeResultsCached"
+			size="5%" codeErr="timeErr" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.resultspersearch" path="maxResults"
+			size="5%" codeErr="maxErr" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.countrycode" path="countryCode" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.spamwords" path="spamWords" size="100%"
+			placeholder="system.lists.placeholder" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.negativewords" path="negativeWords"
+			size="100%" placeholder="system.lists.placeholder" />
+		<br>
+		<br>
+
+		<acme:textbox code="system.positivewords" path="possitiveWords"
+			size="100%" placeholder="system.lists.placeholder" />
+		<br>
+		<br>
 
 		<p>
 			<spring:message code="wel.name.es" />
@@ -53,7 +76,9 @@
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />"
 			required>
 
-		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
+		<form:errors cssClass="error" path="welcomeMessage" />
+		<br />
+		<br />
 
 		<p>
 			<spring:message code="wel.name.en" />
@@ -62,26 +87,35 @@
 			value="${sysConfig.welcomeMessage.get('English')}"
 			placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />"
 			required>
-		<form:errors cssClass="error" path="welcomeMessage" /><br/><br/>
-		
+		<form:errors cssClass="error" path="welcomeMessage" />
+		<br />
+		<br />
+
 		<!-- BRECHA -->
-				<p>
+		<p>
 			<spring:message code="breachNotification.name.es" />
 		</p>
 		<input type="text" name="nEs" id="nEs" size="100%"
 			value="${sysConfig.breachNotification.get('Español')}">
 
-		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
+		<form:errors cssClass="error" path="breachNotification" />
+		<br />
+		<br />
 
 		<p>
 			<spring:message code="breachNotification.name.en" />
 		</p>
 		<input type="text" name="nEn" id="nEn" size="100%"
 			value="${sysConfig.breachNotification.get('English')}">
-		<form:errors cssClass="error" path="breachNotification" /><br/><br/>
+		<form:errors cssClass="error" path="breachNotification" />
+		<br />
+		<br />
 
-		<acme:submit code="system.save" name="save"/>&nbsp;
-		<acme:cancel code="system.cancel" url="sysconfig/administrator/display.do"/><br/><br/>
+		<acme:submit code="system.save" name="save" />&nbsp;
+		<acme:cancel code="system.cancel"
+			url="sysconfig/administrator/display.do" />
+		<br />
+		<br />
 	</form:form>
 
 </security:authorize>

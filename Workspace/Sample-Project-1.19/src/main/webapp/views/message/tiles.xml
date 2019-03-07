@@ -15,12 +15,14 @@
 		<put-attribute name="body" value="/views/message/edit.jsp" />
 	</definition>
 
-
 	<definition name="message/broadcast" extends="master.page">
 		<put-attribute name="title" value="Send broadcast" />
 		<put-attribute name="body" value="/views/message/broadcast.jsp" />
 	</definition>
 
-
+	<definition name="message/display" extends="master.page">
+		<put-attribute name="title" value="See message" />
+		<put-attribute name="body" value="/views/message/display.jsp" />
+	</definition>
 
 </tiles-definitions>

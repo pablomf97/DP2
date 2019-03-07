@@ -177,5 +177,12 @@ public class ActorService {
 		result.remove(principal);
 		return result;
 	}
+	
+	public Actor findBySocialProfileId(int socialProfileId) {
+		Actor result = this.actorRepository.findBySocialProfileId(socialProfileId);
+		Assert.notNull(result);
+		
+		return result;
+	}
 
 }
