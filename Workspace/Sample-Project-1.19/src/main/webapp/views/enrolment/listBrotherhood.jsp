@@ -72,9 +72,11 @@
 
 					<jstl:choose>
 						<jstl:when test="${enrolment.isOut != false}">
-							<a
-								href="enrolment/brotherhood/action.do?action=accept&enrolmentID=${enrolment.id}"><jstl:out
-									value="${enroll}" /></a>
+							<jstl:if test="${!empty enrolment.brotherhood.zone}">
+								<a
+									href="enrolment/brotherhood/action.do?action=accept&enrolmentID=${enrolment.id}"><jstl:out
+										value="${enroll}" /></a>
+							</jstl:if>
 						</jstl:when>
 						<jstl:otherwise>
 							<a

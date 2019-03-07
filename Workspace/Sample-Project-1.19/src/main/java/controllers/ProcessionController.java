@@ -43,11 +43,15 @@ public class ProcessionController extends AbstractController {
 		boolean isPrincipal = false;
 		Actor principal;
 
-		principal = this.actorService.findByPrincipal();
 		procession = this.processionService.findOne(processionId);
 
-		if (procession.getBrotherhood().getId() == principal.getId())
-			isPrincipal = true;
+		try {
+			principal = this.actorService.findByPrincipal();
+			if (procession.getBrotherhood().getId() == principal.getId())
+				isPrincipal = true;
+		} catch (Throwable oops) {
+
+		}
 
 		result = new ModelAndView("procession/display");
 		result.addObject("procession", procession);
@@ -61,51 +65,35 @@ public class ProcessionController extends AbstractController {
 	// List
 
 	@RequestMapping(value = "/member,brotherhood/list")
-	public ModelAndView list(@RequestParam(required = false) Integer memberId,
+	public ModelAndView list(
 			@RequestParam(required = false) Integer brotherhoodId) {
 		ModelAndView result;
 		Collection<Procession> processions;
 		Actor principal;
-
+		String requestURI;
 		Boolean permission;
 
 		try {
-			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(!this.actorService.checkAuthority(principal,
-					"ADMINISTRATOR"));
-
 			permission = true;
 
-			principal = this.actorService.findByPrincipal();
-
-			if (this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
+			if (brotherhoodId != null) {
+				processions = this.processionService
+						.findProcessionsByBrotherhoodId(brotherhoodId);
+				requestURI = "procession/member,brotherhood/list.do?brotherhoodId="
+						+ brotherhoodId;
+			} else {
+				principal = this.actorService.findByPrincipal();
 
 				processions = this.processionService
 						.findProcessionsByBrotherhoodId(principal.getId());
-
-				String requestURI = "procession/member,brotherhood/list.do?brotherhoodId="
+				requestURI = "procession/member,brotherhood/list.do?brotherhoodId="
 						+ principal.getId();
-				result = new ModelAndView("procession/list");
-				result.addObject("requestURI", requestURI);
-				result.addObject("processions", processions);
-
-			} else {
-
-				Collection<Procession> toApply;
-
-				processions = this.processionService
-						.findAcceptedProcessionsByMemberId(principal.getId());
-				toApply = this.processionService.processionsToApply(principal
-						.getId());
-
-				String requestURI = "procession/member,brotherhood/list.do?memberId="
-						+ principal.getId();
-				result = new ModelAndView("procession/list");
-				result.addObject("requestURI", requestURI);
-				result.addObject("processions", processions);
-				result.addObject("toApply", toApply);
-
 			}
+
+			result = new ModelAndView("procession/list");
+			result.addObject("requestURI", requestURI);
+			result.addObject("processions", processions);
+
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
@@ -183,14 +171,13 @@ public class ProcessionController extends AbstractController {
 			final BindingResult binding) {
 		ModelAndView result;
 
-		
-		
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(procession);
 		else
 			try {
 				Actor principal = this.actorService.findByPrincipal();
-				Assert.isTrue(procession.getBrotherhood().getId() == principal.getId());
+				Assert.isTrue(procession.getBrotherhood().getId() == principal
+						.getId());
 				procession.setIsDraft(false);
 				procession = this.processionService.reconstruct(procession,
 						binding);

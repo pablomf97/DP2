@@ -44,10 +44,6 @@
 		<br>
 		<br>
 
-		<acme:textbox code="system.bannerURL" path="banner" />
-		<br>
-		<br>
-
 		<acme:textError code="system.resultspersearch" path="maxResults"
 			size="5%" codeErr="maxErr" />
 		<br>

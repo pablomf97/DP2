@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.ActorRepository;
 import repositories.BrotherhoodRepository;
 import security.Authority;
 import security.LoginService;
@@ -35,6 +36,8 @@ public class BrotherhoodService {
 	private BrotherhoodRepository brotherhoodRepository;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private ActorService actorService;
 
 	@Autowired
 	private EnrolmentService enrolmentService;
@@ -169,21 +172,20 @@ public class BrotherhoodService {
 			final Brotherhood bd = this.brotherhoodRepository
 					.findOne(brotherhoodForm.getId());
 			Assert.notNull(bd, "NotIdValid");
+			Assert.isTrue(bd.getId() == this.actorService.findByPrincipal()
+					.getId());
 			if (this.checkValidation(brotherhoodForm, binding, bd)) {
-				result.setId(brotherhoodForm.getId());
-				final UserAccount user = new UserAccount();
-				// user.setAuthorities(bd.getUserAccount().getAuthorities());
-				result.setUserAccount(user);
-				result.setAddress(brotherhoodForm.getAddress());
-				result.setEmail(brotherhoodForm.getEmail());
-				result.setMiddleName(brotherhoodForm.getMiddleName());
-				result.setName(brotherhoodForm.getName());
-				result.setPhoneNumber(brotherhoodForm.getPhoneNumber());
-				result.setPhoto(brotherhoodForm.getPhoto());
-				result.setSurname(brotherhoodForm.getSurname());
-				result.setTitle(brotherhoodForm.getTitle());
+				bd.setAddress(brotherhoodForm.getAddress());
+				bd.setEmail(brotherhoodForm.getEmail());
+				bd.setMiddleName(brotherhoodForm.getMiddleName());
+				bd.setName(brotherhoodForm.getName());
+				bd.setPhoneNumber(brotherhoodForm.getPhoneNumber());
+				bd.setPhoto(brotherhoodForm.getPhoto());
+				bd.setSurname(brotherhoodForm.getSurname());
+				bd.setTitle(brotherhoodForm.getTitle());
 				if (bd.getZone() == null && brotherhoodForm.getZone() != null)
-					result.setZone(brotherhoodForm.getZone());
+					bd.setZone(brotherhoodForm.getZone());
+				result = bd;
 			} else {
 				result = this.create();
 				result.setAddress(brotherhoodForm.getAddress());
