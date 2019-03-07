@@ -29,9 +29,12 @@
 
 	<jstl:if test="${isMember}">
 		<display:column>
-			<a href="enrolment/member/request.do?brotherhoodID=${brotherhood.id}">
-				<spring:message code="brotherhood.request" />
-			</a>
+			<jstl:if test="${!enrolledBrotherhoods.contains(brotherhood)}">
+				<a
+					href="enrolment/member/request.do?brotherhoodID=${brotherhood.id}">
+					<spring:message code="brotherhood.request" />
+				</a>
+			</jstl:if>
 		</display:column>
 	</jstl:if>
 </display:table>

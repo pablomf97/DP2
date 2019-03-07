@@ -23,7 +23,6 @@ import services.SocialProfileService;
 @RequestMapping("/socialProfile/actor")
 public class SocialProfileController extends AbstractController {
 
-
 	// Services
 
 	@Autowired
@@ -60,11 +59,9 @@ public class SocialProfileController extends AbstractController {
 
 		principal = this.actorService.findByPrincipal();
 
-
-
-		
-		socialProfiles = this.socialProfileService.findAll();//this.socialProfileService.socialProfilesByUser(principal.getUserAccount().getUsername());
-
+		// socialProfiles = this.socialProfileService.findAll();
+		socialProfiles = this.socialProfileService.socialProfilesById(principal
+				.getId());
 
 		res = new ModelAndView("socialProfile/list");
 		res.addObject("editable", editable);
@@ -73,6 +70,7 @@ public class SocialProfileController extends AbstractController {
 
 		return res;
 	}
+
 	@RequestMapping(value = "/edit", params = "socialprofileID")
 	public ModelAndView display(@RequestParam int socialprofileID) {
 		ModelAndView res;
@@ -80,7 +78,9 @@ public class SocialProfileController extends AbstractController {
 
 		socialProfile = this.socialProfileService.findOne(socialprofileID);
 		Assert.notNull(socialProfile);
-		Assert.isTrue(this.socialProfileService.checkifPrincipalIsOwnerBySocialProfileId(socialprofileID),"not.allowed");
+		Assert.isTrue(this.socialProfileService
+				.checkifPrincipalIsOwnerBySocialProfileId(socialprofileID),
+				"not.allowed");
 		res = this.createEditModelAndView(socialProfile);
 
 		return res;
@@ -95,7 +95,7 @@ public class SocialProfileController extends AbstractController {
 			res = createEditModelAndView(socialProfile);
 		} else {
 			try {
-				
+
 				this.socialProfileService.save(socialProfile);
 				res = new ModelAndView("redirect:list.do");
 			} catch (Throwable oops) {
@@ -117,8 +117,7 @@ public class SocialProfileController extends AbstractController {
 			try {
 				Actor actor = this.actorService.findByPrincipal();
 				this.socialProfileService.delete(socialProfile);
-				res = new ModelAndView("redirect:list.do"
-						+ actor.getId());
+				res = new ModelAndView("redirect:list.do" + actor.getId());
 			} catch (Throwable oops) {
 				res = createEditModelAndView(socialProfile,
 						"system.commit.error");
@@ -127,8 +126,7 @@ public class SocialProfileController extends AbstractController {
 		return res;
 	}
 
-
-	///--------ModelAndView
+	// /--------ModelAndView
 
 	protected ModelAndView createEditModelAndView(SocialProfile socialProfile) {
 		ModelAndView res;
@@ -143,27 +141,17 @@ public class SocialProfileController extends AbstractController {
 		ModelAndView res;
 		Boolean editable;
 		Actor principal;
-		principal=this.actorService.findByPrincipal();
+		principal = this.actorService.findByPrincipal();
 
 		editable = this.socialProfileService
 				.checkifPrincipalIsOwnerBySocialProfileId(socialProfile.getId());
 
 		res = new ModelAndView("socialProfile/edit");
-		res.addObject("principal",principal);
+		res.addObject("principal", principal);
 		res.addObject("editable", editable);
 		res.addObject("socialProfile", socialProfile);
 		res.addObject("message", messageCode);
 		return res;
 	}
-
-
-
-
-
-
-
-
-
-
 
 }
