@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MessageBoxService;
 import services.MessageService;
+import services.SystemConfigurationService;
 import domain.Actor;
 import domain.Message;
 import domain.MessageBox;
@@ -37,6 +36,8 @@ public class MessageController extends AbstractController{
 	@Autowired
 	private MessageBoxService messageBoxService;
 
+	@Autowired
+	private SystemConfigurationService systemConfigurationService;
 
 
 	//Create ----------------------------------------------------------------------
@@ -166,7 +167,9 @@ public class MessageController extends AbstractController{
 		Actor principal;
 		Date sentMoment;
 		Collection<Actor> recipients;
-		
+		String[] priorities;
+		String priority;
+		Collection<String> splitPriorities = new ArrayList<String>();
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
 
@@ -190,7 +193,14 @@ public class MessageController extends AbstractController{
 		sender = mensaje.getSender();
 		
 		recipients = this.actorService.findAllExceptPrincipal();
-
+		
+		priority = this.systemConfigurationService.findMySystemConfiguration().getMessagePriority();
+		
+		priorities = priority.split(",");
+		
+		for(String p : priorities){
+			splitPriorities.add(p);
+		}
 		result = new ModelAndView("message/edit");
 		result.addObject("sentMoment", sentMoment);
 		result.addObject("messageBoxes", messageBoxes);
@@ -202,6 +212,7 @@ public class MessageController extends AbstractController{
 		result.addObject("broadcast", false);
 		result.addObject("message", messageError);
 		result.addObject("recipients", recipients);
+		result.addObject("priorities", splitPriorities);
 		
 
 

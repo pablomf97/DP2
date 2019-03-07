@@ -35,17 +35,16 @@
 
 
 
-			 <form:label path="priority">
-				<spring:message code="message.priority" />
-			</form:label>
-			<form:radiobutton path="priority" value="HIGH" />
-			<spring:message code="message.priority.high" />
-			<form:radiobutton path="priority" value="NEUTRAL" checked="checked" />
-			<spring:message code="message.priority.neutral" />
-			<form:radiobutton path="priority" value="LOW" />
-			<spring:message code="message.priority.low" />
+			<form:label path="priority">
+				<spring:message code="message.priority" />:
+	</form:label>
+			<form:select path="priority" >
+				<form:options items="${priorities}" />
+			</form:select>
+			<form:errors cssClass="error" path="priority" />
 			<br />
-			<br /> 
+			<br />
+			
 
 			<input type="submit" name="save"
 				value="<spring:message code="message.broadcast"/>" />&nbsp;

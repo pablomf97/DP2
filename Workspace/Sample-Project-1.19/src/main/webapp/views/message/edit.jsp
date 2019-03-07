@@ -21,33 +21,40 @@
 				<form:options items="${recipients}" itemLabel="userAccount.username"
 					itemValue="id" />
 			</form:select>
-			<form:errors cssClass="error" path="recipient" /><br /><br />
+			<form:errors cssClass="error" path="recipient" />
+			<br />
+			<br />
 
-			<acme:textbox code="message.subject" path="subject"/><br><br>
-			
-			<acme:textbox code="message.body" path="body"/><br><br>
+			<acme:textbox code="message.subject" path="subject" />
+			<br>
+			<br>
+
+			<acme:textbox code="message.body" path="body" />
+			<br>
+			<br>
 
 			<form:label path="priority">
-				<spring:message code="message.priority" />
-			</form:label>
-			<form:radiobutton path="priority" value="HIGH" />
-			<spring:message code="message.priority.high" />
-			<form:radiobutton path="priority" value="NEUTRAL" checked="checked" />
-			<spring:message code="message.priority.neutral" />
-			<form:radiobutton path="priority" value="LOW" />
-			<spring:message code="message.priority.low" />
+				<spring:message code="message.priority" />:
+	</form:label>
+			<form:select path="priority" >
+				<form:options items="${priorities}" />
+			</form:select>
+			<form:errors cssClass="error" path="priority" />
 			<br />
 			<br />
 
+
 			<jstl:if test="${mensaje.id == 0}">
-				<acme:submit code="message.send" name="save"/>&nbsp;
+				<acme:submit code="message.send" name="save" />&nbsp;
   			</jstl:if>
 
 			<jstl:if test="${(mensaje.id == 0) && (broadcast)}">
-				<acme:submit code="message.broadcast" name="save"/>&nbsp;
+				<acme:submit code="message.broadcast" name="save" />&nbsp;
 			</jstl:if>
 
-			<acme:cancel code="message.cancel" url="messagebox/list.do"/><br/><br/>
+			<acme:cancel code="message.cancel" url="messagebox/list.do" />
+			<br />
+			<br />
 		</form:form>
 	</jstl:if>
 </jstl:if>
