@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -38,8 +40,11 @@ public class MessageService {
 	@Autowired
 	private MessageBoxService messageBoxService;
 
+
 	@Autowired
 	private UtilityService utilityService;
+
+
 
 
 	//CRUD Methods	-----------------------------------------------------------
@@ -74,6 +79,9 @@ public class MessageService {
 		Collection<MessageBox> messageBoxes = new ArrayList<MessageBox>();
 		MessageBox inSpamBox = null,outBox;
 
+
+		//TODO: Check spam
+
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
 
@@ -84,27 +92,35 @@ public class MessageService {
 
 		sentMoment = new Date(System.currentTimeMillis()-1);
 
+
 		final List<String> atributosAComprobar = new ArrayList<>();
 		atributosAComprobar.add(message.getBody());
 		atributosAComprobar.add(message.getSubject());
-		
+
 
 		final boolean containsSpam = this.utilityService.isSpam(atributosAComprobar);
 		if (containsSpam)
 			message.setIsSpam(true);
-			message.setTags("spam");
+		message.setTags("spam");
+
 
 		if(message.getTags().equals("spam")){
-			
-				inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "Spam box");
-				Assert.notNull(inSpamBox);
+
+			inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "Spam box");
+			Assert.notNull(inSpamBox);
+
+
+
 
 		}else{
-				inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "In box");
-				Assert.notNull(inSpamBox);
-			}
 
-		
+			inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "In box");
+			Assert.notNull(inSpamBox);
+
+
+		}
+
+
 		outBox = this.messageBoxService.findByName(principal.getId(), "Out Box");
 		Assert.notNull(outBox);
 
@@ -116,9 +132,15 @@ public class MessageService {
 
 		result  = this.messageRepository.save(message);
 
+
 		outBox.getMessages().add(result);
 		inSpamBox.getMessages().add(result);
-		
+
+
+
+
+
+
 		return result;
 	}
 
@@ -206,8 +228,11 @@ public class MessageService {
 		}
 
 		for(MessageBox mb : messageBoxRecipient){
-			if(mb.getMessages().contains(message)){
-				result = true;
+			if(!mb.getName().equals("Trash box")){
+				if(mb.getMessages().contains(message)){
+					result = true;
+					break;
+				}
 			}
 		}
 		return result;
@@ -312,37 +337,41 @@ public class MessageService {
 				notificationBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification box"));
 			}
 
-
-			outBoxAdmin = this.messageBoxService.findByName(principal.getId(), "Out box");
-			Assert.notNull(outBoxAdmin);
-
-
-
-			final Message message = new Message();
-			message.setSubject(subject);
-			message.setBody(body);
-			message.setSentMoment(sentMoment);
-			message.setPriority(priority);
-			message.setTags(tags);
-			message.setIsSpam(isSpam);
-			message.setRecipient(principal);
-			message.setSender(principal);
-
-			boxes.add(outBoxAdmin);
-			boxes.addAll(notificationBoxes);
-
-			message.setMessageBoxes(boxes);
-
-			saved = this.messageRepository.save(message);
-
-			for(MessageBox notBox : notificationBoxes){
-				notBox.getMessages().add(saved);
-			}
-
-			outBoxAdmin.getMessages().add(saved);
-
 		}
+
+
+
+
+		outBoxAdmin = this.messageBoxService.findByName(principal.getId(), "Out box");
+		Assert.notNull(outBoxAdmin);
+
+
+
+		final Message message = new Message();
+		message.setSubject(subject);
+		message.setBody(body);
+		message.setSentMoment(sentMoment);
+		message.setPriority(priority);
+		message.setTags(tags);
+		message.setIsSpam(isSpam);
+		message.setRecipient(principal);
+		message.setSender(principal);
+
+		boxes.add(outBoxAdmin);
+		boxes.addAll(notificationBoxes);
+
+		message.setMessageBoxes(boxes);
+
+		saved = this.messageRepository.save(message);
+
+		for(MessageBox notBox : notificationBoxes){
+			notBox.getMessages().add(saved);
+		}
+
+		outBoxAdmin.getMessages().add(saved);
+
 	}
+
 
 	public void deleteMessages(final Message m, final MessageBox mb){
 		Collection<Message> messages= new ArrayList<Message>();
@@ -405,6 +434,7 @@ public class MessageService {
 
 
 	}
+
 
 
 
@@ -601,6 +631,7 @@ public class MessageService {
 
 		return result;
 	}
+
 
 }
 

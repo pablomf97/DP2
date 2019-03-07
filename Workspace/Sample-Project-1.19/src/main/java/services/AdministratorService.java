@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -24,16 +23,15 @@ import forms.AdministratorForm;
 public class AdministratorService {
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService actorService;
 	@Autowired
-	private UserAccountService		userAccountService;
+	private UserAccountService userAccountService;
 	@Autowired
-	private AdministratorRepository	administratorRepository;
+	private AdministratorRepository administratorRepository;
 	@Autowired
-	private Validator				validator;
+	private Validator validator;
 	@Autowired
-	private MessageBoxService		messageBoxService;
-
+	private MessageBoxService messageBoxService;
 
 	/**
 	 * Create a new empty admin
@@ -54,10 +52,12 @@ public class AdministratorService {
 	}
 
 	public AdministratorForm createForm() {
-		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), "ADMINISTRATOR"));
+		Assert.isTrue(this.actorService.checkAuthority(
+				this.actorService.findByPrincipal(), "ADMINISTRATOR"));
 		final AdministratorForm res = new AdministratorForm();
 		return res;
 	}
+
 	/**
 	 * Find one admin by id
 	 * 
@@ -93,31 +93,40 @@ public class AdministratorService {
 			final UserAccount account = admin.getUserAccount();
 			final Authority au = new Authority();
 			au.setAuthority(Authority.ADMINISTRATOR);
-			Assert.isTrue(account.getAuthorities().contains(au), "You can not register with this authority");
-			final UserAccount savedAccount = this.userAccountService.save(account);
+			Assert.isTrue(account.getAuthorities().contains(au),
+					"You can not register with this authority");
+			final UserAccount savedAccount = this.userAccountService
+					.save(account);
 			admin.setUserAccount(savedAccount);
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			final String hash = encoder.encodePassword(admin.getUserAccount().getPassword(), null);
+			final String hash = encoder.encodePassword(admin.getUserAccount()
+					.getPassword(), null);
 			admin.getUserAccount().setPassword(hash);
 			result = this.administratorRepository.save(admin);
 			this.messageBoxService.initializeDefaultBoxes(result);
 		} else {
 			final UserAccount userAccount = LoginService.getPrincipal();
-			final Administrator adminBD = this.administratorRepository.findOne(admin.getId());
-			Assert.isTrue(admin.getUserAccount().equals(userAccount) && adminBD.getUserAccount().equals(userAccount), "This account does not belong to you");
+			final Administrator adminBD = this.administratorRepository
+					.findOne(admin.getId());
+			Assert.isTrue(admin.getUserAccount().equals(userAccount)
+					|| adminBD.getUserAccount().equals(userAccount),
+					"This account does not belong to you");
 			result = this.administratorRepository.save(admin);
 		}
 		return result;
 	}
+
 	/**
 	 * Remove the admin
 	 * 
 	 * @param id
 	 */
 	public void delete(final int id) {
-		final Administrator brotherhood = this.administratorRepository.findOne(id);
+		final Administrator brotherhood = this.administratorRepository
+				.findOne(id);
 		final UserAccount userAccount = LoginService.getPrincipal();
-		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount), "This account does not belong to you");
+		Assert.isTrue(brotherhood.getUserAccount().equals(userAccount),
+				"This account does not belong to you");
 		this.administratorRepository.delete(id);
 	}
 
@@ -128,11 +137,14 @@ public class AdministratorService {
 	 * @param binding
 	 * @return administrator
 	 */
-	public Administrator reconstruct(final AdministratorForm administratorForm, final BindingResult binding) {
+	public Administrator reconstruct(final AdministratorForm administratorForm,
+			final BindingResult binding) {
 		Administrator result = this.create();
 		if (administratorForm.getId() == 0) {
-			result.getUserAccount().setUsername(administratorForm.getUsername());
-			result.getUserAccount().setPassword(administratorForm.getPassword());
+			result.getUserAccount()
+					.setUsername(administratorForm.getUsername());
+			result.getUserAccount()
+					.setPassword(administratorForm.getPassword());
 			result.setAddress(administratorForm.getAddress());
 			result.setEmail(administratorForm.getEmail());
 			result.setMiddleName(administratorForm.getMiddleName());
@@ -143,7 +155,8 @@ public class AdministratorService {
 			this.validator.validate(administratorForm, binding);
 
 		} else {
-			result = this.administratorRepository.findOne(administratorForm.getId());
+			result = this.administratorRepository.findOne(administratorForm
+					.getId());
 			Assert.notNull(result);
 			if (this.checkValidation(administratorForm, binding, result)) {
 				result.setAddress(administratorForm.getAddress());
@@ -169,12 +182,16 @@ public class AdministratorService {
 		return result;
 	}
 
-	private boolean checkValidation(final AdministratorForm administratorForm, final BindingResult binding, final Administrator brotherhood) {
+	private boolean checkValidation(final AdministratorForm administratorForm,
+			final BindingResult binding, final Administrator brotherhood) {
 		boolean check = true;
 		administratorForm.setCheckBox(true);
-		administratorForm.setPassword(brotherhood.getUserAccount().getPassword());
-		administratorForm.setPassword2(brotherhood.getUserAccount().getPassword());
-		administratorForm.setUsername(brotherhood.getUserAccount().getUsername());
+		administratorForm.setPassword(brotherhood.getUserAccount()
+				.getPassword());
+		administratorForm.setPassword2(brotherhood.getUserAccount()
+				.getPassword());
+		administratorForm.setUsername(brotherhood.getUserAccount()
+				.getUsername());
 		this.validator.validate(administratorForm, binding);
 		if (binding.hasErrors())
 			check = false;

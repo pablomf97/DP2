@@ -25,10 +25,10 @@ public class PlatformService {
 	private PlatformRepository platformRepository;
 
 	// Supporting services -----------------------------------
-	
+
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private Validator validator;
 
@@ -39,8 +39,10 @@ public class PlatformService {
 		Platform result;
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+
 		result = new Platform();
 
 		return result;
@@ -49,7 +51,7 @@ public class PlatformService {
 	public Collection<Platform> findAll() {
 		Collection<Platform> result;
 		result = this.platformRepository.findAll();
-		
+
 		return result;
 	}
 
@@ -64,20 +66,23 @@ public class PlatformService {
 		Brotherhood brotherhood;
 		Actor principal;
 		Platform result;
-	
+
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		Assert.isTrue(platform.getBrotherhood().equals(principal), "not.allowed");
-		
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+		Assert.isTrue(platform.getBrotherhood().equals(principal),
+				"not.allowed");
+
 		Assert.notNull(platform);
 		Assert.notNull(platform.getDescription());
 		Assert.notNull(platform.getTitle());
-		
+
 		brotherhood = (Brotherhood) principal;
-		
-		if(platform.getId() == 0){
+
+		if (platform.getId() == 0) {
 			Assert.notNull(brotherhood.getZone());
-		}		
+		}
 
 		result = this.platformRepository.save(platform);
 		Assert.notNull(result);
@@ -92,8 +97,11 @@ public class PlatformService {
 		Assert.isTrue(platform.getId() != 0, "wrong.id");
 
 		principal = this.actorService.findByPrincipal();
-		Assert.isTrue(this.actorService.checkAuthority(principal, "BROTHERHOOD"), "not.allowed");
-		Assert.isTrue(platform.getBrotherhood().getId() == principal.getId(), "not.allowed");
+		Assert.isTrue(
+				this.actorService.checkAuthority(principal, "BROTHERHOOD"),
+				"not.allowed");
+		Assert.isTrue(platform.getBrotherhood().getId() == principal.getId(),
+				"not.allowed");
 
 		this.platformRepository.delete(platform.getId());
 
@@ -103,32 +111,34 @@ public class PlatformService {
 
 	public Platform reconstruct(Platform platform, BindingResult binding) {
 		Platform result;
-		Actor principal = null;
-		
-		if(platform.getId() == 0) {
-			principal = this.actorService.findByPrincipal();
-			
+		Actor principal = this.actorService.findByPrincipal();
+
+		if (platform.getId() == 0) {
 			result = platform;
 			result.setBrotherhood((Brotherhood) principal);
 		} else {
 			result = this.findOne(platform.getId());
-			
+
+			Assert.notNull(result);
+			Assert.isTrue(result.getBrotherhood().getId() == principal.getId());
+
 			result.setTitle(platform.getTitle());
 			result.setDescription(platform.getDescription());
 			result.setPictures(platform.getPictures());
-			
+
 		}
 
 		validator.validate(result, binding);
-		
+
 		return result;
 	}
-	
+
 	public Collection<Platform> findPlatformsByBrotherhoodId(int brotherhoodId) {
 		Collection<Platform> result;
-		
-		result = this.platformRepository.findPlatformsByBrotherhoodId(brotherhoodId);
-		
+
+		result = this.platformRepository
+				.findPlatformsByBrotherhoodId(brotherhoodId);
+
 		return result;
 	}
 }

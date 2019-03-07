@@ -17,24 +17,24 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
 <!-- 	<p id="demo"></p>
 			document.getElementById("demo").innerHTML = pat; -->
-	
+
 <script>
 	function checkPhone(msg) {
 		var phone = document.getElementById("phoneNumber").value;
-		var phonePattern =  new RegExp(
-			/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/);
-		var pat = phonePattern.test(phone);
+		var pattern = /^(((([+][1-9]{1}[0-9]{0,2}[\s]){0,1}([(][1-9]{1}[0-9]{0,2}[)][\s]){0,1})){0,1}([0-9]{4}){1}([0-9]{0,}))$/;
+		var pat = pattern.test(phone);
 		if (pat) {
 			return true;
 		} else {
 			return confirm(msg);
 		}
 	}
+
 	function unCheck() {
 		var checkbox = document.getElementById('checkBox');
 		checkbox.checked = false;
@@ -48,7 +48,8 @@
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
 <form:form action="member/edit.do" modelAttribute="memberForm"
-	methodParam="post" onsubmit="javascript: return checkPhone('${confirmTelephone}');">
+	methodParam="post"
+	onsubmit="javascript: return checkPhone('${confirmTelephone}');">
 
 	<form:hidden path="id" />
 
@@ -82,11 +83,13 @@
 		<br />
 	</security:authorize>
 
-	<acme:textbox code="actor.surname" path="surname"/><br>
+	<acme:textbox code="actor.surname" path="surname" />
+	<br>
 
-	<acme:textbox code="actor.name" path="name"/><br>
-	
-	
+	<acme:textbox code="actor.name" path="name" />
+	<br>
+
+
 
 	<form:label path="middleName">
 		<spring:message code="actor.middlename" />:
@@ -126,7 +129,7 @@
 	<form:input path="address" value="${member.address}" />
 	<form:errors cssClass="error" path="address" />
 	<br>
-	
+
 	<security:authorize access="isAnonymous()">
 		<form:label path="checkBox">
 			<spring:message code="actor.check.law" />:

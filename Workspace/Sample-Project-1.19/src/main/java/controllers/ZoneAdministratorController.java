@@ -20,9 +20,9 @@ import domain.Zone;
 
 @Controller
 @RequestMapping("zone/administrator")
-public class ZoneAdministratorController extends AbstractController{
+public class ZoneAdministratorController extends AbstractController {
 
-	//Services -----------------------------------------------------------
+	// Services -----------------------------------------------------------
 
 	@Autowired
 	private ZoneService zoneService;
@@ -30,22 +30,22 @@ public class ZoneAdministratorController extends AbstractController{
 	@Autowired
 	private ActorService actorService;
 
+	// Create -----------------------------------------------------------
 
-	//Create -----------------------------------------------------------
-
-	@RequestMapping(value="/create", method=RequestMethod.GET)
-	public ModelAndView create(){
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
 
 		ModelAndView result;
 		final Zone zone;
-		
+
 		Actor principal;
 		Boolean error;
-		
+
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
-						
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"ADMINISTRATOR"));
+
 			zone = this.zoneService.create();
 			Assert.notNull(zone);
 
@@ -53,60 +53,58 @@ public class ZoneAdministratorController extends AbstractController{
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
-			
+
 			result = new ModelAndView("zone/list");
 			error = true;
-			
+
 			result.addObject("oopsie", oopsie);
 			result.addObject("error", error);
 		}
 
-
 		return result;
-
 
 	}
 
-	//List ---------------------------------------------------------------
+	// List ---------------------------------------------------------------
 
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public ModelAndView list(){
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
 		ModelAndView result;
 		Collection<Zone> zones;
 		Actor principal;
 		Boolean permission;
-		
+
 		try {
 			principal = this.actorService.findByPrincipal();
-			Assert.isTrue(this.actorService.checkAuthority(principal, "ADMINISTRATOR"));
-			
+			Assert.isTrue(this.actorService.checkAuthority(principal,
+					"ADMINISTRATOR"));
+
 			permission = true;
-			
+
 			zones = this.zoneService.findAll();
 			Assert.notEmpty(zones);
 
 			result = new ModelAndView("zone/list");
 			result.addObject("zones", zones);
 			result.addObject("permission", permission);
-			
+
 		} catch (IllegalArgumentException oops) {
 			result = new ModelAndView("misc/403");
 		} catch (Throwable oopsie) {
-			
+
 			result = new ModelAndView("platform/list");
 			permission = false;
-			
+
 			result.addObject("oopsie", oopsie);
 			result.addObject("permission", permission);
 		}
-		return result;	
+		return result;
 	}
 
+	// Edit
 
-	//Edit
-
-	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int zoneId){
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int zoneId) {
 		final ModelAndView result;
 		final Zone zone;
 
@@ -118,45 +116,44 @@ public class ZoneAdministratorController extends AbstractController{
 		return result;
 	}
 
-	@RequestMapping(value="/edit", method=RequestMethod.POST, params="save")
-	public ModelAndView save(@Valid final Zone zone, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Zone zone, final BindingResult binding) {
 
 		ModelAndView result;
 
-		if(binding.hasErrors())
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(zone);
 		else
-			try{
+			try {
+				Assert.notNull(this.zoneService.findOne(zone.getId()));
 				this.zoneService.save(zone);
 				result = new ModelAndView("redirect:list.do");
-			}catch(final Throwable oops){
+			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(zone, "zone.commit.error");
 			}
 
-
 		return result;
 	}
 
-
-	@RequestMapping(value="/edit", method=RequestMethod.POST, params="delete")
-	public ModelAndView delete(@Valid final Zone zone, final BindingResult binding){
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@Valid final Zone zone,
+			final BindingResult binding) {
 
 		ModelAndView result;
 
-		try{
+		try {
 			this.zoneService.delete(zone);
 			result = new ModelAndView("redirect:list.do");
-		}catch(final Throwable oops){
+		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(zone, "zone.commit.error");
 		}
 
-
 		return result;
 	}
-	
-	//Ancillary methods ------------------------------------------------
 
-	public ModelAndView createEditModelAndView(final Zone zone){
+	// Ancillary methods ------------------------------------------------
+
+	public ModelAndView createEditModelAndView(final Zone zone) {
 
 		ModelAndView result;
 
@@ -164,10 +161,10 @@ public class ZoneAdministratorController extends AbstractController{
 
 		return result;
 
-
 	}
 
-	public ModelAndView createEditModelAndView(final Zone zone, String messageCode){
+	public ModelAndView createEditModelAndView(final Zone zone,
+			String messageCode) {
 
 		Actor principal;
 		final String name;
@@ -184,16 +181,16 @@ public class ZoneAdministratorController extends AbstractController{
 		pictures = zone.getPictures();
 		selectedZones = this.zoneService.findSelectedZones();
 		Assert.notNull(selectedZones);
-		
-		if(selectedZones.contains(zone)){
+
+		if (selectedZones.contains(zone)) {
 			isSelected = true;
 		}
-		
-		if(this.actorService.checkAuthority(principal, "ADMINISTRATOR")){
-			
+
+		if (this.actorService.checkAuthority(principal, "ADMINISTRATOR")) {
+
 			permission = true;
 		}
-		
+
 		result = new ModelAndView("zone/edit");
 		result.addObject("principal", principal);
 		result.addObject("name", name);
@@ -201,8 +198,9 @@ public class ZoneAdministratorController extends AbstractController{
 		result.addObject("zone", zone);
 		result.addObject("isSelected", isSelected);
 		result.addObject("permission", permission);
+		result.addObject("message", messageCode);
 		return result;
 
 	}
-	
+
 }

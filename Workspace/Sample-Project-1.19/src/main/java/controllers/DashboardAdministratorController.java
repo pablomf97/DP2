@@ -88,14 +88,17 @@ public class DashboardAdministratorController extends AbstractController {
 		String language;
 		language = locale.getLanguage();
 
+
 		statsFinder = this.finderService.statsFinder();
 		ratioFinders = this.finderService.ratioFinders();
+
 
 		// maxBrotherhoodPerArea=this.brotherhoodService.maxBrotherhoodPerArea();
 		// minBrotherhoodPerArea=this.brotherhoodService.minBrotherhoodPerArea();
 		// ratioBrotherhoodsPerArea=this.brotherhoodService.ratioBrotherhoodsPerArea();
 		// countBrotherhoodsPerArea=this.brotherhoodService.countBrotherhoodsPerArea();
 		//
+
 		averageMemberPerBrotherhood = this.memberService
 				.averageMemberPerBrotherhood();
 		minMemberPerBrotherhood = this.memberService.minMemberPerBrotherhood();
@@ -103,6 +106,18 @@ public class DashboardAdministratorController extends AbstractController {
 		// stdevMemberPerBrotherhood =
 		// this.memberService.stdevMembersPerBrotherhood();
 		acceptedMembers = this.memberService.acceptedMembers();
+
+
+		// averageMemberPerBrotherhood =
+		// this.memberService.averageMemberPerBrotherhood();
+		// minMemberPerBrotherhood =
+		// this.memberService.minMemberPerBrotherhood();
+		// maxMemberPerBrotherhood =
+		// this.memberService.maxMemberPerBrotherhood();
+		// stdevMemberPerBrotherhood =
+		// this.memberService.stdevMembersPerBrotherhood();
+		// acceptedMembers = this.memberService.acceptedMembers();
+
 
 		largestBrotherhood = this.brotherhoodService.largestBrotherhood();
 		smallestBrotherhood = this.brotherhoodService.smallestBrotherhood();
@@ -140,6 +155,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("largestBrotherhood", largestBrotherhood);
 		result.addObject("smallestBrotherhood", smallestBrotherhood);
 
+
 		result.addObject("acceptedMembers", acceptedMembers);
 		result.addObject("maxMemberPerBrotherhood", maxMemberPerBrotherhood);
 		result.addObject("minMemberPerBrotherhood", minMemberPerBrotherhood);
@@ -150,6 +166,20 @@ public class DashboardAdministratorController extends AbstractController {
 
 		result.addObject("statsFinder", statsFinder);
 		result.addObject("ratioFinders", ratioFinders);
+
+
+
+		// result.addObject("acceptedMembers", acceptedMembers);
+		// result.addObject("maxMemberPerBrotherhood", maxMemberPerBrotherhood);
+		// result.addObject("minMemberPerBrotherhood", minMemberPerBrotherhood);
+		// result.addObject("averageMemberPerBrotherhood",
+		// averageMemberPerBrotherhood);
+		// result.addObject("stdevMemberPerBrotherhood",
+		// stdevMemberPerBrotherhood);
+		//
+		// result.addObject("statsFinder",statsFinder);
+		// result.addObject("ratioFinders",ratioFinders);
+		//
 
 		// result.addObject("maxBrotherhoodPerArea",maxBrotherhoodPerArea);
 		// result.addObject("minBrotherhoodPerArea",minBrotherhoodPerArea);

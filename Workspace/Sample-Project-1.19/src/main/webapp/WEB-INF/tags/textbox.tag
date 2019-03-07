@@ -46,5 +46,5 @@
 	</form:label>	
 	<form:input path="${path}" readonly="${readonly}" size="${size }"
 		placeholder="${place}"/>	
-	<form:errors path="${path}" cssClass="${codeErr }" />
+	<form:errors path="${path}" cssClass="error" />
 </div>	

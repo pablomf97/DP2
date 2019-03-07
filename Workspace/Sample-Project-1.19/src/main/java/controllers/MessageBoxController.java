@@ -58,6 +58,7 @@ public class MessageBoxController extends AbstractController {
 			Assert.isTrue(box.getOwner().equals(actor));
 			result.addObject("requestURI", "/messagebox/content.do");
 			final Collection<MessageBox> childBoxes = this.messageBoxService.findByParent(box.getId());
+			result.addObject("box", box);
 			result.addObject("messageBoxes", childBoxes);
 			result.addObject("messages", box.getMessages());
 		} catch (final Throwable opps) {
