@@ -80,14 +80,17 @@ public class UtilityService {
 
 	}
 	
-	public void checkSpammers() {
+	public Integer checkSpammers() {
 		Collection<Actor> allActors = this.actorService.findAll();
+		Integer spammers = 0;
 		
 		for(Actor actor: allActors) {
 			if((this.messageService.findNumberMessagesSpamByActorId(actor.getId())/this.messageService.findNumberMessagesByActorId(actor.getId())) >= 0.1) {
 				actor.setSpammer(true);
+				spammers ++;				
 			}
 		}
+		return spammers;
 	}
 
 //	public List<String> getNegativeWords() {

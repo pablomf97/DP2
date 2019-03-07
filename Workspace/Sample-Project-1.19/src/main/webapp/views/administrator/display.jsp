@@ -68,4 +68,10 @@
 			<jstl:out value="N/A" />
 		</jstl:if>
 	</p>
+	
+	<jstl:if test="${isPrincipal}">
+	<input type="button" name="flagSpammers"
+		value="<spring:message code="admin.flag.spammers" />"
+		onclick="redirect: location.href = 'administrator/flag-spammers.do';" />
+	</jstl:if>
 </security:authorize>

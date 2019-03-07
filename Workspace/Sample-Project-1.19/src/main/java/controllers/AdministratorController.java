@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
+import services.UtilityService;
+import domain.Actor;
 import domain.Administrator;
 import forms.AdministratorForm;
 
@@ -34,6 +36,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
+	
+	@Autowired
+	private UtilityService			utilityService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -46,11 +51,20 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView displayGET(@RequestParam final int id) {
 		ModelAndView result;
 		Administrator a;
+		Boolean isPrincipal = false;
+		Actor principal;
+		
 		try {
+			principal = this.actorService.findByPrincipal();
+			if(principal.getId() == id) {
+				isPrincipal = true;
+			}
+			
 			result = new ModelAndView("administrator/display");
 			a = this.administratorService.findOne(id);
 			Assert.isTrue(a.equals(this.actorService.findByPrincipal()));
 			result.addObject("administrator", a);
+			result.addObject("isPrincipal", isPrincipal);
 		} catch (final Throwable opps) {
 			//TODO: ver la posibilidada de una pantalla de error
 			result = new ModelAndView("redirect:/welcome/index.do");
@@ -87,6 +101,24 @@ public class AdministratorController extends AbstractController {
 				result = new ModelAndView("redirect:/welcome/index.do");
 			}
 		return result;
+	}
+	
+	// Flag spammers
+	@RequestMapping(value = "/flag-spammers", method = RequestMethod.GET)
+	public ModelAndView flagSpammers() {
+		ModelAndView res;
+		Actor a;
+		Integer spammers;
+		
+		a = this.actorService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(a, "ADMINISTRATOR"));
+
+		spammers = this.utilityService.checkSpammers();
+		
+		res = new ModelAndView("administrator/display");
+		res.addObject("administrator", a);
+
+		return res;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)

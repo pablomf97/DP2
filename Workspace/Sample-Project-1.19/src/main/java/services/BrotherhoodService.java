@@ -305,6 +305,14 @@ public class BrotherhoodService {
 
 		return res;
 	}
+	
+	public Collection<Brotherhood> brotherhoodsByMemberInId(int memberId) {
+		Collection<Brotherhood> res;
+
+		res = this.brotherhoodRepository.brotherhoodsByMemberInId(memberId);
+
+		return res;
+	}
 
 	public Collection<Brotherhood> allBrotherhoodsByMemberId(int memberId) {
 		Collection<Brotherhood> res;

@@ -24,6 +24,9 @@ public interface ProcessionRepository extends JpaRepository<Procession, Integer>
 	
 	@Query("select p from Procession p where p.isDraft = 'false'")
 	Collection<Procession> findFinalProcessions();	
+	
+	@Query("select p from Procession p where p.isDraft = 'false' and p.brotherhood.id =?1")
+	Collection<Procession> findFinalProcessionByBrotherhood(int brotherhoodId);	
 		
 	@Query("select p from Procession p where p.organisedMoment > NOW() AND p.organisedMoment < ?1")
 	Collection<Procession> findEarlyProcessions(Date maxDate);

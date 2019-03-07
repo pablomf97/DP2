@@ -36,6 +36,7 @@ public class MarchController extends AbstractController {
 	@Autowired
 	private ProcessionService processionService;
 
+
 	// Display
 	
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -301,7 +302,7 @@ public class MarchController extends AbstractController {
 		
 		
 		if(this.actorService.checkAuthority(principal, "MEMBER")){
-			toApply = this.processionService.processionsToApply(principal.getId());
+			toApply = this.processionService.findPossibleProcessionsToMarchByMember(principal.getId());
 			if(principal.getId() == march.getId()){
 				isPrincipal = true;
 			}
