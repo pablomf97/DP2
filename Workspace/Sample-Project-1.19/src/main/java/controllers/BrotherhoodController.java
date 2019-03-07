@@ -14,9 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.BrotherhoodService;
+import services.MemberService;
 import services.ZoneService;
 import domain.Actor;
 import domain.Brotherhood;
+import domain.Member;
 import domain.Zone;
 import forms.BrotherhoodForm;
 
@@ -30,6 +32,9 @@ public class BrotherhoodController extends AbstractController {
 	private ActorService actorService;
 	@Autowired
 	private ZoneService zoneService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	public BrotherhoodController() {
 		super();
@@ -202,4 +207,19 @@ public class BrotherhoodController extends AbstractController {
 
 		return res;
 	}
+	
+	@RequestMapping(value="/members/list", method = RequestMethod.GET)
+	public ModelAndView listMembers(@RequestParam int brotherhoodId){
+		ModelAndView result;
+		Collection<Member> members = new ArrayList<Member>();
+			
+		members.addAll(this.memberService.findAllMembersByBrotherhood(brotherhoodId));
+		
+		result = new ModelAndView("brotherhood/listMembers");
+		result.addObject("members", members);
+		
+		return result;
+			
+	}
+	
 }

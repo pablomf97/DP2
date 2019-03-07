@@ -36,7 +36,6 @@ public class MemberController extends AbstractController {
 		try {
 			result = new ModelAndView("member/display");
 			m = this.memberService.findOne(id);
-			Assert.isTrue(m.equals(this.actorService.findByPrincipal()));
 			result.addObject("member", m);
 		} catch (final Throwable opps) {
 			opps.printStackTrace();

@@ -28,4 +28,5 @@ public interface EnrolmentRepository extends JpaRepository<Enrolment, Integer> {
 
 	@Query("select e from Enrolment e where e.position.id = ?1")
 	Collection<Enrolment> getEnrolmentsUsingPosition(int positionID);
+	
 }

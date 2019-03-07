@@ -64,7 +64,7 @@
 
 </security:authorize>
 
-<security:authorize access="hasRole('MEMBER')">
+<security:authorize access="isAnonymous()">
 	<table class="displayStyle">
 		<tr>
 			<td><strong> <spring:message
@@ -95,7 +95,6 @@
 	<div></div>
 	
 		<input type="button" name="back"
-		value="<spring:message code="procession.back" />"
+		value="<spring:message code="platform.back" />"
 		onclick="window.history.back()" />
-
 </security:authorize>

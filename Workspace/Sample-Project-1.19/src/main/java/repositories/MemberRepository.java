@@ -18,5 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	@Query("select e.member from Enrolment e where e.brotherhood.id = ?1 and e.isOut = 'false'")
 	Collection<Member> findAllMembersByBrotherhood(int brotherhoodId);
 	
+	
 		
 }

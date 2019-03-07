@@ -34,63 +34,55 @@ public class PlatformController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int platformId) {
 
-		ModelAndView result;
+		ModelAndView result = null;
 		Platform platform;
 		boolean isPrincipal = false;
 		Actor principal;
+		try{
+			principal = this.actorService.findByPrincipal();
+			platform = this.platformService.findOne(platformId);
+			if (platform.getBrotherhood().getId() == principal.getId())
+				isPrincipal = true;
 
-		principal = this.actorService.findByPrincipal();
-		platform = this.platformService.findOne(platformId);
+		}catch(Throwable oops){
+			platform = this.platformService.findOne(platformId);
 
-		if (platform.getBrotherhood().getId() == principal.getId())
-			isPrincipal = true;
+		}
 
 		result = new ModelAndView("platform/display");
 		result.addObject("platform", platform);
 		result.addObject("isPrincipal", isPrincipal);
-		result.addObject("requestURI", "platform/display.do?processionId="
+		result.addObject("requestURI", "platform/display.do?platformId="
 				+ platformId);
-
 		return result;
+
+
 	}
 
 	// List
 	@RequestMapping(value = "/list")
-	public ModelAndView list(
-			@RequestParam(required = false) Integer brotherhoodId) {
-		ModelAndView result;
+	public ModelAndView list(@RequestParam Integer brotherhoodId) {
+		ModelAndView result = null;
 		Actor principal;
 		Collection<Platform> platforms;
-		Boolean permission;
-
+		String requestURI;
+		platforms = this.platformService
+				.findPlatformsByBrotherhoodId(brotherhoodId);
 		try {
 			principal = this.actorService.findByPrincipal();
+			requestURI = "platform/list.do?=brotherhoodId"
+					+ brotherhoodId;
 
-			Assert.isTrue(this.actorService.checkAuthority(principal,
-					"BROTHERHOOD"));
+		} catch (Throwable oops){
 
-			permission = true;
+			requestURI = "platform/list.do?=brotherhoodId"
+					+ brotherhoodId;
 
-			platforms = this.platformService
-					.findPlatformsByBrotherhoodId(principal.getId());
-
-			String requestURI = "platform/list.do?memberId="
-					+ principal.getId();
-			result = new ModelAndView("platform/list");
-			result.addObject("requestURI", requestURI);
-			result.addObject("platforms", platforms);
-			result.addObject("permission", permission);
-
-		} catch (IllegalArgumentException oops) {
-			result = new ModelAndView("misc/403");
-		} catch (Throwable oopsie) {
-
-			result = new ModelAndView("platform/list");
-			permission = false;
-
-			result.addObject("oopsie", oopsie);
-			result.addObject("permission", permission);
 		}
+		result = new ModelAndView("platform/list");
+		result.addObject("requestURI", requestURI);
+		result.addObject("platforms", platforms);
+
 		return result;
 	}
 
@@ -158,7 +150,7 @@ public class PlatformController extends AbstractController {
 			try {
 				platform = this.platformService.reconstruct(platform, binding);
 				this.platformService.save(platform);
-				result = new ModelAndView("redirect:list.do");
+				result = new ModelAndView("redirect:list.do?brotherhoodId="+platform.getBrotherhood().getId());
 			} catch (IllegalArgumentException oops) {
 				result = new ModelAndView("misc/403");
 			} catch (final Throwable oops) {
@@ -173,11 +165,14 @@ public class PlatformController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Platform platform, final BindingResult binding) {
 		ModelAndView result;
-
+			
 		try {
 			platform = this.platformService.reconstruct(platform, binding);
+			int brotherhoodId = platform.getBrotherhood().getId();
+			
 			this.platformService.delete(platform);
-			result = new ModelAndView("redirect:list.do");
+			
+			result = new ModelAndView("redirect:list.do?brotherhoodId="+brotherhoodId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("welcome/index");
 
@@ -203,9 +198,9 @@ public class PlatformController extends AbstractController {
 		boolean isPrincipal = false;
 
 		principal = this.actorService.findByPrincipal();
-		
+
 		Brotherhood actorBrother = (Brotherhood) principal;
-		
+
 		if(this.actorService.checkAuthority(principal, "BROTHERHOOD")) {
 
 			isBrotherhood = true;

@@ -10,9 +10,21 @@
 
 <!-- Listing grid -->
 
+
 <display:table pagesize="5" class="displaytag" name="brotherhoods"
 	requestURI="brotherhood/list.do" id="brotherhood">
 	<!-- Attributes-->
+
+	<jstl:if test="${isMember}">
+		<display:column>
+			<jstl:if test="${!enrolledBrotherhoods.contains(brotherhood)}">
+				<a
+					href="enrolment/member/request.do?brotherhoodID=${brotherhood.id}">
+					<spring:message code="brotherhood.request" />
+				</a>
+			</jstl:if>
+		</display:column>
+	</jstl:if>
 
 	<display:column titleKey="brotherhood.title" sortable="true">
 		<jstl:out value="${brotherhood.title}" />
@@ -25,17 +37,17 @@
 	<display:column titleKey="brotherhood.zone">
 		<jstl:out value="${brotherhood.zone.name}" />
 	</display:column>
-	<!-- Action links -->
-
-	<jstl:if test="${isMember}">
-		<display:column>
-			<jstl:if test="${!enrolledBrotherhoods.contains(brotherhood)}">
-				<a
-					href="enrolment/member/request.do?brotherhoodID=${brotherhood.id}">
-					<spring:message code="brotherhood.request" />
-				</a>
-			</jstl:if>
-		</display:column>
-	</jstl:if>
+	
+	<display:column>
+	<a href="brotherhood/members/list.do?brotherhoodId=${brotherhood.id}">
+		<spring:message code="brotherhood.members" />
+	</a>
+	</display:column>
+	
+	<display:column>
+	<a href="platform/list.do?brotherhoodId=${brotherhood.id}">
+		<spring:message code="brotherhood.floats" />
+	</a>
+	</display:column>
 </display:table>
 

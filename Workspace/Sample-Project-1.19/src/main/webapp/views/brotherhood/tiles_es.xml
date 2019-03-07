@@ -24,5 +24,10 @@
 		<put-attribute name="title" value="Hermandad: lista" />
 		<put-attribute name="body" value="/views/brotherhood/list.jsp" />
 	</definition>
+	
+	<definition name="brotherhood/listMembers" extends="master.page">
+		<put-attribute name="title" value="Miembros inscritos en la hermandad" />
+		<put-attribute name="body" value="/views/brotherhood/listMembers.jsp" />
+	</definition>
 
 </tiles-definitions>
