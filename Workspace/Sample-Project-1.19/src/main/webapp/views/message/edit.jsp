@@ -25,7 +25,8 @@
 
 			<acme:textbox code="message.subject" path="subject"/><br><br>
 			
-			<acme:textbox code="message.body" path="body"/><br><br>
+			<spring:message code="message.body" /><br />
+			<form:textarea code="message.body" path="body"/><br><br>
 
 			<form:label path="priority">
 				<spring:message code="message.priority" />
@@ -77,7 +78,7 @@
 		
 	<input type="button" name="cancel"
 				value="<spring:message code="message.cancel" />"
-				onclick="javascript: relativeRedir('/box/actor/list.do');" />
+				onclick="javascript: relativeRedir('/messagebox/list.do');" />
 
 			<br />
 		</form:form>

@@ -21,10 +21,10 @@
 
 <script>
 	function checkPhone(msg) {
-		var phone = document.getElementById("phoneNumber");
-		var phonePattern = new RegExp(/^(((([+][1-9]{1}[0-9]{0,2}[\s]){0,1}([(][1-9]{1}[0-9]{0,2}[)][\s]){0,1})){0,1}([0-9]{4}){1}([0-9]{0,}))$/);
-
-		if (phonePattern.test(phone)) {
+		var phone = document.getElementById("phoneNumber").value;
+		var pattern = /^(((([+][1-9]{1}[0-9]{0,2}[\s]){0,1}([(][1-9]{1}[0-9]{0,2}[)][\s]){0,1})){0,1}([0-9]{4}){1}([0-9]{0,}))$/;
+		var pat = pattern.test(phone);
+		if (pat) {
 			return true;
 		} else {
 			return confirm(msg);

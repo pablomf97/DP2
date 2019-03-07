@@ -3,9 +3,10 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.transaction.Transactional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,6 @@ public class MessageService {
 
 	@Autowired
 	private MessageBoxService messageBoxService;
-	
-	@Autowired
-	private UtilityService utilityService;
 
 
 	//CRUD Methods	-----------------------------------------------------------
@@ -70,6 +68,9 @@ public class MessageService {
 		Collection<MessageBox> messageBoxes = new ArrayList<MessageBox>();
 		MessageBox inSpamBox,outBox;
 
+
+		//TODO: Check spam
+
 		principal = this.actorService.findByPrincipal();
 		Assert.notNull(principal);
 
@@ -79,25 +80,20 @@ public class MessageService {
 		tags = message.getTags();
 
 		sentMoment = new Date(System.currentTimeMillis()-1);
-		
-		final List<String> atributosAComprobar = new ArrayList<>();
-		atributosAComprobar.add(message.getBody());
-		atributosAComprobar.add(message.getSubject());
-		if (message.getTags() != null)
-			atributosAComprobar.add(message.getTags());
-
-		final boolean containsSpam = this.utilityService.isSpam(atributosAComprobar);
-		if (containsSpam)
-			message.setIsSpam(true);		
 
 		if(tags != null){
 			if(tags.contains("spam")){
 				inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "Spam box");
 				Assert.notNull(inSpamBox);
 
+				message.setIsSpam(true);
+				principal.setSpammer(true);
+
 			}else{
 				inSpamBox = this.messageBoxService.findByName(message.getRecipient().getId(), "In box");
 				Assert.notNull(inSpamBox);
+
+
 			}
 			
 		}else if(tags==null){
@@ -118,6 +114,8 @@ public class MessageService {
 
 			outBox.getMessages().add(result);
 			inSpamBox.getMessages().add(result);
+
+			
 		}
 		return result;
 	}
@@ -311,6 +309,7 @@ public class MessageService {
 			if(!(this.actorService.checkAuthority(a, "ADMINISTRATOR"))){
 				notificationBoxes.add(this.messageBoxService.findByName(a.getId(), "Notification box"));
 			}
+			
 		}
 		
 		outBoxAdmin = this.messageBoxService.findByName(principal.getId(), "Out box");
@@ -377,6 +376,7 @@ public class MessageService {
 			
 			this.validator.validate(result,binding);
 
+			
 		}
 		return result;
 	}
@@ -401,17 +401,5 @@ public class MessageService {
 		
 		return result;
 	}
-	
-	public Integer findNumberMessagesByActorId(int actorId) {
-		Integer result = this.messageRepository.findNumberMessagesByActorId(actorId);
-		
-		return result;
-	}
-	
-	public Integer findNumberMessagesSpamByActorId(int actorId) {
-		Integer result = this.messageRepository.findNumberMessagesSpamByActorId(actorId);
-		
-		return result;
-	}
-	
+
 }

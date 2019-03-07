@@ -16,11 +16,11 @@
 	</jstl:if>
 	<display:table name="messageboxes" id="messagebox" requestURI="${requestURI}"
 		pagesize="10">
-		<display:column>
+		<display:column titleKey="messagebox.name">
 			<jstl:out value="${messagebox.name}"></jstl:out>
 		</display:column>
 
-		<display:column>
+		<display:column titleKey="message.display">
 			<button
 				onClick="window.location.href='messagebox/content.do?Id=${messagebox.id}'">
 				<spring:message code="messagebox.seeM" />
